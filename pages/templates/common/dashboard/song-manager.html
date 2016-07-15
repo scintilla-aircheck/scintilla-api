@@ -1,0 +1,17 @@
+<div id="nav_container">
+    <a [ngClass]="{nav_link_container: true, active: navigation_location == 'new_songs'}">
+        <div class="nav_link" (click)="change_navigation_location('new_songs');">
+            New Songs
+        </div>
+    </a>
+    <a [ngClass]="{nav_link_container: true, active: navigation_location == 'featured_songs'}" (click)="change_navigation_location('featured_songs');">
+        <div class="nav_link">
+            Featured Songs
+        </div>
+    </a>
+</div>
+<div id="dashboard_feed_container" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="200" (scrolled)="on_scroll();">
+    <song *ngFor="let song of songs" [song]="song">
+
+    </song>
+</div>

@@ -1,0 +1,116 @@
+{% load staticfiles %}
+<form #upload_form="ngForm" id="upload_form" name="upload_form" method="POST" enctype="multipart/form-data" action="/api/v1/songs/">
+    <div id="dropzone_container">
+        <div id="upload_drop_icon" class="upload_drop_icon">
+            &#xf0ee;
+        </div>
+        <div class="upload_drop_text">
+            Drop file here or <span id="upload_drop_text_link" class="upload_drop_text_link">choose file</span> to upload a song.
+        </div>
+    </div>
+    <div id="preview_template" style="display: none">
+        <div style="display:none">
+
+        </div>
+    </div>
+    <div id="upload_finalize_container" style="display:none">
+        <div class="upload_finalize_left_column_container">
+            <div class="upload_finalize_album_art_container" id="upload_finalize_album_art_preview_image">
+                <div class="upload_finalize_album_art_content" id="upload_finalize_album_art_content">
+                    <div class="upload_finalize_album_art_text">
+                        Add album art
+                    </div>
+                    <label class="upload_finalize_album_art_upload_button">
+                        <input #album_art type="file" name="album_art" id="album_art" accept="image/*" />
+                        Upload
+                    </label>
+                </div>
+            </div>
+            <div id="wave" style="display: none"></div>
+            <div class="upload_finalize_song_preview_container">
+                <div class="upload_finalize_song_name_input_container">
+                    <input [(ngModel)]="song.name" id="song_name" name="song_name" class="upload_finalize_song_name_input" placeholder="Name your song" required />
+                </div>
+                <div class="upload_finalize_song_preview_play_container">
+                    <div [ngClass]="{play_pause_container: true, play_on: !song.is_playing, pause_on: song.is_playing}" (click)="play_pause();">
+                        <div class="play_triangle">
+                        </div>
+                        <div class="pause_bars">
+                            <div class="pause_bar_left"></div>
+                            <div class="pause_bar_right"></div>
+                        </div>
+                    </div>
+                    <div class="upload_finalize_song_preview_play_info_container">
+                        <div class="upload_finalize_song_preview_song_name">
+                            {% verbatim %}{{ song.name }}{% endverbatim %}
+                        </div>
+                        <div class="upload_finalize_song_preview_file_name">
+                            {% verbatim %}{{ song.compressed_file }}{% endverbatim %}
+                        </div>
+                    </div>
+                </div>
+                <div class="upload_finalize_song_preview_progress_container">
+                    <div class="upload_finalize_song_preview_progress_text_container">
+                        <div class="upload_finalize_song_preview_progress_time">
+                            {% verbatim %}{{song.time_progress}}{% endverbatim %}
+                        </div>
+                        <div class="upload_finalize_song_preview_progress_time">
+                            {% verbatim %}{{song.time_total}}{% endverbatim %}
+                        </div>
+                    </div>
+                    <div class="upload_finalize_song_preview_progress_bar_container" #wave_container (click)="seek($event, wave_container);">
+                        <div class="upload_finalize_song_preview_progress_bar" [style.width]="(song.progress_percentage * 100) + '%'">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="upload_finalize_right_column_container">
+            <div class="upload_finalize_licenses_container">
+                <div class="upload_finalize_license_container">
+                    <div class="upload_finalize_license_header_container">
+                        <input class="upload_finalize_license_input" type="radio" name="license" value="1" checked="true"/>
+                        <div class="upload_finalize_license_title">
+                            CC: Attribution
+                        </div>
+                    </div>
+                    <div class="upload_finalize_license_text">
+                        This license lets others distribute, remix, tweak, and build upon your work, even commercially, as long as they credit you for the original creation. This is the most accommodating of licenses offered. Recommended for maximum dissemination and use of licensed materials.
+                    </div>
+                </div>
+                <div class="upload_finalize_license_container">
+                    <div class="upload_finalize_license_header_container">
+                        <input class="upload_finalize_license_input" type="radio" name="license" value="2" />
+                        <div class="upload_finalize_license_title">
+                            CC: Attribution-ShareAlike
+                        </div>
+                    </div>
+                    <div class="upload_finalize_license_text">
+                        This license lets others remix, tweak, and build upon your work even for commercial purposes, as long as they credit you and license their new creations under the identical terms. This license is often compared to “copyleft” free and open source software licenses. All new works based on yours will carry the same license, so any derivatives will also allow commercial use.
+                    </div>
+                </div>
+                <!--
+                <div class="upload_finalize_license_container">
+                    <div class="upload_finalize_license_header_container">
+                        <input class="upload_finalize_license_input" type="radio" name="license" value="3" />
+                        <div class="upload_finalize_license_title">
+                            License Type 3
+                        </div>
+                    </div>
+                    <div class="upload_finalize_license_text">
+                        This is the text of the license. It is very long text so that it properly tests how the layout handles long paragraphs. This is probably a good amount of text to meet that requirement.
+                    </div>
+                </div>
+                -->
+            </div>
+            <button class="upload_finalize_complete_upload_button" (click)="submit()" [disabled]="!(song.name)">
+                Complete Upload
+            </button>
+        </div>
+        <div class="upload_finalize_close_container" (click)="show_song_upload_screen();">
+            &#xf00d;
+        </div>
+    </div>
+</form>
+<div class="bottom_spacer"></div>

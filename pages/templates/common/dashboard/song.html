@@ -1,0 +1,109 @@
+<div [id]="'wave-' + song.key" style="display: none">
+
+</div>
+<div class="song_share_and_favorite_container">
+    <div class="song_share_and_favorite">
+        <div #share_tooltip_container class="share_tooltip_container" style="display: none;">
+            <div class="share_tooltip_triangle">
+
+            </div>
+            <div class="share_tooltip">
+                <div class="share_tooltip_text">
+                    Share this song.
+                </div>
+                <div class="share_tooltip_link_container">
+                    <a class="share_tooltip_link" (click)="share();">
+                        &#xf082;
+                    </a>
+                    <a class="share_tooltip_link" (click)="share();">
+                        &#xf081;
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="song_share_and_favorite_button" (click)="toggle_share_tooltip();">
+            &#xf064;
+        </div>
+        <div class="song_share_and_favorite_amount">
+            {% verbatim %}{{ song.num_shares }}{% endverbatim %}
+        </div>
+    </div>
+    <div class="song_share_and_favorite" (click)="favorite();">
+        <div [ngClass]="{song_share_and_favorite_button: true, active: song.is_favorited}">
+            &#xf004;
+        </div>
+        <div class="song_share_and_favorite_amount">
+            {% verbatim %}{{ song.num_favorites }}{% endverbatim %}
+        </div>
+    </div>
+</div>
+<div class="song_player_container" [style.background-image]="'url(' + song.album_art + ')'">
+    <div class="song_player_overlay">
+
+    </div>
+    <div [ngClass]="{dashboard_play_pause_container: true, play_on: !song.is_playing, pause_on: song.is_playing}" (click)="play_pause();">
+        <div class="play_triangle">
+        </div>
+        <div class="pause_bars">
+            <div class="pause_bar_left"></div>
+            <div class="pause_bar_right"></div>
+        </div>
+    </div>
+    <div class="dashboard_progress_container">
+        <div class="dashboard_progress_text_container">
+            <div class="dashboard_progress_time">
+                {% verbatim %}{{song.time_progress}}{% endverbatim %}
+            </div>
+            <div class="dashboard_progress_time">
+                {% verbatim %}{{song.time_total}}{% endverbatim %}
+            </div>
+        </div>
+        <div class="dashboard_progress_bar_container" #wave_container (click)="seek($event, wave_container);">
+            <div class="dashboard_progress_bar" [style.width]="(song.progress_percentage * 100) + '%'">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="song_info_container">
+    <div class="song_info_top_container">
+        <div class="song_info_author_container">
+            <div class="song_info_author_thumbnail" [style.background-image]="'url(' + song.profile_image + ')'">
+
+            </div>
+            <div class="song_info_author_text_container">
+                <div class="song_info_author_name">
+                    {% verbatim %}{{ song.display_name }}{% endverbatim %}
+                </div>
+                <div class="song_info_song_age">
+                    {% verbatim %}{{ song.date_created |  date_to_string }}{% endverbatim %}
+                </div>
+            </div>
+        </div>
+        <div class="song_info_tags_container">
+            <div *ngFor="let tag of song.tags_cache | slice:0:10" class="tag">
+                {% verbatim %}{{ tag }}{% endverbatim %}
+            </div>
+        </div>
+    </div>
+    <div class="song_info_middle_container">
+        <div class="song_info_song_name">
+            {% verbatim %}{{song.name}}{% endverbatim %}
+        </div>
+        <div class="song_info_number_of_plays_container">
+            <div class="song_info_number_of_plays_icon">
+                &#xf144;
+            </div>
+            <div class="song_info_number_of_plays_text">
+                {% verbatim %}{{ song.num_plays }}{% endverbatim %}
+            </div>
+        </div>
+    </div>
+    <div class="song_info_bottom_container">
+        <!--
+        <a href="" class="song_info_buy_button">
+            BUY
+        </div>
+        -->
+    </div>
+</div>

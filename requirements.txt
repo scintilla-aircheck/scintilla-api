@@ -1,0 +1,27 @@
+# App
+
+Django==1.9.7
+djangorestframework==3.3.3
+slothauth==0.6.1
+django-mobile==0.7.0
+celery==3.1.23
+django-celery==3.1.17
+
+# Logging
+
+# DevOps
+
+gunicorn==19.4.5
+dj-database-url==0.4.0
+django-storages==1.1.8
+django-boto==0.3.9
+
+# Testing
+
+factory_boy==2.6.1
+
+# Utility
+
+django-extensions==1.6.1
+Werkzeug==0.11.9
+PyYAML==3.11

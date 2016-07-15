@@ -1,0 +1,38 @@
+{% load staticfiles %}
+
+<div id="profile_content_container">
+    <div class="profile_header">
+        <div class="profile_user_badge_container">
+            <div class="profile_user_badge_image" [style.background-image]="'url(' + profile_image + ')'">
+
+            </div>
+            <div class="profile_user_badge_text">
+                {% verbatim %}{{ display_name }}{% endverbatim %}
+            </div>
+        </div>
+        {% if request.user.is_authenticated %}
+        <a href="/settings" class="profile_settings_link">
+            &#xf013;
+        </a>
+        {% endif %}
+    </div>
+    <div id="profile_content">
+        <div id="nav_container">
+            <a [ngClass]="{nav_link_container: true, active: navigation_location == 'uploaded_songs'}">
+                <div class="nav_link" (click)="change_navigation_location('uploaded_songs');">
+                    Uploaded Songs
+                </div>
+            </a>
+            <a [ngClass]="{nav_link_container: true, active: navigation_location == 'favorite_songs'}" (click)="change_navigation_location('favorite_songs');">
+                <div class="nav_link">
+                    Favorite Songs
+                </div>
+            </a>
+        </div>
+        <div id="profile_feed_container" infinite-scroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="200" (scrolled)="on_scroll();">
+            <song *ngFor="let song of songs" [song]="song">
+
+            </song>
+        </div>
+    </div>
+</div>
