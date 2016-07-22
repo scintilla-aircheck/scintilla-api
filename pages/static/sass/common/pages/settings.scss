@@ -1,0 +1,190 @@
+@import "../base";
+@import "../includes/common";
+
+@mixin settings-input {
+  height: 44px;
+  background-color: $white;
+  box-sizing: border-box;
+  padding: 10px 15px 10px 15px;
+  margin-bottom: 10px;
+  border: 1px solid $grey;
+  font-family: $font-regular;
+  font-size: 18px;
+  color: $black;
+
+  &:focus {
+    border: 1px solid $teal;
+    outline: none;
+  }
+
+  @include placeholder {
+    font-family: $font-regular;
+    font-size: 18px;
+    color: $grey;
+  }
+}
+
+#settings_container {
+  @include flexbox-display-flex();
+  @include flexbox-flex-direction(column);
+  @include flexbox-justify-content(flex-start);
+  @include flexbox-align-items(center);
+  width: 100%;
+  background-color: $lighter-grey;
+
+  #settings {
+    @include flexbox-display-flex();
+    @include flexbox-flex-direction(column);
+    @include flexbox-justify-content(flex-start);
+    @include flexbox-align-items(stretch);
+    width: 640px;
+
+    .settings_header {
+      @include flexbox-display-flex();
+      @include flexbox-justify-content(center);
+      @include flexbox-align-items(center);
+      width: 100%;
+      height: 220px;
+      position: relative;
+
+      .settings_back_button_container {
+        @include flexbox-display-flex();
+        @include flexbox-justify-content(flex-start);
+        @include flexbox-align-items(center);
+        position: absolute;
+        left: 0px;
+        top: calc(50% - 20px);  // 20px is half of the settings_back_button_container height
+        text-decoration: none;
+
+        .settings_back_button_arrow {
+          font-family: FontAwesome;
+          font-size: 40px;
+          color: $teal;
+        }
+
+        .settings_back_button_text {
+          font-family: $font-bold;
+          font-size: 16px;
+          color: $teal;
+          margin-left: 8px;
+          margin-top: 3px;
+        }
+      }
+
+      .settings_user_badge_container {
+        @include flexbox-display-flex();
+        @include flexbox-flex-direction(column);
+        @include flexbox-justify-content(space-between);
+        @include flexbox-align-items(center);
+        height: 125px;
+
+        .settings_user_badge_image {
+          width: 90px;
+          height: 90px;
+          background: $white url('/static/images/temp/settings_thumbnail.png') center center no-repeat;
+          background-size: cover;
+          border-radius: 50%;
+        }
+
+        .settings_user_badge_text {
+          font-family: $font-bold;
+          font-size: 22px;
+          color: $black;
+        }
+      }
+    }
+
+    .settings_content {
+      .settings_input_group_container {
+        @include flexbox-display-flex();
+        @include flexbox-justify-content(flex-start);
+        @include flexbox-align-items(center);
+        @include flexbox-flex-wrap(wrap);
+        margin-bottom: 45px;
+
+        .settings_input_group_header_container {
+          @include flexbox-display-flex();
+          @include flexbox-justify-content(space-between);
+          width: 100%;
+          margin-bottom: 10px;
+
+          .settings_input_group_label {
+            font-family: $font-bold;
+            font-size: 12px;
+            color: $dark-grey;
+            letter-spacing: 2px;
+          }
+
+          .settings_input_group_extra_text {
+            font-family: $font-regular;
+            font-size: 14px;
+            color: $teal;
+            letter-spacing: 0px;
+            text-decoration: none;
+
+            &:hover {
+              color: $light-teal;
+            }
+          }
+        }
+
+        .settings_input_label {
+          font-family: $font-regular;
+          font-size: 14px;
+          color: $dark-grey;
+          letter-spacing: 0px;
+          line-height: 18px;
+          margin-right: 10px;
+          margin-bottom: 10px;  // offset input margin bottom
+        }
+
+        .settings_input_full_size {
+          @include settings-input;
+          width: 100%;
+        }
+
+        .settings_input_half_size {
+          @include settings-input;
+          width: calc(50% - 5px);
+        }
+
+        .settings_input_date_size {
+          @include settings-input;
+          width: 120px;
+          margin-right: 25px;
+        }
+
+        .settings_input_cvv_size {
+          @include settings-input;
+          width: 60px;
+        }
+      }
+
+      .settings_input_group_container > .settings_input_half_size ~ .settings_input_half_size {
+        margin-left: 10px;
+      }
+    }
+
+    .settings_save_button {
+      @include magenta_button(100%, 50px);
+    }
+
+    .settings_save_button_container {
+      @include flexbox-display-flex();
+      @include flexbox-justify-content(center);
+      @include flexbox-align-items(center);
+      width: 100%;
+      height: 50px;
+      background: $teal;
+      box-shadow: 0px 2px 4px 0px rgba(0, 7, 7, 0.14);
+      text-decoration: none;
+
+      .settings_save_button_text {
+        font-family: $font-bold;
+        font-size: 16px;
+        color: $pure-white;
+        line-height: 24px;
+      }
+    }
+  }
+}

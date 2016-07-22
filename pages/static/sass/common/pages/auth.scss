@@ -1,0 +1,224 @@
+@import "../base";
+@import "../includes/common";
+
+#authentication_container {
+  @include flexbox-display-flex();
+  @include flexbox-justify-content(center);
+  @include flexbox-align-items(flex-start);
+  width: 100%;
+
+  #authentication_content {
+    @include flexbox-display-flex();
+    @include flexbox-justify-content(space-between);
+    @include flexbox-align-items(flex-start);
+    width: 840px;
+    margin-top: 165px;
+
+    .authentication_info_container {
+      @include flexbox-display-flex();
+      @include flexbox-flex-direction(column);
+      @include flexbox-justify-content(flex-start);
+      @include flexbox-align-items(flex-start);
+      width: 310px;
+
+      .authentication_info_title {
+        font-family: $font-bold;
+        font-size: 32px;
+        color: $black;
+        letter-spacing: 0px;
+        line-height: 40px;
+        margin-bottom: 25px;
+      }
+
+      .authentication_info_text {
+        font-family: $font-regular;
+        font-size: 16px;
+        color: $black;
+        letter-spacing: 0px;
+        line-height: 24px;
+      }
+    }
+
+    .authentication_form_container {
+      @include flexbox-display-flex();
+      @include flexbox-flex-direction(column);
+      @include flexbox-justify-content(flex-start);
+      @include flexbox-align-items(flex-start);
+      width: 330px;
+      position: relative;
+
+      .authentication_form_title {
+        font-family: $font-bold;
+        font-size: 18px;
+        color: $black;
+        letter-spacing: 0px;
+        line-height: 24px;
+        margin-bottom: 50px;
+      }
+
+      .authentication_form_label {
+        font-family: $font-bold;
+        font-size: 12px;
+        color: $dark-grey;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+      }
+
+      .authentication_form_input {
+        @include input(330px);
+      }
+
+      .authentication_form_button {
+        @include magenta_button(330px, 44px);
+        margin-top: 20px;
+      }
+
+      .login_forgot_password_link {
+        position: absolute;
+        right: 0px;
+        margin-top: -4px;
+        font-family: $font-regular;
+        font-size: 14px;
+        line-height: 21px;
+        text-decoration: none;
+
+        @include color_transition($teal, $light-teal, $light-teal);
+      }
+
+      .authentication_form_error {
+        font-family: $font-regular;
+        font-size: 13px;
+        color: $red;
+        letter-spacing: 0px;
+        margin-top: -5px;
+        margin-bottom: 15px;
+      }
+
+      #username_check_container {
+        display: none;
+        @include flexbox-justify-content(space-between);
+        @include flexbox-align-items(center);
+        width: 100%;
+        height: 45px;
+        margin-top: -8px;
+
+        #username_check_text {
+          font-family: $font-regular;
+          font-size: 18px;
+          color: $grey;
+
+          #username_check_username {
+            color: $grey;
+          }
+        }
+
+        #username_check_alert_container {
+          @include flexbox-display-flex();
+          @include flexbox-justify-content(space-between);
+          @include flexbox-align-items(center);
+
+          #username_check_taken_text {
+            display: none;
+            font-family: $font-regular;
+            font-size: 15px;
+            color: $red;
+            margin-right: 8px;
+            margin-top: 3px;
+          }
+
+          #username_check_taken_icon {
+            display: none;
+            font-family: FontAwesome;
+            font-size: 24px;
+            color: $red;
+            letter-spacing: 0px;
+          }
+
+          #username_check_available_icon {
+            display: none;
+            font-family: FontAwesome;
+            font-size: 24px;
+            color: $teal;
+            letter-spacing: 0px;
+          }
+        }
+
+        &.available {
+          @include flexbox-display-flex();
+
+          #username_check_text {
+            #username_check_username {
+              color: $teal;
+            }
+          }
+
+          #username_check_alert_container {
+            #username_check_taken_text {
+              display: none;
+            }
+
+            #username_check_taken_icon {
+              display: none;
+            }
+
+            #username_check_available_icon {
+              display: block;
+            }
+          }
+        }
+
+        &.taken {
+          @include flexbox-display-flex();
+
+          #username_check_text {
+            #username_check_username {
+              color: $red;
+            }
+          }
+
+          #username_check_alert_container {
+            #username_check_taken_text {
+              display: block;
+            }
+
+            #username_check_taken_icon {
+              display: block;
+            }
+
+            #username_check_available_icon {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .authentication_form_extra_links {
+        @include flexbox-display-flex();
+        @include flexbox-justify-content(center);
+        @include flexbox-align-items(flex-start);
+        width: 100%;
+        margin-top: 60px;
+
+        .authentication_form_extra_link_text {
+          font-family: $font-regular;
+          font-size: 14px;
+          color: $darkest-grey;
+          line-height: 21px;
+        }
+
+        .authentication_form_extra_link {
+          font-family: $font-regular;
+          font-size: 14px;
+          color: $teal;
+          line-height: 21px;
+          margin-left: 5px;
+          text-decoration: none;
+
+          &:hover {
+            color: $light-teal;
+          }
+        }
+      }
+    }
+  }
+}

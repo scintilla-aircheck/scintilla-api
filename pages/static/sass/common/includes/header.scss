@@ -1,0 +1,259 @@
+@import '../base';
+@import '../includes/common';
+
+.header_menu_container {
+  z-index: $tooltip-container;
+
+  .header_menu_triangle {
+    position: fixed;
+    z-index: $tooltip-triangle;
+    right: 17px;
+    top: 39px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 5px 5px 5px;
+    border-color: transparent transparent $pure-white transparent;
+  }
+
+  .header_menu {
+    @include flexbox-display-flex();
+    @include flexbox-flex-direction(column);
+    @include flexbox-justify-content(space-between);
+    @include flexbox-align-items(flex-start);
+    position: fixed;
+    z-index: $tooltip-content;
+    right: 8px;
+    top: 44px;
+    width: 160px;
+    height: 147px;
+    box-sizing: border-box;
+    padding: 20px;
+    background-color: $pure-white;
+    box-shadow: 0px 2px 20px 0px rgba(0, 7, 7, 0.07);
+
+    .header_menu_link {
+      font-family: $font-regular;
+      font-size: 14px;
+      text-decoration: none;
+
+      @include color_transition($darker-grey, $darkest-grey, $grey);
+    }
+
+    .header_logout_button {
+      @include magenta_button(100px, 36px);
+    }
+  }
+}
+
+.header_container {
+  position: relative;
+  z-index: $very-top;
+
+  .header_spacer {
+    width: 100%;
+    height: 44px;
+  }
+
+  .header {
+    @include flexbox-display-flex();
+    @include flexbox-justify-content(space-between);
+    @include flexbox-align-items(center);
+    width: 100%;
+    height: 44px;
+    top: 0px;
+    position: fixed;
+    background-color: $black;
+
+    @include media("<=950px") {
+      width: 980px;
+    }
+
+    .header_logo_container {
+      @include flexbox-display-flex();
+      @include flexbox-justify-content(flex-start);
+      @include flexbox-align-items(center);
+      height: 100%;
+      text-decoration: none;
+
+      .header_logo {
+        font-family: $font-regular;
+        font-size: 14px;
+        color: $pure-white;
+        letter-spacing: 2.62px;
+        margin-left: 12px;
+      }
+    }
+
+    .header_right_links_container {
+      .header_add_credits {
+        display: none; // TODO take out
+        font-family: $font-bold;
+        font-size: 14px;
+        color: $magenta;
+        letter-spacing: 0.58px;
+      }
+
+      .header_profile_info_container {
+        @include flexbox-display-flex();
+        @include flexbox-justify-content(space-between);
+        @include flexbox-align-items(center);
+        height: 100%;
+        margin-right: 8px;
+
+        .header_credits_counter {
+          display: none; // TODO take out
+          font-family: $font-medium;
+          font-size: 14px;
+          color: $pure-white;
+          letter-spacing: 0.58px;
+        }
+
+        .header_profile_button_container {
+          width: 28px;
+          height: 28px;
+          background: $white url('/static/images/temp/user_thumbnail.png') center center no-repeat;
+          background-size: cover;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .header_right_auth_container {
+      @include flexbox-display-flex();
+      @include flexbox-justify-content(flex-start);
+      @include flexbox-align-items(flex-start);
+      height: 100%;
+      margin-right: 10px;
+
+      .header_right_signup_link {
+        width: 70px;
+        height: 100%;
+        line-height: 44px;
+        text-align: center;
+        vertical-align: middle;
+        font-family: $font-bold;
+        font-size: 14px;
+        letter-spacing: 0.58px;
+        text-decoration: none;
+
+        @include color_transition($teal, $light-teal, $white);
+      }
+
+      .header_right_login_link {
+        width: 65px;
+        height: 100%;
+        line-height: 44px;
+        text-align: center;
+        vertical-align: middle;
+        font-family: $font-bold;
+        font-size: 14px;
+        letter-spacing: 0.58px;
+        text-decoration: none;
+
+        @include color_transition($grey, $dark-grey, $magenta);
+      }
+    }
+  }
+
+  .header_search_and_extra_links_container {
+    @include flexbox-display-flex();
+    @include flexbox-justify-content(space-between);
+    @include flexbox-align-items(center);
+    width: 650px;
+    height: 44px;
+    left: calc(50% - 320px);
+    top: 0px;
+    position: fixed;
+
+    @include media("<=980px") {
+      left: 162px;
+    }
+
+    .header_search_container {
+      width: 545px;
+      height: 44px;
+      position: relative;
+
+      .header_search_icon {
+        position: absolute;
+        left: 12px;
+        top: calc(50% - 11px);
+        font-family: FontAwesome;
+        color: $grey;
+        font-size: 22px;
+      }
+
+      .header_search_input {
+        width: 100%;
+        height: 100%;
+        background-color: $darkest-grey;
+        border: 0px;
+        padding: 15px 20px 15px 44px;
+        font-family: $font-medium;
+        font-size: 14px;
+        color: $grey;
+
+        @include placeholder {
+          font-family: $font-medium;
+          font-size: 14px;
+          color: $grey;
+        }
+      }
+
+      .header_search_input:focus {
+        background-color: $pure-white;
+        color: $black;
+        outline: none;
+      }
+
+      .header_search_input:focus ~ .header_search_icon {
+        color: $teal;
+      }
+
+      .header_search_input:focus ~ .header_suggestion_box {
+        display: block;
+      }
+
+      .header_suggestion_box {
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 44px;
+        background-color: $pure-white;
+        box-shadow: 0px 4px 10px 0px rgba(0, 7, 7, 0.25);
+        box-sizing: border-box;
+        padding: 15px 12px 15px 12px;
+
+        .header_suggestion {
+          font-family: $font-medium;
+          font-size: 14px;
+          color: $black;
+          line-height: 24px;
+        }
+      }
+    }
+
+    .header_extra_links_container {
+      @include flexbox-display-flex();
+      @include flexbox-justify-content(space-between);
+      @include flexbox-align-items(center);
+      width: 100px;
+      height: 100%;
+
+      .header_extra_link {
+        @include flexbox-display-flex();
+        @include flexbox-justify-content(center);
+        @include flexbox-align-items(center);
+        width: 50px;
+        height: 100%;
+        font-family: FontAwesome;
+        font-size: 23px;
+        text-decoration: none;
+
+        @include color_transition($grey, $dark-grey, $magenta);
+      }
+    }
+  }
+}

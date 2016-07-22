@@ -8,5 +8,12 @@ from slothauth.models import SlothAuthBaseUser
 KEY_SIZE = getattr(settings, 'KEY_SIZE', 256)
 
 
+class ApiField(models.CharField):
+
+    def __init__(self, *args, **kwargs):
+        kwargs['max_length'] = KEY_SIZE
+        super(ApiField, self).__init__(*args, **kwargs)
+
+
 class Account(SlothAuthBaseUser):
-    api_key = models.CharField(max_length=KEY_SIZE, null=True, blank=True, unique=True, default=None)
+    api_key = ApiField(default=None, unique=True, null=True, blank=True)

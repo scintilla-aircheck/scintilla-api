@@ -21,7 +21,7 @@ PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'j84wr$sls!c#86&0lmq2o)l2lo6tu6qk%-7=-aj^y&qd_qrze9'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'j84wr$sls!c#86&0lmq2o)l2lo6tu6qk%-7=-aj^y&qd_qrze9')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', True))
@@ -162,6 +162,8 @@ INSTALLED_APPS += [
     'django.contrib.sitemaps',
     # custom apps
     'accounts',
+    'pages',
+    'sensors',
 ]
 
 ADMINS = [
@@ -326,21 +328,6 @@ INSTALLED_APPS += [
     'rest_framework',
     'rest_framework.authtoken'
 ]
-
-'''
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 9999,
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAdminUser',
-    ),
-}
-'''
 
 # Django Mobile
 

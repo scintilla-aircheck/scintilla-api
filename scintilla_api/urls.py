@@ -13,9 +13,33 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.static import serve
+
+import slothauth.urls as slothauth_urls
+import accounts.urls as accounts_urls
+
+import pages.urls as pages_urls
+
+import sensors.urls as sensors_urls
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^', include(pages_urls)),
+    url(r'^', include(sensors_urls)),
+    url(r'^', include(accounts_urls)),
+    url(r'^', include(slothauth_urls)),
 ]
+
+urlpatterns += [
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+]
+
+# TODO serve static files directly from nginx
+
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+urlpatterns += staticfiles_urlpatterns()

@@ -1,0 +1,250 @@
+@import "../base";
+
+#loading {
+  @include flexbox-display-flex();
+  @include flexbox-justify-content(center);
+  @include flexbox-align-items(center);
+  background-color: $white;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: $modal-overlay;
+}
+
+$base-line-height: 200px;
+$spin-duration: 1s;
+$pulse-duration: 750ms;
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  50% {
+    background: rgb(0, 169, 157);
+  }
+}
+
+.loading {
+  position: relative;
+  z-index: $modal-overlay;
+  border-radius: 50%;
+  width: $base-line-height;
+  height: $base-line-height;
+  border: .25rem solid rgba(0, 169, 157, 0.2);
+  border-top-color: $white;
+  animation: spin $spin-duration infinite linear;
+
+  &--double {
+    border-style: double;
+    border-width: .5rem;
+  }
+}
+
+.loading-pulse {
+  position: relative;
+  z-index: $modal-overlay;
+  width: ($base-line-height / 4);
+  height: $base-line-height;
+  background: rgba(0, 169, 157, 0.2);
+  animation: pulse $pulse-duration infinite;
+  animation-delay: ($pulse-duration / 3);
+
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: ($base-line-height / 1.5);
+    width: ($base-line-height / 4);
+    background: rgba(0, 169, 157, 0.2);
+    top: 50%;
+    transform: translateY(-50%);
+    animation: pulse $pulse-duration infinite;
+  }
+
+  &:before {
+    left: -($base-line-height / 2);
+  }
+
+  &:after {
+    left: ($base-line-height / 2);
+    animation-delay: ($pulse-duration / 1.5);
+  }
+}
+
+.bottom_spacer {
+  height: 400px;
+}
+
+@mixin input($width) {
+  width: $width;
+  height: 44px;
+  background-color: $white;
+  box-sizing: border-box;
+  padding: 10px 15px 10px 15px;
+  margin-bottom: 10px;
+  border: 1px solid $grey;
+  font-family: $font-regular;
+  font-size: 18px;
+  color: $black;
+
+  &:focus {
+    border: 1px solid $teal;
+    outline: none;
+  }
+
+  &.ng-dirty.ng-invalid.ng-touched {
+    border: 1px solid $red;
+  }
+
+  @include placeholder {
+    font-family: $font-regular;
+    font-size: 18px;
+    color: $grey;
+  }
+}
+
+@mixin transition() {
+  transition: all 200ms $easeInCubic;
+}
+
+@mixin color_transition($normal, $hover, $active) {
+  color: $normal;
+
+  &:hover {
+    @include transition();
+    color: $hover;
+  }
+
+  &:active {
+    transition: none;
+    color: $active;
+  }
+
+  &.active {
+    transition: none;
+    color: $active;
+  }
+}
+
+@mixin magenta_button($width , $height) {
+  width: $width;
+  height: $height;
+  box-sizing: border-box;
+  background: $pure-white;
+  border: 1px solid $purple;
+  box-shadow: 0px 1px 4px 0px rgba(0, 7, 7, 0.14);
+  border-radius: 2px;
+  font-family: $font-bold;
+  font-size: 14px;
+  line-height: $height;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  cursor: pointer;
+
+  @include color_transition($purple, $pure-white, $pure-white);
+
+  &:hover {
+    background: $magenta;
+  }
+
+  &:active {
+    background: $purple;
+  }
+
+  &:disabled {
+    background: $white;
+    border: 1px solid $lighter-grey;
+    color: $light-grey;
+    cursor: default;
+  }
+}
+
+@mixin play_pause_container($size, $circle_color, $hover_circle_color, $play_color, $hover_play_color, $pause_color, $hover_pause_color) {
+  @include flexbox-display-flex();
+  @include flexbox-justify-content(center);
+  @include flexbox-align-items(center);
+  @include flexbox-shrink(0);
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background-color: rgba(0, 7, 7, 0);
+  border: 3px solid $circle_color;
+  cursor: pointer;
+
+  &:hover {
+    @include transition();
+    border: 5px solid $hover_circle_color;
+  }
+
+  &:hover .play_triangle {
+    @include transition();
+    border-color: transparent transparent transparent $hover_play_color;
+  }
+
+  &:hover .pause_bars .pause_bar_left {
+    @include transition();
+    background-color: $hover_pause_color;
+  }
+
+  &:hover .pause_bars .pause_bar_right {
+    @include transition();
+    background-color: $hover_pause_color;
+  }
+
+  &.play_on .pause_bars {
+    display: none;
+  }
+
+  &.play_on .play_triangle {
+    display: block;
+  }
+
+  &.pause_on .pause_bars {
+    display: block;
+  }
+
+  &.pause_on .play_triangle {
+    display: none;
+  }
+
+  .play_triangle {
+    width: 0;
+    height: 0;
+    margin-left: calc(#{$size} / 9);
+    border-style: solid;
+    border-width: calc(#{$size} / 4.5) 0px calc(#{$size} / 4.5) calc(#{$size} / 2.601);
+    border-color: transparent transparent transparent $play_color;
+  }
+
+  .pause_bars {
+    width: 20px;
+    height: 20px;
+    position: relative;
+
+    .pause_bar_left {
+      width: 6px;
+      height: 20px;
+      background-color: $pause_color;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+    }
+
+    .pause_bar_right {
+      width: 6px;
+      height: 20px;
+      background-color: $pause_color;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+  }
+}

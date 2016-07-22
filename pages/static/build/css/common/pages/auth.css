@@ -1,0 +1,507 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline; }
+
+html {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle; }
+
+q, blockquote {
+  quotes: none; }
+  q:before, q:after, blockquote:before, blockquote:after {
+    content: "";
+    content: none; }
+
+a img {
+  border: none; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block; }
+
+strong {
+  font-family: Roboto-Bold; }
+
+input[type="radio"] {
+  margin: 0px; }
+
+input:focus {
+  outline: none; }
+
+:invalid {
+  box-shadow: none; }
+
+:-moz-submit-invalid {
+  box-shadow: none; }
+
+:-moz-ui-invalid {
+  box-shadow: none; }
+
+html {
+  height: 100%;
+  position: relative;
+  z-index: -10000; }
+
+body {
+  height: 100%;
+  position: relative;
+  z-index: -10000; }
+
+#page_container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  position: relative;
+  z-index: -100000;
+  min-height: 100%;
+  background-color: #F0F5F5; }
+
+#page {
+  width: 100%;
+  background-color: #F0F5F5;
+  overflow-x: hidden;
+  position: relative;
+  z-index: -100000; }
+@media (min-width: 321px) and (max-width: 1300px) {
+  #page {
+    position: absolute;
+    left: 0px; } }
+
+.container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  position: relative;
+  z-index: -10000; }
+
+.section {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  width: 100%;
+  background-color: #FFFFFF;
+  overflow-y: visible;
+  position: relative;
+  z-index: -10000; }
+
+.content {
+  width: 100%;
+  position: relative;
+  z-index: -100; }
+
+#loading {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  background-color: #F0F5F5;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 10030; }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+@keyframes pulse {
+  50% {
+    background: #00a99d; } }
+.loading {
+  position: relative;
+  z-index: 10030;
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  border: 0.25rem solid rgba(0, 169, 157, 0.2);
+  border-top-color: #F0F5F5;
+  animation: spin 1s infinite linear; }
+  .loading--double {
+    border-style: double;
+    border-width: .5rem; }
+
+.loading-pulse {
+  position: relative;
+  z-index: 10030;
+  width: 50px;
+  height: 200px;
+  background: rgba(0, 169, 157, 0.2);
+  animation: pulse 750ms infinite;
+  animation-delay: 250ms; }
+  .loading-pulse:before, .loading-pulse:after {
+    content: '';
+    position: absolute;
+    display: block;
+    height: 133.33333px;
+    width: 50px;
+    background: rgba(0, 169, 157, 0.2);
+    top: 50%;
+    transform: translateY(-50%);
+    animation: pulse 750ms infinite; }
+  .loading-pulse:before {
+    left: -100px; }
+  .loading-pulse:after {
+    left: 100px;
+    animation-delay: 500ms; }
+
+.bottom_spacer {
+  height: 400px; }
+
+#authentication_container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: flex-start;
+  -moz-align-items: flex-start;
+  -ms-align-items: flex-start;
+  align-items: flex-start;
+  width: 100%; }
+  #authentication_container #authentication_content {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    -moz-justify-content: space-between;
+    -ms-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-align-items: flex-start;
+    -moz-align-items: flex-start;
+    -ms-align-items: flex-start;
+    align-items: flex-start;
+    width: 840px;
+    margin-top: 165px; }
+    #authentication_container #authentication_content .authentication_info_container {
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-direction: column;
+      -moz-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-justify-content: flex-start;
+      -moz-justify-content: flex-start;
+      -ms-justify-content: flex-start;
+      justify-content: flex-start;
+      -webkit-align-items: flex-start;
+      -moz-align-items: flex-start;
+      -ms-align-items: flex-start;
+      align-items: flex-start;
+      width: 310px; }
+      #authentication_container #authentication_content .authentication_info_container .authentication_info_title {
+        font-family: Roboto-Bold;
+        font-size: 32px;
+        color: #000707;
+        letter-spacing: 0px;
+        line-height: 40px;
+        margin-bottom: 25px; }
+      #authentication_container #authentication_content .authentication_info_container .authentication_info_text {
+        font-family: Roboto-Regular;
+        font-size: 16px;
+        color: #000707;
+        letter-spacing: 0px;
+        line-height: 24px; }
+    #authentication_container #authentication_content .authentication_form_container {
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-direction: column;
+      -moz-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-justify-content: flex-start;
+      -moz-justify-content: flex-start;
+      -ms-justify-content: flex-start;
+      justify-content: flex-start;
+      -webkit-align-items: flex-start;
+      -moz-align-items: flex-start;
+      -ms-align-items: flex-start;
+      align-items: flex-start;
+      width: 330px;
+      position: relative; }
+      #authentication_container #authentication_content .authentication_form_container .authentication_form_title {
+        font-family: Roboto-Bold;
+        font-size: 18px;
+        color: #000707;
+        letter-spacing: 0px;
+        line-height: 24px;
+        margin-bottom: 50px; }
+      #authentication_container #authentication_content .authentication_form_container .authentication_form_label {
+        font-family: Roboto-Bold;
+        font-size: 12px;
+        color: #7C8484;
+        letter-spacing: 2px;
+        margin-bottom: 12px; }
+      #authentication_container #authentication_content .authentication_form_container .authentication_form_input {
+        width: 330px;
+        height: 44px;
+        background-color: #F0F5F5;
+        box-sizing: border-box;
+        padding: 10px 15px 10px 15px;
+        margin-bottom: 10px;
+        border: 1px solid #AEB5B5;
+        font-family: Roboto-Regular;
+        font-size: 18px;
+        color: #000707; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_input:focus {
+          border: 1px solid #00A99D;
+          outline: none; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_input.ng-dirty.ng-invalid.ng-touched {
+          border: 1px solid #DC0145; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_input ::-webkit-input-placeholder {
+          font-family: Roboto-Regular;
+          font-size: 18px;
+          color: #AEB5B5; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_input :-moz-placeholder {
+          font-family: Roboto-Regular;
+          font-size: 18px;
+          color: #AEB5B5; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_input ::-moz-placeholder {
+          font-family: Roboto-Regular;
+          font-size: 18px;
+          color: #AEB5B5; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_input :-ms-input-placeholder {
+          font-family: Roboto-Regular;
+          font-size: 18px;
+          color: #AEB5B5; }
+      #authentication_container #authentication_content .authentication_form_container .authentication_form_button {
+        width: 330px;
+        height: 44px;
+        box-sizing: border-box;
+        background: #FFFFFF;
+        border: 1px solid #BB07FC;
+        box-shadow: 0px 1px 4px 0px rgba(0, 7, 7, 0.14);
+        border-radius: 2px;
+        font-family: Roboto-Bold;
+        font-size: 14px;
+        line-height: 44px;
+        text-align: center;
+        vertical-align: middle;
+        text-decoration: none;
+        cursor: pointer;
+        color: #BB07FC;
+        margin-top: 20px; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_button:hover {
+          transition: all 200ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+          color: #FFFFFF; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_button:active {
+          transition: none;
+          color: #FFFFFF; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_button.active {
+          transition: none;
+          color: #FFFFFF; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_button:hover {
+          background: #EA07FC; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_button:active {
+          background: #BB07FC; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_button:disabled {
+          background: #F0F5F5;
+          border: 1px solid #E0E5E5;
+          color: #C8CDCD;
+          cursor: default; }
+      #authentication_container #authentication_content .authentication_form_container .login_forgot_password_link {
+        position: absolute;
+        right: 0px;
+        margin-top: -4px;
+        font-family: Roboto-Regular;
+        font-size: 14px;
+        line-height: 21px;
+        text-decoration: none;
+        color: #00A99D; }
+        #authentication_container #authentication_content .authentication_form_container .login_forgot_password_link:hover {
+          transition: all 200ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+          color: #10CDBF; }
+        #authentication_container #authentication_content .authentication_form_container .login_forgot_password_link:active {
+          transition: none;
+          color: #10CDBF; }
+        #authentication_container #authentication_content .authentication_form_container .login_forgot_password_link.active {
+          transition: none;
+          color: #10CDBF; }
+      #authentication_container #authentication_content .authentication_form_container .authentication_form_error {
+        font-family: Roboto-Regular;
+        font-size: 13px;
+        color: #DC0145;
+        letter-spacing: 0px;
+        margin-top: -5px;
+        margin-bottom: 15px; }
+      #authentication_container #authentication_content .authentication_form_container #username_check_container {
+        display: none;
+        -webkit-justify-content: space-between;
+        -moz-justify-content: space-between;
+        -ms-justify-content: space-between;
+        justify-content: space-between;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        -ms-align-items: center;
+        align-items: center;
+        width: 100%;
+        height: 45px;
+        margin-top: -8px; }
+        #authentication_container #authentication_content .authentication_form_container #username_check_container #username_check_text {
+          font-family: Roboto-Regular;
+          font-size: 18px;
+          color: #AEB5B5; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container #username_check_text #username_check_username {
+            color: #AEB5B5; }
+        #authentication_container #authentication_content .authentication_form_container #username_check_container #username_check_alert_container {
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-justify-content: space-between;
+          -moz-justify-content: space-between;
+          -ms-justify-content: space-between;
+          justify-content: space-between;
+          -webkit-align-items: center;
+          -moz-align-items: center;
+          -ms-align-items: center;
+          align-items: center; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container #username_check_alert_container #username_check_taken_text {
+            display: none;
+            font-family: Roboto-Regular;
+            font-size: 15px;
+            color: #DC0145;
+            margin-right: 8px;
+            margin-top: 3px; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container #username_check_alert_container #username_check_taken_icon {
+            display: none;
+            font-family: FontAwesome;
+            font-size: 24px;
+            color: #DC0145;
+            letter-spacing: 0px; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container #username_check_alert_container #username_check_available_icon {
+            display: none;
+            font-family: FontAwesome;
+            font-size: 24px;
+            color: #00A99D;
+            letter-spacing: 0px; }
+        #authentication_container #authentication_content .authentication_form_container #username_check_container.available {
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container.available #username_check_text #username_check_username {
+            color: #00A99D; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container.available #username_check_alert_container #username_check_taken_text {
+            display: none; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container.available #username_check_alert_container #username_check_taken_icon {
+            display: none; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container.available #username_check_alert_container #username_check_available_icon {
+            display: block; }
+        #authentication_container #authentication_content .authentication_form_container #username_check_container.taken {
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container.taken #username_check_text #username_check_username {
+            color: #DC0145; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container.taken #username_check_alert_container #username_check_taken_text {
+            display: block; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container.taken #username_check_alert_container #username_check_taken_icon {
+            display: block; }
+          #authentication_container #authentication_content .authentication_form_container #username_check_container.taken #username_check_alert_container #username_check_available_icon {
+            display: none; }
+      #authentication_container #authentication_content .authentication_form_container .authentication_form_extra_links {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-justify-content: center;
+        -moz-justify-content: center;
+        -ms-justify-content: center;
+        justify-content: center;
+        -webkit-align-items: flex-start;
+        -moz-align-items: flex-start;
+        -ms-align-items: flex-start;
+        align-items: flex-start;
+        width: 100%;
+        margin-top: 60px; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_extra_links .authentication_form_extra_link_text {
+          font-family: Roboto-Regular;
+          font-size: 14px;
+          color: #272F2F;
+          line-height: 21px; }
+        #authentication_container #authentication_content .authentication_form_container .authentication_form_extra_links .authentication_form_extra_link {
+          font-family: Roboto-Regular;
+          font-size: 14px;
+          color: #00A99D;
+          line-height: 21px;
+          margin-left: 5px;
+          text-decoration: none; }
+          #authentication_container #authentication_content .authentication_form_container .authentication_form_extra_links .authentication_form_extra_link:hover {
+            color: #10CDBF; }
+
+/*# sourceMappingURL=auth.css.map */
