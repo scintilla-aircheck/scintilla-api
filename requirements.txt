@@ -1,7 +1,7 @@
 # App
 
-Django==1.9.7
-djangorestframework==3.3.3
+Django==1.10
+djangorestframework==3.4.6
 slothauth==0.6.1
 django-mobile==0.7.0
 celery==3.1.23
@@ -11,17 +11,17 @@ django-celery==3.1.17
 
 # DevOps
 
-gunicorn==19.4.5
-dj-database-url==0.4.0
-django-storages==1.1.8
+gunicorn==19.6
+dj-database-url==0.4.1
+django-storages==1.5.0
 django-boto==0.3.9
 
 # Testing
 
-factory_boy==2.6.1
+factory_boy==2.7.0
 
 # Utility
 
-django-extensions==1.6.1
-Werkzeug==0.11.9
+django-extensions==1.7.2
+Werkzeug==0.11.10
 PyYAML==3.11

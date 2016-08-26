@@ -36,7 +36,6 @@ class SensorReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
     permission_classes = ()
     pagination_class = SensorReadingPagination
 
-    @detail_route(methods=['post'])
     def create(self, request, *args, **kwargs):
 
         if 'message' in request.data:
@@ -66,7 +65,6 @@ class SensorReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @list_route(methods=['get'])
     def list(self, request, *args, **kwargs):
 
         queryset = self.queryset.filter(public=True)

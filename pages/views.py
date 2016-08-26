@@ -1,8 +1,17 @@
 from django.shortcuts import render, render_to_response
 
 
+def home(request):
+    return render(request, 'common/home.html')
+
+
+def graphs(request):
+    return render(request, 'common/graphs.html')
+
+
 def dashboard(request):
     return render(request, 'common/dashboard.html')
+
 
 def robots(request):
     return render_to_response('robots.txt')

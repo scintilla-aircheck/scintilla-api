@@ -96,6 +96,8 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATE_LOADERS = TEMPLATES[0]['OPTIONS']['loaders']
+
 WSGI_APPLICATION = PROJECT_NAME + '.wsgi.application'
 
 
