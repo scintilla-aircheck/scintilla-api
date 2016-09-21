@@ -26,7 +26,7 @@ import pages.urls as page_urls
 import readings.urls as reading_urls
 import deployments.urls as deployment_urls
 import platforms.urls as platform_urls
-#import sensors.urls as sensors_urls
+import sensors.urls as sensor_urls
 
 
 urlpatterns = [
@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^', include(reading_urls)),
     url(r'^', include(deployment_urls)),
     url(r'^', include(platform_urls)),
+    url(r'^', include(sensor_urls)),
     url(r'^', include(account_urls)),
     url(r'^', include(slothauth_urls)),
 ]

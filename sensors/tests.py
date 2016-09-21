@@ -12,7 +12,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
 
-import sensor_data_pb2
+from . import sensor_data_pb2
 
 from .factories import SensorReadingFactory
 from .models import SensorReading
@@ -42,6 +42,10 @@ class SensorReadingApiTest(TestCase):
 
         message_string = message.SerializeToString()
 
+        import sys
+        print >>sys.stderr, message_string
+        print >>sys.stderr, str(message.lucky_number)
+
         sensor_readings = SensorReading.objects.all()
 
         self.assertEqual(sensor_readings.count(), 0)
@@ -51,13 +55,15 @@ class SensorReadingApiTest(TestCase):
 
         response = self.client.post('/api/v1/sensor_readings/', data={'api_key': self.account.api_key, 'message': message_string}, format='json', **header)
 
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT, msg=str(response.status_code) + ': ' + response.content)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT, msg=str(response.status_code) + ': ' + str(response.content))
 
         sensor_readings = SensorReading.objects.all()
 
         self.assertEqual(sensor_readings.count(), 1)
 
         self.assertEqual(sensor_readings[0].value, message.lucky_number)
+
+
 
     def test_list_sensor_readings(self):
 
@@ -70,9 +76,9 @@ class SensorReadingApiTest(TestCase):
         # check that we can grab a list of all the public sensors
         header = {}
 
-        response = self.client.get('/api/v1/sensor_readings/list/', data={}, format='json', **header)
+        response = self.client.get('/api/v1/sensor_readings/', data={}, format='json', **header)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK, msg=str(response.status_code) + ': ' + response.content)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, msg=str(response.status_code) + ': ' + str(response.content))
 
         data = json.loads(response.content)
 
@@ -91,7 +97,7 @@ class SensorReadingApiTest(TestCase):
 
         response = self.client.get('/api/v1/sensor_readings/api_key/', data={'api_key': self.account.api_key}, format='json', **header)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK, msg=str(response.status_code) + ': ' + response.content)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, msg=str(response.status_code) + ': ' + str(response.content))
 
         data = json.loads(response.content)
 
@@ -107,3 +113,4 @@ class SensorReadingApiTest(TestCase):
         data = json.loads(response.content)
 
         self.assertEqual(len(data['results']), 1)
+

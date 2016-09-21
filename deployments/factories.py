@@ -24,6 +24,5 @@ class DeviceFactory(factory.django.DjangoModelFactory):
         model = Device
 
     platform = factory.SubFactory(PlatformFactory)
-    deployment = factory.SubFactory(DeploymentFactory)
     device_key = "device_key"
     date_manufactured = timezone.now()

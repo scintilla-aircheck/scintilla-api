@@ -45,3 +45,4 @@ celerybeat-schedule.dir
 .coverage
 db.sqlite3-journal
 scintilla_api/media/*
+venv/

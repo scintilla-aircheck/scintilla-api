@@ -1,25 +1,24 @@
-from base64 import b64decode
+from datetime import datetime
 from decimal import Decimal
-import re
-from urllib.parse import unquote
+import json
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.files.base import ContentFile
-from django.db import transaction
 from django.utils import timezone
 
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.decorators import detail_route, list_route
 from rest_framework.mixins import ListModelMixin
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import JSONParser, MultiPartParser
+from rest_framework.renderers import MultiPartRenderer, JSONRenderer, TemplateHTMLRenderer
 from rest_framework.response import Response
 
 from scintilla_protobufs import reading_pb2
 
-from .models import CalibratedReading, Reading
+from .models import CalibratedReading, Reading, ReadingGroup
 from .paginations import CalibratedReadingPagination, ReadingPagination
+from .parsers import PlainTextParser
+from .renderers import PlainTextRenderer
 from .serializers import CalibratedReadingSerializer, ReadingSerializer
 
 Account = get_user_model()
@@ -87,8 +86,15 @@ class ReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = ()
     pagination_class = ReadingPagination
+    renderer_classes = (MultiPartRenderer, JSONRenderer, TemplateHTMLRenderer, PlainTextRenderer, )
+    parser_classes = (JSONParser, PlainTextParser, MultiPartParser)
 
     '''
+    message ReadingGroupMessage {
+    repeated ReadingMessage reading = 1;
+}
+
+message ReadingMessage {
     optional int32 sensor = 1;
     optional double value = 2;
     optional int64 average_over_seconds = 3;
@@ -96,37 +102,53 @@ class ReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
     optional double latitude = 5;
     optional int32 unit = 6;
     optional int64 time = 7;
-    '''
-    '''
-    def create(self, request, *args, **kwargs):
+}
 
-        if 'message' in request.data:
-            reading_message = reading_pb2.ReadingMessage()
-            reading_message.ParseFromString(request.data.get('message'))
+    '''
+
+    def create(self, request, format=None, *args, **kwargs):
+
+        import sys
+        print("CREATE", file=sys.stderr)
+
+        #if b'message' in request.data: #format == 'pbuf' and
+        if format != 'json':
+            reading_group_message = reading_pb2.ReadingGroupMessage()
+            '''
+            print(request.data.get('message'), file=sys.stderr)
+            print(type(request.data.get('message')), file=sys.stderr)
+            print(request.data.get('message').encode(None), file=sys.stderr)
+            reading_group_message.ParseFromString(request.data.get('message').encode('utf-8'))
+            '''
+            reading_group_message.ParseFromString(request.data)
 
             # TODO: check that there is a non-null api key? or if there isn't and the user is logged in, get the api from the user
 
-            api_key = None
+            #api_key = None
 
-            if not api_key and request.user.is_authenticated():
-                api_key = request.user.api_key
+            #if not api_key and request.user.is_authenticated():
+            #    api_key = request.user.api_key
 
-            reading = Reading(api_key=api_key, sensor='lucky sensor', type=1, unit=1, average_over_hours=0, value=sensor_data.lucky_number, longitude=Decimal('2.3'), latitude=Decimal('4.3'), temperature=Decimal('2.3'), humidity=Decimal('4.3'), date=timezone.now(), public=True)
-            reading.save()
+            for reading_message in reading_group_message.readings:
+                reading_group = ReadingGroup()
+                reading_group.save()
+                reading = Reading(reading_group=reading_group, device_id=1, sensor_id=reading_message.sensor, value=reading_message.value, average_over_seconds=reading_message.average_over_seconds, longitude=reading_message.longitude, latitude=reading_message.latitude, unit=reading_message.unit, time=datetime.utcfromtimestamp(int(reading_message.time)))
+                reading.save()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        else:
-            reading_message = reading_pb2.ReadingMessage()
-            reading_message.lucky_number = 1234
+        if format == 'json' and 'message' in request.data:
+            reading_group_message = json.loads(request.data["message"])
 
-            reading = Reading(api_key='', sensor='lucky sensor', type=1, unit=1, average_over_hours=0, value=sensor_data.lucky_number, longitude=Decimal('2.3'), latitude=Decimal('4.3'), temperature=Decimal('2.3'), humidity=Decimal('4.3'), date=timezone.now(), public=True)
-            reading.save()
+            for reading_message in reading_group_message.readings:
+                reading_group = ReadingGroup()
+                reading_group.save()
+                reading = Reading(device_id=1, sensor_id=reading_message.sensor, value=reading_message.value, average_over_seconds=reading_message.average_over_seconds, longitude=reading_message.longitude, latitude=reading_message.latitude, unit=reading_message.unit, time=datetime.utcfromtimestamp(int(reading_message.time)))
+                reading.save()
 
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
-    '''
 
     def list(self, request, *args, **kwargs):
 
