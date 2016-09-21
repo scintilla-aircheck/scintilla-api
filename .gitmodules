@@ -1,0 +1,3 @@
+[submodule "scintilla_protobufs"]
+	path = scintilla_protobufs
+	url = https://github.com/scintilla-aircheck/scintilla-protobufs.git

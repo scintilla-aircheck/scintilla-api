@@ -1,0 +1,5 @@
+- model: platforms.platform
+  pk: 1
+  fields:
+    name: "Adjutant"
+    version: "0.1"

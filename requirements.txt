@@ -1,6 +1,6 @@
 # App
 
-Django==1.10
+Django==1.10.1
 djangorestframework==3.4.6
 slothauth==0.6.1
 django-mobile==0.7.0

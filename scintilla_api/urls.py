@@ -19,18 +19,23 @@ from django.contrib import admin
 from django.views.static import serve
 
 import slothauth.urls as slothauth_urls
-import accounts.urls as accounts_urls
+import accounts.urls as account_urls
 
-import pages.urls as pages_urls
+import pages.urls as page_urls
 
-import sensors.urls as sensors_urls
+import readings.urls as reading_urls
+import deployments.urls as deployment_urls
+import platforms.urls as platform_urls
+#import sensors.urls as sensors_urls
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include(pages_urls)),
-    url(r'^', include(sensors_urls)),
-    url(r'^', include(accounts_urls)),
+    url(r'^', include(page_urls)),
+    url(r'^', include(reading_urls)),
+    url(r'^', include(deployment_urls)),
+    url(r'^', include(platform_urls)),
+    url(r'^', include(account_urls)),
     url(r'^', include(slothauth_urls)),
 ]
 

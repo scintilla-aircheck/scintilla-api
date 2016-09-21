@@ -166,6 +166,9 @@ INSTALLED_APPS += [
     'accounts',
     'pages',
     'sensors',
+    'readings',
+    'deployments',
+    'platforms',
 ]
 
 ADMINS = [

@@ -16,11 +16,11 @@ from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from . import sensor_data_pb2
+from scintilla_protobufs import reading_pb2
 
-from .models import SensorReading
-from .paginations import SensorReadingPagination
-from .serializers import SensorReadingSerializer
+from .models import CalibratedReading, Reading
+from .paginations import CalibratedReadingPagination, ReadingPagination
+from .serializers import CalibratedReadingSerializer, ReadingSerializer
 
 Account = get_user_model()
 
@@ -29,13 +29,14 @@ import logging
 logger = logging.getLogger(settings.PROJECT_NAME)
 
 
-class SensorReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
-    queryset = SensorReading.objects.all()
-    serializer_class = SensorReadingSerializer
+class CalibratedReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
+    queryset = CalibratedReading.objects.all()
+    serializer_class = CalibratedReadingSerializer
     authentication_classes = (SessionAuthentication, TokenAuthentication)
     permission_classes = ()
-    pagination_class = SensorReadingPagination
+    pagination_class = CalibratedReadingPagination
 
+    '''
     def create(self, request, *args, **kwargs):
 
         if 'message' in request.data:
@@ -64,10 +65,11 @@ class SensorReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
             return Response(status=status.HTTP_204_NO_CONTENT)
 
         return Response(status=status.HTTP_400_BAD_REQUEST)
+    '''
 
     def list(self, request, *args, **kwargs):
 
-        queryset = self.queryset.filter(public=True)
+        queryset = self.queryset.filter()
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -78,6 +80,68 @@ class SensorReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
 
         return Response(serializer.data)
 
+
+class ReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
+    queryset = Reading.objects.all()
+    serializer_class = ReadingSerializer
+    authentication_classes = (SessionAuthentication, TokenAuthentication)
+    permission_classes = ()
+    pagination_class = ReadingPagination
+
+    '''
+    optional int32 sensor = 1;
+    optional double value = 2;
+    optional int64 average_over_seconds = 3;
+    optional double longitude = 4;
+    optional double latitude = 5;
+    optional int32 unit = 6;
+    optional int64 time = 7;
+    '''
+    '''
+    def create(self, request, *args, **kwargs):
+
+        if 'message' in request.data:
+            reading_message = reading_pb2.ReadingMessage()
+            reading_message.ParseFromString(request.data.get('message'))
+
+            # TODO: check that there is a non-null api key? or if there isn't and the user is logged in, get the api from the user
+
+            api_key = None
+
+            if not api_key and request.user.is_authenticated():
+                api_key = request.user.api_key
+
+            reading = Reading(api_key=api_key, sensor='lucky sensor', type=1, unit=1, average_over_hours=0, value=sensor_data.lucky_number, longitude=Decimal('2.3'), latitude=Decimal('4.3'), temperature=Decimal('2.3'), humidity=Decimal('4.3'), date=timezone.now(), public=True)
+            reading.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        else:
+            reading_message = reading_pb2.ReadingMessage()
+            reading_message.lucky_number = 1234
+
+            reading = Reading(api_key='', sensor='lucky sensor', type=1, unit=1, average_over_hours=0, value=sensor_data.lucky_number, longitude=Decimal('2.3'), latitude=Decimal('4.3'), temperature=Decimal('2.3'), humidity=Decimal('4.3'), date=timezone.now(), public=True)
+            reading.save()
+
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    '''
+
+    def list(self, request, *args, **kwargs):
+
+        queryset = self.queryset.filter()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True, context={'request': request})
+
+        return Response(serializer.data)
+
+    '''
     @list_route(methods=['get'])
     def api_key(self, request, *args, **kwargs):
 
@@ -101,6 +165,7 @@ class SensorReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
         serializer = self.get_serializer(queryset, many=True, context={'request': request})
 
         return Response(serializer.data)
+    '''
 
     '''
     @detail_route(methods=['get'])

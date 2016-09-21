@@ -1,0 +1,36 @@
+- model: platforms.sensor
+  pk: 1
+  fields:
+    name: "Cool Temperature Sensor"
+    version: "1.0"
+    type: 1
+- model: platforms.sensor
+  pk: 2
+  fields:
+    name: "Cool Humidity Sensor"
+    version: "1.0"
+    type: 2
+- model: platforms.sensor
+  pk: 3
+  fields:
+    name: "Cool Pressure Sensor"
+    version: "1.0"
+    type: 3
+- model: platforms.sensor
+  pk: 4
+  fields:
+    name: "Inovafit SDS021"
+    version: "1.0"
+    type: 4
+- model: platforms.sensor
+  pk: 5
+  fields:
+    name: "Inovafit SDS021"
+    version: "1.0"
+    type: 5
+- model: platforms.sensor
+  pk: 6
+  fields:
+    name: "SPEC Ozone"
+    version: "1.0"
+    type: 6
