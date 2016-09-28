@@ -113,6 +113,7 @@ message ReadingMessage {
 
         #if b'message' in request.data: #format == 'pbuf' and
         if format != 'json':
+            print(request.data, file=sys.stderr)
             reading_group_message = reading_pb2.ReadingGroupMessage()
             '''
             print(request.data.get('message'), file=sys.stderr)
@@ -129,9 +130,10 @@ message ReadingMessage {
             #if not api_key and request.user.is_authenticated():
             #    api_key = request.user.api_key
 
+            reading_group = ReadingGroup()
+            reading_group.save()
+
             for reading_message in reading_group_message.readings:
-                reading_group = ReadingGroup()
-                reading_group.save()
                 reading = Reading(reading_group=reading_group, device_id=1, sensor_id=reading_message.sensor, value=reading_message.value, average_over_seconds=reading_message.average_over_seconds, longitude=reading_message.longitude, latitude=reading_message.latitude, unit=reading_message.unit, time=datetime.utcfromtimestamp(int(reading_message.time)))
                 reading.save()
 
