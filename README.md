@@ -201,38 +201,52 @@ npm install bower
 
 ### Docker
 
+Installation:
 ```
 wget -qO- https://get.docker.com/ | sh
 systemctl enable docker
+```
 
+And then:
+```
 docker-compose up
 ```
 
-To rebuild the docker image after changing the system requirements
-
+To rebuild the docker image after changing the system requirements:
 ```
 docker-compose build
 ```
 
-List containers
+List containers:
 ```
 docker ps -a
 ```
 
-List images
+List images:
 ```
 docker images
 ```
 
-Stop and remove all Docker containers
+Stop and remove all Docker containers:
 ```
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 ```
 
-Remove all Docker images
+Remove all Docker images:
 ```
 docker rmi $(docker images -q)
+```
+
+Open a shell in your container:
+```
+sudo docker exec -i -t <container_name> /bin/bash
+```
+
+### Docker Channels
+```
+export DJANGO_SECRET_KEY=12345
+docker-compose -f docker-compose.development.yml up
 ```
 
 ##### Mac Specific

@@ -89,31 +89,10 @@ class ReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
     renderer_classes = (MultiPartRenderer, JSONRenderer, TemplateHTMLRenderer, PlainTextRenderer, )
     parser_classes = (JSONParser, PlainTextParser, MultiPartParser)
 
-    '''
-    message ReadingGroupMessage {
-    repeated ReadingMessage reading = 1;
-}
-
-message ReadingMessage {
-    optional int32 sensor = 1;
-    optional double value = 2;
-    optional int64 average_over_seconds = 3;
-    optional double longitude = 4;
-    optional double latitude = 5;
-    optional int32 unit = 6;
-    optional int64 time = 7;
-}
-
-    '''
-
     def create(self, request, format=None, *args, **kwargs):
-
-        import sys
-        print("CREATE", file=sys.stderr)
 
         #if b'message' in request.data: #format == 'pbuf' and
         if format != 'json':
-            print(request.data, file=sys.stderr)
             reading_group_message = reading_pb2.ReadingGroupMessage()
             '''
             print(request.data.get('message'), file=sys.stderr)

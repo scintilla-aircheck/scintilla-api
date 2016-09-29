@@ -21,7 +21,7 @@ PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'j84wr$sls!c#86&0lmq2o)l2lo6tu6qk%-7=-aj^y&qd_qrze9')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'j84wr$sls!c#86&0lmq2o)l2lo6tu6qk%-7=-aj^y&qd_qrze9')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', True))
@@ -169,6 +169,7 @@ INSTALLED_APPS += [
     'readings',
     'deployments',
     'platforms',
+    'channels',
 ]
 
 ADMINS = [
@@ -311,6 +312,18 @@ if PRODUCTION:  # TODO make cloudfront
     STATICFILES_STORAGE = PROJECT_NAME + '.storage.S3Storage'
     MEDIA_URL = 'https://' + PROJECT_NAME + '-production.s3.amazonaws.com/media/'
     DEFAULT_FILE_STORAGE = PROJECT_NAME + '.storage.MediaS3Storage'
+
+# Channels
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+        "ROUTING": PROJECT_NAME + ".routing.channel_routing",
+    },
+}
 
 # Celery
 

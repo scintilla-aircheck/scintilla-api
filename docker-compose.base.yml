@@ -1,0 +1,22 @@
+version: '2'
+services:
+  interfaceserver:
+    build: .
+    command: /scintilla_api/entrypoint-interface.sh
+    user: scintilla_api
+    working_dir: /scintilla_api
+    ports:
+      - 8000:8000
+    environment:
+      - DJANGO_SECRET_KEY
+  workerserver:
+    build: .
+    user: scintilla_api
+    working_dir: /scintilla_api
+    command: /scintilla_api/entrypoint-worker.sh
+    environment:
+      - DJANGO_SECRET_KEY
+  database:
+    image: postgres:9.5
+  redis:
+    image: redis:3.0-alpine

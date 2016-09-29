@@ -10,7 +10,7 @@ from .views import dashboard_header
 
 urlpatterns = [
     url(r'^robots\.txt', robots, name='robots'),
-    url(r'^/?$', home, name='home'),
+    url(r'^$', home, name='home'),
     url(r'^graphs/?$', graphs, name='graphs'),
     url(r'^dashboard/?$', dashboard, name='dashboard'),
     url(r'^settings/?$', dashboard, name='dashboard'),
