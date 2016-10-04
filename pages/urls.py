@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from .views import robots
 
-from .views import home, graphs, dashboard, settings
+from .views import home, react_home, graphs, dashboard, settings
 from .views import dashboard_index, dashboard_home
 from .views import dashboard_signup, dashboard_login, dashboard_reset_password, dashboard_reset_password_thank_you, dashboard_logout, dashboard_logout_redirect
 from .views import dashboard_header
@@ -11,6 +11,7 @@ from .views import dashboard_header
 urlpatterns = [
     url(r'^robots\.txt', robots, name='robots'),
     url(r'^$', home, name='home'),
+    url(r'^react_home/?$', react_home, name='react_home'),
     url(r'^graphs/?$', graphs, name='graphs'),
     url(r'^dashboard/?$', dashboard, name='dashboard'),
     url(r'^settings/?$', dashboard, name='dashboard'),

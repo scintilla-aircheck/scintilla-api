@@ -5,6 +5,10 @@ def home(request):
     return render(request, 'common/home.html')
 
 
+def react_home(request):
+    return render(request, 'common/react_home.html')
+
+
 def graphs(request):
     return render(request, 'common/graphs.html')
 

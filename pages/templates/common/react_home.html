@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block extra_head %}
+<link href="{% static 'build/css/common/includes/header.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div id="loading">
+    <div class="loading-pulse">
+
+    </div>
+</div>
+<div id="root"></div>
+<script src="{% static 'build/javascript/scintilla.bundle.js' %}">
+</script>
+{% endblock %}

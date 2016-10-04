@@ -11,7 +11,7 @@ class DeviceSerializer(serializers.ModelSerializer):
 
 
 class DeploymentSerializer(serializers.ModelSerializer):
-    devices = DeviceSerializer(source='devices', many=True)
+    devices = DeviceSerializer(many=True)
 
     class Meta:
         model = Deployment

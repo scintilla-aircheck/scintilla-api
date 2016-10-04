@@ -167,6 +167,11 @@ module.exports = function(grunt) {
 
 To watch for changes in SASS/Coffee/JS files, simply run `grunt`. If preparing the app for production, run `grunt compress` which will run uglify.
 
+### Testing
+```
+npm install -g mocha
+```
+
 ### Installing bower  (if NOT using package.json)
 ```
 cd app_name/static
