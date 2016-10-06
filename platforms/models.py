@@ -39,7 +39,6 @@ class Sensor(DateMixin):
         (Type.CO, 'CO'),
         (Type.SO2, 'SO2'),
         (Type.NO2, 'NO2'),
-        (Type.NO2, 'NO2'),
     )
 
     class Unit:

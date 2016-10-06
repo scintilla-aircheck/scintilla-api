@@ -1,4 +1,4 @@
-const deployments = (state = {deployments:[], current_deployment: {}}, action) => {
+const deployments = (state = {deployments:[]}, action) => {
     switch (action.type) {
         case 'SELECT_DEPLOYMENT':
 
@@ -11,9 +11,17 @@ const deployments = (state = {deployments:[], current_deployment: {}}, action) =
         case 'DEPLOYMENTS_REJECTED':
             return state;
         case 'DEPLOYMENTS_FULFILLED':
+            let current_deployment;
+            if(state.current_deployment === undefined &&
+               action.payload.data.results.length > 0) {
+                current_deployment = action.payload.data.results[0];
+            } else {
+                current_deployment = state.current_deployment;
+            }
             return {
                 ...state,
-                deployments: action.payload.data.results
+                deployments: action.payload.data.results,
+                current_deployment
             };
         default:
             return state

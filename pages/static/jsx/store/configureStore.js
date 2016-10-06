@@ -1,24 +1,30 @@
-/*if (process.env.NODE_ENV === 'production') {
-    module.exports = require('./configureStore.prod')
-} else {
-    module.exports = require('./configureStore.dev')
-}
-*/
-import promise from 'redux-promise-middleware'
 import { createStore, applyMiddleware, compose } from 'redux'
+import promise from 'redux-promise-middleware'
 import createLogger from 'redux-logger';
+
+import throttle from 'lodash/throttle'
+
 import rootReducer from '../reducers'
 
-const configureStore = preloadedState => {
-  const store = createStore(
-    rootReducer,
-    preloadedState,
-    compose(
-      applyMiddleware(createLogger(), promise())
-    )
-  );
+import { loadState, saveState } from './localStorage'
 
-  return store
+const configureStore = () => {
+    //const persistantState = loadState();
+    const persistantState = {};  // TODO turn persistant storage back on!
+
+    const store = createStore(
+        rootReducer,
+        persistantState,
+        compose(
+            applyMiddleware(createLogger(), promise())
+        )
+    );
+
+    store.subscribe(throttle(() => {
+        saveState(store.getState());
+    }, 1000));
+
+    return store;
 };
 
 export default configureStore

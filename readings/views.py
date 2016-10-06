@@ -15,6 +15,8 @@ from rest_framework.response import Response
 
 from scintilla_protobufs import reading_pb2
 
+from deployments.models import Deployment
+
 from .models import CalibratedReading, Reading, ReadingGroup
 from .paginations import CalibratedReadingPagination, ReadingPagination
 from .parsers import PlainTextParser
@@ -133,7 +135,18 @@ class ReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
 
     def list(self, request, *args, **kwargs):
 
-        queryset = self.queryset.filter()
+        '''
+        if 'deployment_id' in request.GET:
+            deployment_id = request.GET['deployment_id']
+            deployment = Deployment.objects.get(pk=deployment_id)
+            if deployment.account != request.user:  # TODO: this should be checking if deployment.account is request.user OR if request.user is in deployment.accounts
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        '''
+
+        #queryset = self.queryset.filter(device__deployment=deployment).order_by('-time')
+        queryset = self.queryset
 
         page = self.paginate_queryset(queryset)
         if page is not None:

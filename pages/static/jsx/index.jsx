@@ -1,25 +1,17 @@
 import React from 'react';
 import {render} from 'react-dom';
-import 'babel-polyfill';
-
-
-//import { browserHistory } from 'react-router'
-//import { syncHistoryWithStore } from 'react-router-redux'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import Root from './components/index.jsx'
-import configureStore from './store/configureStore'
-//import rootReducer from './reducers'
+
+import 'babel-polyfill';
 import axios from 'axios'
 
+import Root from './containers/root.jsx'
+import configureStore from './store/configureStore'
 
 document.getElementById('loading').style.display = 'none';
 
 const store = configureStore();
-//console.log('rootReducer');
-//console.log(rootReducer());
-//console.log('END');
-//const store = createStore(rootReducer);
 
 render(
     <Provider store={store}>
@@ -31,6 +23,11 @@ render(
 store.dispatch({
     type: 'DEPLOYMENTS',
     payload: axios.get('http://192.168.7.55:8000/api/v1/deployments/')
+});
+
+store.dispatch({
+    type: 'READINGS',
+    payload: axios.get('http://192.168.7.55:8000/api/v1/readings/')
 });
 
 /*
