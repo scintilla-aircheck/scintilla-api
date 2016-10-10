@@ -22,12 +22,12 @@ render(
 
 store.dispatch({
     type: 'DEPLOYMENTS',
-    payload: axios.get('http://192.168.7.55:8000/api/v1/deployments/')
+    payload: axios.get('http://localhost:8000/api/v1/deployments/')
 });
 
 store.dispatch({
     type: 'READINGS',
-    payload: axios.get('http://192.168.7.55:8000/api/v1/readings/')
+    payload: axios.get('http://localhost:8000/api/v1/readings/')
 });
 
 /*

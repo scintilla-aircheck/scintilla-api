@@ -25,7 +25,7 @@ class AbstractReading(DateMixin):
 
 class CalibratedReading(AbstractReading):
 
-    reading = models.ForeignKey('Reading')
+    reading = models.ForeignKey('Reading', null=True, blank=True)
 
     def __unicode__(self):
         return str(self.name)
@@ -33,7 +33,7 @@ class CalibratedReading(AbstractReading):
 
 class Reading(AbstractReading):
 
-    reading_group = models.ForeignKey('ReadingGroup')
+    reading_group = models.ForeignKey('ReadingGroup', null=True, blank=True)
 
     def __unicode__(self):
         return str(self.name)

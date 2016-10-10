@@ -1,0 +1,9 @@
+- model: readings.reading
+  pk: 1
+  fields:
+    value: "234.5"
+    average_over_seconds: 60
+    longitude: "1.234"
+    latitude: "5.678"
+    unit: 0
+    time: "2016-08-09T01:10:10"

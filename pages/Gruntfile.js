@@ -95,6 +95,14 @@ module.exports = function(grunt) {
                 inline: true  // embed the webpack-dev-server runtime into the bundle
                 // Defaults to false
             }
+        },
+        cacheBust: {
+            scintilla: {
+                options: {
+                    assets: ['static/build/**']
+                },
+                src: ['templates/common/react_home.html']
+            }
         }
     });
 
@@ -103,7 +111,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-webpack');
+    grunt.loadNpmTasks('grunt-cache-bust');
 
     grunt.registerTask('build', ['sass', 'concat', 'uglify']);
-    grunt.registerTask('default', ['sass', 'webpack', 'watch'])
+    grunt.registerTask('default', ['sass', 'webpack', 'watch', 'cacheBust'])
 };

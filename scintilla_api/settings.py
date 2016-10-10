@@ -66,6 +66,7 @@ INSTALLED_APPS = [
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'slothauth.middleware.PasswordlessUserMiddleware',
@@ -327,21 +328,32 @@ if PRODUCTION:  # TODO make cloudfront
     MEDIA_URL = 'https://' + PROJECT_NAME + '-production.s3.amazonaws.com/media/'
     DEFAULT_FILE_STORAGE = PROJECT_NAME + '.storage.MediaS3Storage'
 
+# CORS Headers for dev server
+
+INSTALLED_APPS += ['corsheaders', ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = [
+
+]
+
 # Channels
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("redis", 6379)],
+if DEVELOPMENT_DOCKER:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "asgi_redis.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [("redis", 6379)],
+            },
+            "ROUTING": PROJECT_NAME + ".routing.channel_routing",
         },
-        "ROUTING": PROJECT_NAME + ".routing.channel_routing",
-    },
-}
+    }
 
 # Celery
 
-INSTALLED_APPS += ('djcelery', )
+INSTALLED_APPS += ['djcelery', ]
 
 import djcelery
 
