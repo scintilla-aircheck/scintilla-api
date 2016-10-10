@@ -11,7 +11,7 @@ class Deployment(DateMixin):
 
     account = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     name = models.CharField(max_length=1000, null=True, blank=True)
-    devices = models.ManyToManyField('Device', related_name='deployment_devices', null=True, blank=True)
+    devices = models.ManyToManyField('Device', related_name='deployment_devices', blank=True)
 
     def __unicode__(self):
         return str(self.name)
@@ -20,8 +20,9 @@ class Deployment(DateMixin):
 class Device(DateMixin):
 
     platform = models.ForeignKey(Platform, null=True, blank=True)
-    deployments = models.ManyToManyField(Deployment, related_name='device_deployments', null=True, blank=True)
+    deployments = models.ManyToManyField(Deployment, related_name='device_deployments', blank=True)
     device_key = ApiField()
+    name = models.CharField(max_length=1000, null=True, blank=True)
     date_manufactured = models.DateTimeField(null=True, blank=True)
 
     def __unicode__(self):

@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'j84wr$sls!c#86&0lmq2o)l2lo6tu6
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', True))
-template_debug = bool(os.environ.get('TEMPLATE_DEBUG', DEBUG))
+TEMPLATE_DEBUG = bool(os.environ.get('TEMPLATE_DEBUG', DEBUG))
 TESTING = bool(os.environ.get('TESTING', False))
 
 # Custom Global App Config
@@ -34,15 +34,19 @@ PROJECT_DOMAIN = 'scintilla.net'
 
 APP_ENV = os.environ.get('APP_ENV', '').upper()
 
-STAGING = PRODUCTION = False
+DEVELOPMENT = DEVELOPMENT_DOCKER = PRODUCTION_DOCKER = STAGING = PRODUCTION = False
 
-if APP_ENV == 'STAGING':
+if APP_ENV == 'DEVELOPMENT':
+    DEVELOPMENT = True
+elif APP_ENV == 'DEVELOPMENT_DOCKER':
+    DEVELOPMENT_DOCKER = True
+elif APP_ENV == 'PRODUCTION_DOCKER':
+    PRODUCTION_DOCKER = True
+elif APP_ENV == 'STAGING':
     STAGING = True
 elif APP_ENV == 'PRODUCTION':
     PRODUCTION = True
-    DEBUG = template_debug = False
-else:
-    DEBUG = template_debug = True
+    DEBUG = TEMPLATE_DEBUG = False
 
 # Allowed Hosts
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', PROJECT_DOMAIN, '.' + PROJECT_DOMAIN, 'dev.' + PROJECT_DOMAIN, 'staging.' + PROJECT_DOMAIN]
@@ -103,23 +107,23 @@ WSGI_APPLICATION = PROJECT_NAME + '.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
-        'NAME': 'postgres',
-        'HOST': 'database',
-        'PORT': '5432'
+if DEVELOPMENT_DOCKER:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'USER': 'postgres',
+            'NAME': 'postgres',
+            'HOST': 'database',
+            'PORT': '5432'
+        }
     }
-}
-'''
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-
-'''
 
 
 # Password validation

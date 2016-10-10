@@ -1,0 +1,12 @@
+- model: deployments.deployment
+  pk: 1
+  fields:
+    name: "Power Plant"
+- model: deployments.deployment
+  pk: 2
+  fields:
+    name: "Widget Factory"
+- model: deployments.deployment
+  pk: 3
+  fields:
+    name: "Construction Site"

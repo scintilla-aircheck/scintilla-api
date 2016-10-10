@@ -7,12 +7,13 @@ services:
     volumes:
       - .:/scintilla_api
     environment:
-      - DJANGO_DEBUG=true
+      - APP_ENV=DEVELOPMENT_DOCKER
       - DJANGO_SECRET_KEY
     depends_on:
       - database
       - redis
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: /scintilla_api/entrypoint-combinedserver.sh
+    restart: always
   database:
     extends:
       file: docker-compose.base.yml

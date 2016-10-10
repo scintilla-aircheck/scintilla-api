@@ -1,0 +1,20 @@
+- model: deployments.device
+  pk: 1
+  fields:
+    name: "Entrance"
+- model: deployments.device
+  pk: 1
+  fields:
+    name: "West"
+- model: deployments.device
+  pk: 1
+  fields:
+    name: "East"
+- model: deployments.device
+  pk: 1
+  fields:
+    name: "North"
+- model: deployments.device
+  pk: 1
+  fields:
+    name: "South"

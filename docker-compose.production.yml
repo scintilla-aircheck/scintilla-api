@@ -4,6 +4,9 @@ services:
     extends:
       file: docker-compose.base.yml
       service: interfaceserver
+    environment:
+      - APP_ENV=PRODUCTION_DOCKER
+      - DJANGO_SECRET_KEY
     depends_on:
       - database
       - redis
@@ -11,6 +14,9 @@ services:
     extends:
       file: docker-compose.base.yml
       service: workerserver
+    environment:
+      - APP_ENV=PRODUCTION_DOCKER
+      - DJANGO_SECRET_KEY
     depends_on:
       - database
       - redis
