@@ -1,7 +1,9 @@
 {
   "name": "scintilla-api",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register static/jsx/test/"
+  },
   "license": "ISC",
   "dependencies": {
     "axios": "^0.14.0",
@@ -19,7 +21,8 @@
     "react-websocket": "^1.1.6",
     "redux": "^3.6.0",
     "redux-logger": "^2.6.1",
-    "redux-promise-middleware": "^4.0.0"
+    "redux-promise-middleware": "^4.0.0",
+    "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.16.0",

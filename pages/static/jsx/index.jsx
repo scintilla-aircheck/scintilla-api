@@ -1,10 +1,10 @@
 import React from 'react';
-import {render} from 'react-dom';
+import { render } from 'react-dom';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
+import { deployments } from './actions/deployments'
 
 import 'babel-polyfill';
-import axios from 'axios'
 
 import Root from './containers/root.jsx'
 import configureStore from './store/configureStore'
@@ -20,15 +20,17 @@ render(
   document.getElementById('root')
 );
 
-store.dispatch({
+store.dispatch(deployments());
+
+/*store.dispatch({
     type: 'DEPLOYMENTS',
     payload: axios.get('http://localhost:8000/api/v1/deployments/')
-});
+});*/
 
-store.dispatch({
-    type: 'READINGS',
-    payload: axios.get('http://localhost:8000/api/v1/readings/')
-});
+//store.dispatch({
+//    type: 'READINGS',
+//    payload: axios.get('http://localhost:8000/api/v1/readings/?deployment_id=')
+//}); // TODO get readings by deployment
 
 /*
 render(

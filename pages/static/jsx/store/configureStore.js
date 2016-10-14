@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import promise from 'redux-promise-middleware'
+import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 
 import throttle from 'lodash/throttle'
@@ -16,7 +17,7 @@ const configureStore = () => {
         rootReducer,
         persistantState,
         compose(
-            applyMiddleware(createLogger(), promise())
+            applyMiddleware(thunk, createLogger(), promise())
         )
     );
 

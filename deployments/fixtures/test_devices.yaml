@@ -2,19 +2,24 @@
   pk: 1
   fields:
     name: "Entrance"
+    deployments: [3]
 - model: deployments.device
-  pk: 1
+  pk: 2
   fields:
     name: "West"
+    deployments: [3]
 - model: deployments.device
-  pk: 1
+  pk: 3
   fields:
     name: "East"
+    deployments: [3]
 - model: deployments.device
-  pk: 1
+  pk: 4
   fields:
     name: "North"
+    deployments: [3]
 - model: deployments.device
-  pk: 1
+  pk: 5
   fields:
     name: "South"
+    deployments: [3]

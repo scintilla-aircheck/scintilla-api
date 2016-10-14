@@ -7,18 +7,37 @@ const ReadingGraphList = ({
 }) => {
 
     return (
-        <div className="reading_graph_list_container">
-            {readings.device_view_graphs.map(graph => {
-                    var id = v4();
-                    return (
-                        <ReadingGraph
-                            key={id}
-                            id={id}
-                            graph={graph}
-                        />
-                    )
-                }
-            )}
+        <div>
+            <div className="reading_graph_list_container">
+                {readings.device_view_graphs.map(graph => {
+                        var id = v4();
+                        return (
+                            <ReadingGraph
+                                key={id}
+                                id={id}
+                                graph={graph}
+                                labels={readings.sensor_type_names}
+                                active={readings.sensor_types_active}
+                            />
+                        )
+                    }
+                )}
+            </div>
+            <div className="reading_graph_list_container">
+                {readings.sensor_type_view_graphs.map(graph => {
+                        var id = v4();
+                        return (
+                            <ReadingGraph
+                                key={id}
+                                id={id}
+                                graph={graph}
+                                labels={readings.device_names}
+                                active={readings.devices_active}
+                            />
+                        )
+                    }
+                )}
+            </div>
         </div>
     )
 };
@@ -26,7 +45,14 @@ const ReadingGraphList = ({
 class ReadingGraph extends React.Component {
 
     componentDidMount() {
-        console.log(this.props.id);
+        let labels = ["Date/Time"];
+        for(var i = 0; i < this.props.labels.length; i++) {
+            labels.push(this.props.labels[i]);
+        }
+
+        console.log(labels);
+        console.log(this.props.graph);
+
         var g = new Dygraph(
 
             // containing div
@@ -35,10 +61,18 @@ class ReadingGraph extends React.Component {
             // CSV or path to a CSV file.
             this.props.graph,
             {
-                labels: ["Date/Time", "CO"]
+                labels: labels,
+                visibility: this.props.active,
+                stacked: false,
+                connectSeparatedPoints: true
             }
         );
     }
+
+    componentDidUpdate() {
+
+    }
+
     render() {
 
         return (

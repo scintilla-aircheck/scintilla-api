@@ -1,3 +1,8 @@
+import { selectDeployment } from '../actions/deployments'
+import { readings } from './readings'
+
+import axios from 'axios'
+
 const deployments = (state = {deployments:[]}, action) => {
     switch (action.type) {
         case 'SELECT_DEPLOYMENT':
@@ -18,10 +23,10 @@ const deployments = (state = {deployments:[]}, action) => {
             } else {
                 current_deployment = state.current_deployment;
             }
+
             return {
                 ...state,
-                deployments: action.payload.data.results,
-                current_deployment
+                deployments: action.payload.data.results
             };
         default:
             return state

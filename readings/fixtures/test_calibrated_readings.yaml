@@ -2,6 +2,8 @@
   pk: 1
   fields:
     value: "234.5"
+    device: 1
+    sensor: 1
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"

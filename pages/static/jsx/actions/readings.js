@@ -1,3 +1,10 @@
+import axios from 'axios'
+
+export const readings = (deployment_id) => ({
+    type: 'READINGS',
+    payload: axios.get('http://localhost:8000/api/v1/readings/?deployment_id=' + String(deployment_id))
+});
+
 export const addReading = (reading) => ({
     type: 'ADD_READING',
     reading

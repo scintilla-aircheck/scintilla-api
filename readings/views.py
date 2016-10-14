@@ -135,18 +135,18 @@ class ReadingViewSet(viewsets.GenericViewSet, ListModelMixin):
 
     def list(self, request, *args, **kwargs):
 
-        '''
         if 'deployment_id' in request.GET:
             deployment_id = request.GET['deployment_id']
             deployment = Deployment.objects.get(pk=deployment_id)
+            '''
             if deployment.account != request.user:  # TODO: this should be checking if deployment.account is request.user OR if request.user is in deployment.accounts
                 return Response(status=status.HTTP_400_BAD_REQUEST)
+            '''
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        '''
 
-        #queryset = self.queryset.filter(device__deployment=deployment).order_by('-time')
-        queryset = self.queryset
+        queryset = self.queryset.filter(device__deployments__id__exact=deployment.id)
+        #queryset = self.queryset
 
         page = self.paginate_queryset(queryset)
         if page is not None:

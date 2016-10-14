@@ -169,7 +169,16 @@ To watch for changes in SASS/Coffee/JS files, simply run `grunt`. If preparing t
 
 ### Testing
 ```
+cd pages/
 npm install -g mocha
+```
+```
+cd pages/
+npm run test
+
+OR
+
+mocha --compilers js:babel-core/register static/jsx/test/
 ```
 
 ### Installing bower  (if NOT using package.json)

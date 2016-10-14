@@ -13,8 +13,8 @@ class Deployment(DateMixin):
     name = models.CharField(max_length=1000, null=True, blank=True)
     devices = models.ManyToManyField('Device', related_name='deployment_devices', blank=True)
 
-    def __unicode__(self):
-        return str(self.name)
+    def __str__(self):
+        return '#' + str(self.id) + ' ' + str(self.name)
 
 
 class Device(DateMixin):
@@ -25,5 +25,5 @@ class Device(DateMixin):
     name = models.CharField(max_length=1000, null=True, blank=True)
     date_manufactured = models.DateTimeField(null=True, blank=True)
 
-    def __unicode__(self):
-        return str(self.name)
+    def __str__(self):
+        return '#' + str(self.id) + ' ' + str(self.name)

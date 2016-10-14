@@ -59,7 +59,7 @@ module.exports = function(grunt) {
                         test: /\.jsx?$/,
                         exclude: /node_modules/,
                         loader: 'babel',
-                        query: {presets: ['es2015', 'stage-2', 'react'], compact: false}
+                        query: {compact: false}
                     }]
                 },
 

@@ -9,8 +9,8 @@ class Platform(DateMixin):
     version = models.CharField(max_length=1000, null=True, blank=True)
     sensors = models.ManyToManyField('Sensor')
 
-    def __unicode__(self):
-        return str(self.name)
+    def __str__(self):
+        return '#' + str(self.id) + ' ' + str(self.name)
 
 
 class Sensor(DateMixin):
@@ -27,12 +27,11 @@ class Sensor(DateMixin):
         SO2 = 8
         NO2 = 9
 
-
     TYPE = (
         (Type.NONE, 'None'),
-        (Type.TEMPERATURE, 'TEMPERATURE'),
-        (Type.HUMIDITY, 'HUMIDITY'),
-        (Type.PRESSURE, 'PRESSURE'),
+        (Type.TEMPERATURE, 'Temperature'),
+        (Type.HUMIDITY, 'Humidity'),
+        (Type.PRESSURE, 'Pressure'),
         (Type.PM2_5, 'PM2.5'),
         (Type.PM10, 'PM10'),
         (Type.OZONE, 'Ozone'),
@@ -64,5 +63,5 @@ class Sensor(DateMixin):
     version = models.CharField(max_length=1000, null=True, blank=True)
     type = models.IntegerField(default=Type.NONE, db_index=True, choices=TYPE, null=True, blank=True)
 
-    def __unicode__(self):
-        return str(self.name)
+    def __str__(self):
+        return '#' + str(self.id) + ' ' + str(self.name)
