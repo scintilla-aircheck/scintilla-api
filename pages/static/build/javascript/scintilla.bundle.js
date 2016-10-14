@@ -58,6 +58,8 @@
 
 	var _deployments = __webpack_require__(515);
 
+	var _readings = __webpack_require__(559);
+
 	__webpack_require__(195);
 
 	var _root = __webpack_require__(513);
@@ -81,6 +83,29 @@
 	), document.getElementById('root'));
 
 	store.dispatch((0, _deployments.deployments)());
+
+	var socket = null;
+	function createSocket() {
+	    socket = new WebSocket('ws://' + window.location.host + '/socket');
+	    if (socket) {
+	        socket.onmessage = function (e) {
+	            console.log(e.data);
+	            store.dispatch((0, _readings.addReading)(JSON.parse(e.data)));
+	            //store.dispatch({
+	            //    type: 'ADD_READING',
+	            //    reading: JSON.parse(e.data)
+	            //})
+	        };
+	        // When the backend reloads, the connection will be lost.
+	        // This will reopen it after a bit of a cooldown period.
+	        socket.onclose = function (e) {
+	            if (e.code === 1006) {
+	                window.setTimeout(createSocket, 2000);
+	            }
+	        };
+	    }
+	}
+	createSocket();
 
 	/*store.dispatch({
 	    type: 'DEPLOYMENTS',
@@ -38215,12 +38240,43 @@
 	    return retVal;
 	};
 
-	var reading = exports.reading = function reading() {
+	var readings = exports.readings = function readings() {
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initial_readings_state;
 	    var action = arguments[1];
 
-
 	    switch (action.type) {
+	        case 'READINGS_PENDING':
+	            return state;
+	        case 'READINGS_REJECTED':
+	            return state;
+	        case 'READINGS_FULFILLED':
+	            var new_state = _extends({}, state);
+	            var _iteratorNormalCompletion = true;
+	            var _didIteratorError = false;
+	            var _iteratorError = undefined;
+
+	            try {
+	                for (var _iterator = action.payload.data.results[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                    var r = _step.value;
+
+	                    new_state = readings(new_state, { type: 'ADD_READING', reading: r });
+	                }
+	            } catch (err) {
+	                _didIteratorError = true;
+	                _iteratorError = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion && _iterator.return) {
+	                        _iterator.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError) {
+	                        throw _iteratorError;
+	                    }
+	                }
+	            }
+
+	            return new_state;
 	        case 'ADD_READING':
 
 	            if (action.reading.device === undefined || action.reading.device === null || action.reading.sensor_type === undefined || action.reading.sensor_type === null) {
@@ -38287,12 +38343,14 @@
 	                if (device_view_graphs[device_index][i].length) {
 	                    if (device_view_graphs[device_index][i][0].toISOString().slice(0, 19) == action.reading.time.slice(0, 19)) {
 	                        device_view_graphs = [].concat(_toConsumableArray(device_view_graphs.slice(0, device_index)), [[].concat(_toConsumableArray(device_view_graphs[device_index].slice(0, i)), [[].concat(_toConsumableArray(device_view_graphs[device_index][i].slice(0, sensor_type_index + 1)), [action.reading.value], _toConsumableArray(device_view_graphs[device_index][i].slice(sensor_type_index + 2)))], _toConsumableArray(device_view_graphs[device_index].slice(i + 1)))], _toConsumableArray(device_view_graphs.slice(device_index + 1)));
+	                        console.log('FALSE');
 	                        new_time = false;
 	                        break;
 	                    }
 	                }
 	            }
 	            if (new_time) {
+	                console.log('TRUE');
 	                device_view_graphs = [].concat(_toConsumableArray(device_view_graphs.slice(0, device_index)), [[].concat(_toConsumableArray(device_view_graphs[device_index]), [readingToDygraphArray(action.reading, sensor_type_index, sensor_types.length)])], _toConsumableArray(device_view_graphs.slice(device_index + 1)));
 	            }
 
@@ -38312,48 +38370,6 @@
 	            }
 
 	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active });
-	        default:
-	            return state;
-	    }
-	};
-
-	var readings = exports.readings = function readings() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initial_readings_state;
-	    var action = arguments[1];
-
-	    switch (action.type) {
-	        case 'READINGS_PENDING':
-	            return state;
-	        case 'READINGS_REJECTED':
-	            return state;
-	        case 'READINGS_FULFILLED':
-	            var new_state = _extends({}, state);
-	            var _iteratorNormalCompletion = true;
-	            var _didIteratorError = false;
-	            var _iteratorError = undefined;
-
-	            try {
-	                for (var _iterator = action.payload.data.results[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                    var r = _step.value;
-
-	                    new_state = reading(new_state, { type: 'ADD_READING', reading: r });
-	                }
-	            } catch (err) {
-	                _didIteratorError = true;
-	                _iteratorError = err;
-	            } finally {
-	                try {
-	                    if (!_iteratorNormalCompletion && _iterator.return) {
-	                        _iterator.return();
-	                    }
-	                } finally {
-	                    if (_didIteratorError) {
-	                        throw _iteratorError;
-	                    }
-	                }
-	            }
-
-	            return new_state;
 	        default:
 	            return state;
 	    }

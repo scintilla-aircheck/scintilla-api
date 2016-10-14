@@ -16,9 +16,13 @@ def ws_connect(msg):
     print("TEST CONNECT", file=sys.stderr)
     Group('custom_broadcast').add(msg.reply_channel)
 
+    Group('readings').add(msg.reply_channel)
+
 
 def ws_disconnect(msg):
     Group('custom_broadcast').discard(msg.reply_channel)
+
+    Group('readings').discard(msg.reply_channel)
 
 
 def ws_receive(msg):

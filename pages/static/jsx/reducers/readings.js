@@ -16,9 +16,18 @@ const readingToDygraphArray = (reading, index, length) => {
     return retVal;
 };
 
-export const reading = (state = initial_readings_state, action) => {
-
+export const readings = (state = initial_readings_state, action) => {
     switch(action.type) {
+        case 'READINGS_PENDING':
+            return state;
+        case 'READINGS_REJECTED':
+            return state;
+        case 'READINGS_FULFILLED':
+            let new_state = {...state};
+            for(var r of action.payload.data.results) {
+                new_state = readings(new_state, {type: 'ADD_READING', reading: r});
+            }
+            return new_state;
         case 'ADD_READING':
 
             if( action.reading.device === undefined || action.reading.device === null ||
@@ -94,12 +103,14 @@ export const reading = (state = initial_readings_state, action) => {
                             ],
                             ...device_view_graphs.slice(device_index + 1)
                         ];
+                        console.log('FALSE');
                         new_time = false;
                         break;
                     }
                 }
             }
             if(new_time) {
+                console.log('TRUE');
                 device_view_graphs = [
                     ...device_view_graphs.slice(0, device_index),
                     [
@@ -145,23 +156,6 @@ export const reading = (state = initial_readings_state, action) => {
             }
 
             return {...state, device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active};
-        default:
-            return state;
-    }
-};
-
-export const readings = (state = initial_readings_state, action) => {
-    switch(action.type) {
-        case 'READINGS_PENDING':
-            return state;
-        case 'READINGS_REJECTED':
-            return state;
-        case 'READINGS_FULFILLED':
-            let new_state = {...state};
-            for(var r of action.payload.data.results) {
-                new_state = reading(new_state, {type: 'ADD_READING', reading: r});
-            }
-            return new_state;
         default:
             return state
     }
