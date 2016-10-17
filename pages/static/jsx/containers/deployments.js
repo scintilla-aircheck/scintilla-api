@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { selectDeployment } from '../actions/deployments'
-import DeploymentList from '../components/deployments.jsx'
+import Header from '../components/header.jsx'
 
 const mapStateToProps = (state) => ({
     deployments: state.deployments.deployments,
@@ -14,6 +14,6 @@ const mapDispatchToProps =  ({
 const DeploymentListContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(DeploymentList);
+)(Header);
 
 export default DeploymentListContainer

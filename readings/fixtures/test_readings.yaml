@@ -8,7 +8,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T01:10:10"
+    time: "2016-10-13T01:10:10"
 - model: readings.reading
   pk: 2
   fields:
@@ -19,7 +19,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T02:10:10"
+    time: "2016-10-13T02:10:10"
 - model: readings.reading
   pk: 3
   fields:
@@ -30,7 +30,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T03:10:10"
+    time: "2016-10-13T03:10:10"
 - model: readings.reading
   pk: 4
   fields:
@@ -41,7 +41,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T04:10:10"
+    time: "2016-10-13T04:10:10"
 - model: readings.reading
   pk: 5
   fields:
@@ -52,7 +52,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T05:10:10"
+    time: "2016-10-13T05:10:10"
 - model: readings.reading
   pk: 6
   fields:
@@ -63,7 +63,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T06:10:10"
+    time: "2016-10-13T06:10:10"
 - model: readings.reading
   pk: 7
   fields:
@@ -74,7 +74,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T01:10:10"
+    time: "2016-10-13T01:10:10"
 - model: readings.reading
   pk: 8
   fields:
@@ -85,7 +85,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T02:10:10"
+    time: "2016-10-13T02:10:10"
 - model: readings.reading
   pk: 9
   fields:
@@ -96,7 +96,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T03:10:10"
+    time: "2016-10-13T03:10:10"
 - model: readings.reading
   pk: 10
   fields:
@@ -107,7 +107,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T04:10:10"
+    time: "2016-10-13T04:10:10"
 - model: readings.reading
   pk: 11
   fields:
@@ -118,7 +118,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T05:10:10"
+    time: "2016-10-13T05:10:10"
 - model: readings.reading
   pk: 12
   fields:
@@ -129,7 +129,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T06:10:10"
+    time: "2016-10-13T06:10:10"
 - model: readings.reading
   pk: 13
   fields:
@@ -140,7 +140,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T01:10:10"
+    time: "2016-10-13T01:10:10"
 - model: readings.reading
   pk: 14
   fields:
@@ -151,7 +151,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T02:10:10"
+    time: "2016-10-13T02:10:10"
 - model: readings.reading
   pk: 15
   fields:
@@ -162,7 +162,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T03:10:10"
+    time: "2016-10-13T03:10:10"
 - model: readings.reading
   pk: 16
   fields:
@@ -173,7 +173,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T04:10:10"
+    time: "2016-10-13T04:10:10"
 - model: readings.reading
   pk: 17
   fields:
@@ -184,7 +184,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T05:10:10"
+    time: "2016-10-13T05:10:10"
 - model: readings.reading
   pk: 18
   fields:
@@ -195,7 +195,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T06:10:10"
+    time: "2016-10-13T06:10:10"
 - model: readings.reading
   pk: 19
   fields:
@@ -206,7 +206,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T01:10:10"
+    time: "2016-10-13T01:10:10"
 - model: readings.reading
   pk: 20
   fields:
@@ -217,7 +217,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T02:10:10"
+    time: "2016-10-13T02:10:10"
 - model: readings.reading
   pk: 21
   fields:
@@ -228,7 +228,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T03:10:10"
+    time: "2016-10-13T03:10:10"
 - model: readings.reading
   pk: 22
   fields:
@@ -239,7 +239,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T04:10:10"
+    time: "2016-10-13T04:10:10"
 - model: readings.reading
   pk: 23
   fields:
@@ -250,7 +250,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T05:10:10"
+    time: "2016-10-13T05:10:10"
 - model: readings.reading
   pk: 24
   fields:
@@ -261,7 +261,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T06:10:10"
+    time: "2016-10-13T06:10:10"
 - model: readings.reading
   pk: 25
   fields:
@@ -272,7 +272,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T01:10:10"
+    time: "2016-10-13T01:10:10"
 - model: readings.reading
   pk: 26
   fields:
@@ -283,7 +283,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T02:10:10"
+    time: "2016-10-13T02:10:10"
 - model: readings.reading
   pk: 27
   fields:
@@ -294,7 +294,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T03:10:10"
+    time: "2016-10-13T03:10:10"
 - model: readings.reading
   pk: 28
   fields:
@@ -305,7 +305,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T04:10:10"
+    time: "2016-10-13T04:10:10"
 - model: readings.reading
   pk: 29
   fields:
@@ -316,7 +316,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T05:10:10"
+    time: "2016-10-13T05:10:10"
 - model: readings.reading
   pk: 30
   fields:
@@ -327,7 +327,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T06:10:10"
+    time: "2016-10-13T06:10:10"
 - model: readings.reading
   pk: 31
   fields:
@@ -338,7 +338,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T01:10:10"
+    time: "2016-10-13T01:10:10"
 - model: readings.reading
   pk: 32
   fields:
@@ -349,7 +349,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T02:10:10"
+    time: "2016-10-13T02:10:10"
 - model: readings.reading
   pk: 33
   fields:
@@ -360,7 +360,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T03:10:10"
+    time: "2016-10-13T03:10:10"
 - model: readings.reading
   pk: 34
   fields:
@@ -371,7 +371,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T04:10:10"
+    time: "2016-10-13T04:10:10"
 - model: readings.reading
   pk: 35
   fields:
@@ -382,7 +382,7 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T05:10:10"
+    time: "2016-10-13T05:10:10"
 - model: readings.reading
   pk: 36
   fields:
@@ -393,4 +393,4 @@
     longitude: "1.234"
     latitude: "5.678"
     unit: 0
-    time: "2016-08-09T06:10:10"
+    time: "2016-10-13T06:10:10"

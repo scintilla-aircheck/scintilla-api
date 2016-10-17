@@ -32518,9 +32518,9 @@
 
 	var _deployments = __webpack_require__(195);
 
-	var _deployments2 = __webpack_require__(517);
+	var _header = __webpack_require__(560);
 
-	var _deployments3 = _interopRequireDefault(_deployments2);
+	var _header2 = _interopRequireDefault(_header);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32535,7 +32535,7 @@
 	    onDeploymentClick: _deployments.selectDeployment
 	};
 
-	var DeploymentListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_deployments3.default);
+	var DeploymentListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_header2.default);
 
 	exports.default = DeploymentListContainer;
 
@@ -32623,50 +32623,6 @@
 	    onDeploymentClick: _react2.default.PropTypes.func.isRequired
 	};
 
-	/*
-	const DeploymentList = ({
-	    deployments,
-	    onDeploymentClick
-	}) => (
-	    <div className="deployments_list">
-	        {deployments.deployments.map(deployment =>
-	            <Deployment
-	                key={deployment.id}
-	                {...deployment}
-	                onClick={() => onDeploymentClick(deployment)}
-	            />
-	        )}
-	    </div>
-	);
-	*/
-	/*class Deployment extends React.Component {
-
-	    constructor(props) {
-	        super(props);
-	        this.onClick = this.onClick.bind(this);
-	        this.state = {dropDownOpen: false};
-	    }
-
-	    onClick(event) {
-	        this.setState({dropDownOpen: !this.state.dropDownOpen});
-	        this.props.onClick();
-	    }
-
-	    render() {
-	        let dropDownContainerClass = this.state.dropDownOpen ? 'drop_down_container active' : 'drop_down_container';
-	        return (
-	            <div className={dropDownContainerClass} onClick={this.onClick}>
-	                {this.props.name}
-	            </div>
-	        )
-	    }
-	}
-
-	Deployment.propTypes = {
-	    onClick: React.PropTypes.func.isRequired,
-	    name: React.PropTypes.string.isRequired
-	};*/
-
 	var Deployment = function Deployment(_ref) {
 	    var onClick = _ref.onClick;
 	    var name = _ref.name;
@@ -32737,63 +32693,136 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var ReadingGraphList = function ReadingGraphList(_ref) {
-	    var readings = _ref.readings;
+	/*
+	const ReadingGraphList = ({
+	    readings
+	}) => {
 
+	    return (
+	        <div>
+	            <div className="reading_graph_list_container">
+	                {readings.device_view_graphs.map(graph => {
+	                        var id = v4();
+	                        return (
+	                            <ReadingGraph
+	                                key={id}
+	                                id={id}
+	                                graph={graph}
+	                                labels={readings.sensor_type_names}
+	                                active={readings.sensor_types_active}
+	                            />
+	                        )
+	                    }
+	                )}
+	            </div>
+	            <div className="reading_graph_list_container">
+	                {readings.sensor_type_view_graphs.map(graph => {
+	                        var id = v4();
+	                        return (
+	                            <ReadingGraph
+	                                key={id}
+	                                id={id}
+	                                graph={graph}
+	                                labels={readings.device_names}
+	                                active={readings.devices_active}
+	                            />
+	                        )
+	                    }
+	                )}
+	            </div>
+	        </div>
+	    )
+	};*/
 
-	    return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	            'div',
-	            { className: 'reading_graph_list_container' },
-	            readings.device_view_graphs.map(function (graph) {
-	                var id = (0, _nodeUuid.v4)();
-	                return _react2.default.createElement(ReadingGraph, {
-	                    key: id,
-	                    id: id,
-	                    graph: graph,
-	                    labels: readings.sensor_type_names,
-	                    active: readings.sensor_types_active
-	                });
-	            })
-	        ),
-	        _react2.default.createElement(
-	            'div',
-	            { className: 'reading_graph_list_container' },
-	            readings.sensor_type_view_graphs.map(function (graph) {
-	                var id = (0, _nodeUuid.v4)();
-	                return _react2.default.createElement(ReadingGraph, {
-	                    key: id,
-	                    id: id,
-	                    graph: graph,
-	                    labels: readings.device_names,
-	                    active: readings.devices_active
-	                });
-	            })
-	        )
-	    );
-	};
+	var ReadingGraphList = function (_React$Component) {
+	    _inherits(ReadingGraphList, _React$Component);
 
-	var ReadingGraph = function (_React$Component) {
-	    _inherits(ReadingGraph, _React$Component);
+	    function ReadingGraphList() {
+	        _classCallCheck(this, ReadingGraphList);
 
-	    function ReadingGraph() {
+	        return _possibleConstructorReturn(this, (ReadingGraphList.__proto__ || Object.getPrototypeOf(ReadingGraphList)).apply(this, arguments));
+	    }
+
+	    _createClass(ReadingGraphList, [{
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            console.log('./components/readingGraph.jsx:: ReadingGraphList: COMPONENT DID UPDATE');
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+
+	            console.log('./components/readingGraph.jsx:: ReadingGraphList: RENDER');
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'reading_graph_list_container' },
+	                    this.props.readings.device_view_graphs.map(function (graph) {
+	                        var id = (0, _nodeUuid.v4)();
+	                        return _react2.default.createElement(ReadingGraph, {
+	                            key: id,
+	                            id: id,
+	                            graph: graph,
+	                            labels: _this2.props.readings.sensor_type_names,
+	                            active: _this2.props.readings.sensor_types_active
+	                        });
+	                    })
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'reading_graph_list_container' },
+	                    this.props.readings.sensor_type_view_graphs.map(function (graph) {
+	                        var id = (0, _nodeUuid.v4)();
+	                        return _react2.default.createElement(ReadingGraph, {
+	                            key: id,
+	                            id: id,
+	                            graph: graph,
+	                            labels: _this2.props.readings.device_names,
+	                            active: _this2.props.readings.devices_active
+	                        });
+	                    })
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ReadingGraphList;
+	}(_react2.default.Component);
+
+	;
+
+	var ReadingGraph = function (_React$Component2) {
+	    _inherits(ReadingGraph, _React$Component2);
+
+	    function ReadingGraph(props) {
 	        _classCallCheck(this, ReadingGraph);
 
-	        return _possibleConstructorReturn(this, (ReadingGraph.__proto__ || Object.getPrototypeOf(ReadingGraph)).apply(this, arguments));
+	        return _possibleConstructorReturn(this, (ReadingGraph.__proto__ || Object.getPrototypeOf(ReadingGraph)).call(this, props));
 	    }
 
 	    _createClass(ReadingGraph, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
+	            console.log('./components/readingGraph.jsx:: ReadingGraph: COMPONENT DID MOUNT');
+	            this.updateGraphs();
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            //this.updateGraphs();
+	        }
+	    }, {
+	        key: 'updateGraphs',
+	        value: function updateGraphs() {
+	            console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPHS');
+
 	            var labels = ["Date/Time"];
 	            for (var i = 0; i < this.props.labels.length; i++) {
 	                labels.push(this.props.labels[i]);
 	            }
-
-	            //console.log(labels);
-	            //console.log(this.props.graph);
 
 	            var g = new Dygraph(
 
@@ -32809,12 +32838,8 @@
 	            });
 	        }
 	    }, {
-	        key: 'componentDidUpdate',
-	        value: function componentDidUpdate() {}
-	    }, {
 	        key: 'render',
 	        value: function render() {
-
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'reading_graph_container' },
@@ -32825,6 +32850,12 @@
 
 	    return ReadingGraph;
 	}(_react2.default.Component);
+
+	ReadingGraph.propTypes = {
+	    graph: _react2.default.PropTypes.any.isRequired,
+	    labels: _react2.default.PropTypes.any.isRequired,
+	    active: _react2.default.PropTypes.any.isRequired
+	};
 
 	exports.default = ReadingGraphList;
 
@@ -38377,6 +38408,40 @@
 	        // Ignore write errors.
 	    }
 	};
+
+/***/ },
+/* 560 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _deployments = __webpack_require__(517);
+
+	var _deployments2 = _interopRequireDefault(_deployments);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Header = function Header(_ref) {
+	    var deployments = _ref.deployments;
+	    var current_deployment = _ref.current_deployment;
+	    var onDeploymentClick = _ref.onDeploymentClick;
+	    return _react2.default.createElement(
+	        'div',
+	        { className: 'header-container' },
+	        _react2.default.createElement(_deployments2.default, { deployments: deployments, current_deployment: current_deployment, onDeploymentClick: onDeploymentClick }),
+	        _react2.default.createElement('div', null)
+	    );
+	};
+
+	exports.default = Header;
 
 /***/ }
 /******/ ]);

@@ -2,12 +2,12 @@
   pk: 1
   fields:
     name: "Entrance"
-    deployments: [3]
+    deployments: [1,2,3]
 - model: deployments.device
   pk: 2
   fields:
     name: "West"
-    deployments: [3]
+    deployments: [2,3]
 - model: deployments.device
   pk: 3
   fields:
