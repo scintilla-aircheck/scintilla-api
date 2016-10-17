@@ -20,3 +20,16 @@ services:
     image: postgres:9.5
   redis:
     image: redis:3.0-alpine
+  #rabbitmq:
+  #  image: tutum/rabbitmq
+  #  environment:
+  #    - RABBITMQ_PASS=password
+  #  ports:
+  #    - "5672:5672"  # we forward this port because it's useful for debugging
+  #    - "15672:15672"  # here, we can access rabbitmq management plugin
+  celery:
+    build: .
+    user: scintilla_api
+    command: /scintilla_api/entrypoint-celery.sh
+    volumes:
+      - .:/scintilla_api

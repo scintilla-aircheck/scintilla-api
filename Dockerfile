@@ -4,6 +4,8 @@ RUN useradd --system scintilla_api && \
     mkdir /scintilla_api && \
     chown scintilla_api:scintilla_api /scintilla_api
 
+#RUN adduser --disabled-password --gecos '' celery_user
+
 ADD requirements.txt entrypoint-*.sh manage.py /scintilla_api/
 ADD . /scintilla_api/
 

@@ -6,6 +6,7 @@ slothauth==0.6.1
 django-mobile==0.7.0
 celery==3.1.24
 django-celery==3.1.17
+kombu==3.0.37
 protobuf==3.0.0
 
 # Channels

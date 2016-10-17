@@ -14,6 +14,10 @@ services:
       - redis
     command: /scintilla_api/entrypoint-combinedserver.sh
     restart: always
+    links:
+      - database:database
+    #  - rabbitmq:rabbit
+      - redis:redis
   database:
     extends:
       file: docker-compose.base.yml
@@ -22,5 +26,17 @@ services:
     extends:
       file: docker-compose.base.yml
       service: redis
+  #rabbitmq:
+  #  extends:
+  #    file: docker-compose.base.yml
+  #    service: rabbitmq
+  #celery:
+  #  extends:
+  #    file: docker-compose.base.yml
+  #    service: celery
+  #  links:
+  #    - database:database
+     # - rabbitmq:rabbit
+  #    - redis:redis
     #command: sysctl vm.overcommit_memory=1
     #command: echo never > /sys/kernel/mm/transparent_hugepage/enabled
