@@ -23088,9 +23088,9 @@
 	};
 
 	var selectDeployment = exports.selectDeployment = function selectDeployment(deployment) {
-	    return {
-	        type: 'SELECT_DEPLOYMENT',
-	        deployment: deployment
+	    return function (dispatch) {
+	        dispatch({ type: 'SELECT_DEPLOYMENT', deployment: deployment });
+	        dispatch((0, _readings.readings)(deployment.id));
 	    };
 	};
 
@@ -32543,7 +32543,7 @@
 /* 517 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -32571,33 +32571,46 @@
 	    function DeploymentList(props) {
 	        _classCallCheck(this, DeploymentList);
 
-	        return _possibleConstructorReturn(this, (DeploymentList.__proto__ || Object.getPrototypeOf(DeploymentList)).call(this, props));
-	        //this.onClick = this.onClick.bind(this);
-	        //this.state = {dropDownOpen: false};
+	        var _this = _possibleConstructorReturn(this, (DeploymentList.__proto__ || Object.getPrototypeOf(DeploymentList)).call(this, props));
+
+	        _this.onClick = _this.onClick.bind(_this);
+	        _this.state = { dropDownOpen: false };
+	        return _this;
 	    }
 
 	    _createClass(DeploymentList, [{
-	        key: "render",
+	        key: 'onClick',
+	        value: function onClick() {
+	            this.setState({ dropDownOpen: !this.state.dropDownOpen });
+	        }
+	    }, {
+	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
 
+	            var dropDownContainerClass = this.state.dropDownOpen ? 'deployments-list active' : 'deployments-list';
+
 	            return _react2.default.createElement(
-	                "div",
-	                { className: "deployments_list" },
+	                'div',
+	                { className: dropDownContainerClass, onClick: this.onClick },
 	                _react2.default.createElement(
-	                    "span",
+	                    'span',
 	                    null,
 	                    this.props.current_deployment.name
 	                ),
-	                this.props.deployments.map(function (deployment) {
-	                    return _react2.default.createElement(Deployment, _extends({
-	                        key: deployment.id
-	                    }, deployment, {
-	                        onClick: function onClick() {
-	                            return _this2.props.onDeploymentClick(deployment);
-	                        }
-	                    }));
-	                })
+	                _react2.default.createElement(
+	                    'ul',
+	                    { className: 'dropdown' },
+	                    this.props.deployments.map(function (deployment) {
+	                        return _react2.default.createElement(Deployment, _extends({
+	                            key: deployment.id
+	                        }, deployment, {
+	                            onClick: function onClick() {
+	                                return _this2.props.onDeploymentClick(deployment);
+	                            }
+	                        }));
+	                    })
+	                )
 	            );
 	        }
 	    }]);
@@ -32658,9 +32671,13 @@
 	    var onClick = _ref.onClick;
 	    var name = _ref.name;
 	    return _react2.default.createElement(
-	        "div",
-	        { className: "deployment", onClick: onClick },
-	        name
+	        'li',
+	        { className: 'deployment', onClick: onClick },
+	        _react2.default.createElement(
+	            'a',
+	            { href: '#' },
+	            name
+	        )
 	    );
 	};
 
@@ -38140,7 +38157,7 @@
 	            console.log('./reducers/deployments.js:: SELECT_DEPLOYMENT:');
 	            console.log(action);
 
-	            (0, _readings.readings)(action.deployment.id);
+	            //readings(action.deployment.id);
 
 	            return _extends({}, state, {
 	                current_deployment: action.deployment
@@ -38208,7 +38225,7 @@
 	        case 'READINGS_REJECTED':
 	            return state;
 	        case 'READINGS_FULFILLED':
-	            var new_state = _extends({}, state);
+	            var new_state = _extends({}, initial_readings_state);
 	            var _iteratorNormalCompletion = true;
 	            var _didIteratorError = false;
 	            var _iteratorError = undefined;

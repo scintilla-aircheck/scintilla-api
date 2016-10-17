@@ -20,7 +20,7 @@ export const readings = (state = initial_readings_state, action) => {
         case 'READINGS_REJECTED':
             return state;
         case 'READINGS_FULFILLED':
-            let new_state = {...state};
+            let new_state = {...initial_readings_state};
             for(var r of action.payload.data.results) {
                 new_state = readings(new_state, {type: 'ADD_READING', reading: r});
             }

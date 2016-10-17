@@ -11,7 +11,7 @@ const deployments = (state = {deployments:[], current_deployment: {}}, action) =
             console.log('./reducers/deployments.js:: SELECT_DEPLOYMENT:');
             console.log(action);
 
-            readings(action.deployment.id);
+            //readings(action.deployment.id);
 
             return {
                 ...state,

@@ -10,19 +10,23 @@ lib = require('bower-files')({
 output_dir = 'static/build/';
 
 module.exports = function(grunt) {
+
+    require('load-grunt-tasks')(grunt);
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         sass: {
+            options: {
+                compass: true,
+                sourceMap: true,
+                require: 'susy'
+            },
             dist: {
-                options: {
-                    compass: true,
-                    require: 'susy'
-                },
                 files: [{
                     expand: true,
                     cwd: 'sass',
                     src: ['**/*.scss'],
-                    dest: output_dir + 'css',
+                    dest: output_dir + 'static/build/css',
                     ext: '.css'
                 }]
             }
@@ -40,7 +44,7 @@ module.exports = function(grunt) {
             },
             pages: {
                 files: ['**/js/**/*.js'],
-                tasks: ['webpack']
+                tasks: ['webpack', 'cacheBust']
             }
         },
         webpack: {
@@ -106,13 +110,15 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-sass');
+    //grunt.loadNpmTasks('grunt-contrib-uglify');
+    //grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-concat');
+    //grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-cache-bust');
 
-    grunt.registerTask('build', ['sass', 'concat', 'uglify']);
-    grunt.registerTask('default', ['sass', 'webpack', 'watch', 'cacheBust'])
+    //grunt.registerTask('build', ['sass', 'concat', 'uglify']);
+    grunt.registerTask('test', ['sass']);
+    //grunt.registerTask('watch', ['watch']);
+    grunt.registerTask('default', ['webpack', 'cacheBust']);
 };

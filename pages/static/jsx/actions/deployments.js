@@ -20,10 +20,12 @@ export const deployments = () => {
     }
 };
 
-export const selectDeployment = (deployment) => ({
-    type: 'SELECT_DEPLOYMENT',
-    deployment
-});
+export const selectDeployment = (deployment) => {
+    return dispatch => {
+        dispatch({type: 'SELECT_DEPLOYMENT', deployment});
+        dispatch(readings(deployment.id));
+    };
+};
 
 /*
 export const selectDeployment = (deployment) => {
