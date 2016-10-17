@@ -1,7 +1,7 @@
 import 'babel-polyfill'
 var chai = require('chai');
 var deepFreeze = require('deep-freeze-strict');
-import { reading, initial_readings_state } from '../reducers/readings'
+import { readings, initial_readings_state } from '../reducers/readings'
 
 var expect = chai.expect;
 
@@ -16,7 +16,7 @@ describe('reading reducer', function() {
                     sensor_type: 1,
                     device: 1,
                     value: 1.2,
-                    time: 12345
+                    time: '2016-05-05T01:01:01'
                 }
             };
 
@@ -25,7 +25,7 @@ describe('reading reducer', function() {
 
             const date_1 = new Date(action_1.reading.time);
 
-            const state_2 = reading(state_1, action_1);
+            const state_2 = readings(state_1, action_1);
 
             expect(
                 state_2
@@ -46,7 +46,7 @@ describe('reading reducer', function() {
                     sensor_type: 2,
                     device: 2,
                     value: 3.4,
-                    time: 67890
+                    time: '2016-05-05T01:01:01'
                 }
             };
 
@@ -55,7 +55,7 @@ describe('reading reducer', function() {
 
             const date_2 = new Date(action_2.reading.time);
 
-            const state_3 = reading(state_2, action_2);
+            const state_3 = readings(state_2, action_2);
 
             expect(
                 state_3
@@ -76,7 +76,7 @@ describe('reading reducer', function() {
                     sensor_type: 1,
                     device: 1,
                     value: 5.6,
-                    time: 54321
+                    time: '2016-05-05T01:01:02'
                 }
             };
 
@@ -85,7 +85,7 @@ describe('reading reducer', function() {
 
             const date_3 = new Date(action_3.reading.time);
 
-            const state_4 = reading(state_3, action_3);
+            const state_4 = readings(state_3, action_3);
 
             expect(
                 state_4

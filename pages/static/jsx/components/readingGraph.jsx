@@ -50,8 +50,8 @@ class ReadingGraph extends React.Component {
             labels.push(this.props.labels[i]);
         }
 
-        console.log(labels);
-        console.log(this.props.graph);
+        //console.log(labels);
+        //console.log(this.props.graph);
 
         var g = new Dygraph(
 
@@ -84,28 +84,5 @@ class ReadingGraph extends React.Component {
         )
     }
 }
-/*
-const ReadingGraph = ({
-    graph
-}) => {
-    console.log(this.props.id);
-    g = new Dygraph(
 
-        // containing div
-        document.getElementById(this.props.id),
-
-        // CSV or path to a CSV file.
-        this.props.graph,
-        {
-            labels: ["Date/Time", "CO", "CO2", "O3", "SO2", "NO2", "PM2.5"]
-        }
-    );
-    return (
-    <div className="reading_graph_container">
-        <div id={key}>
-
-        </div>
-    </div>
-)};
-*/
 export default ReadingGraphList

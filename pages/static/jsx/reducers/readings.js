@@ -2,9 +2,6 @@ export const initial_readings_state = {device_view_graphs: [], device_ids: [], d
 
 const readingToDygraphArray = (reading, index, length) => {
     var retVal = [];
-    console.log(reading.id);
-    console.log(reading.value);
-    console.log(reading.time);
     retVal.push(new Date(reading.time));
     for(var i = 0; i < length; i++) {
         if(i != index) {
@@ -103,14 +100,12 @@ export const readings = (state = initial_readings_state, action) => {
                             ],
                             ...device_view_graphs.slice(device_index + 1)
                         ];
-                        console.log('FALSE');
                         new_time = false;
                         break;
                     }
                 }
             }
             if(new_time) {
-                console.log('TRUE');
                 device_view_graphs = [
                     ...device_view_graphs.slice(0, device_index),
                     [

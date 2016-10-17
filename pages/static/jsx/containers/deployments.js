@@ -3,7 +3,8 @@ import { selectDeployment } from '../actions/deployments'
 import DeploymentList from '../components/deployments.jsx'
 
 const mapStateToProps = (state) => ({
-    deployments: state.deployments
+    deployments: state.deployments.deployments,
+    current_deployment: state.deployments.current_deployment
 });
 
 const mapDispatchToProps =  ({
