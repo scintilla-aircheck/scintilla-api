@@ -51,40 +51,72 @@ class ReadingGraphList extends React.Component {
     render() {
         console.log('./components/readingGraph.jsx:: ReadingGraphList: RENDER');
         return (
-            <div>
-                <div className="reading_graph_list_container">
-                    {this.props.readings.device_view_graphs.map(graph => {
-                            var id = v4();
-                            return (
-                                <ReadingGraph
-                                    key={id}
-                                    id={id}
-                                    graph={graph}
-                                    labels={this.props.readings.sensor_type_names}
-                                    active={this.props.readings.sensor_types_active}
-                                />
-                            )
-                        }
-                    )}
+            <div className="reading-graphs-section">
+                <div className="reading-graphs-container">
+                    <div className="reading-graphs-header">
+                        <div className="reading-graphs-header-title">By Scouts</div>
+                        <div>
+                            {
+                                this.props.readings.sensor_type_names.map(name => {
+                                    return (
+                                        <span>{name}</span>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div className="reading-graphs">
+                        {this.props.readings.device_view_graphs.map(graph => {
+                                var id = v4();
+                                return (
+                                    <ReadingGraph
+                                        key={id}
+                                        id={id}
+                                        graph={graph}
+                                        labels={this.props.readings.sensor_type_names}
+                                        active={this.props.readings.sensor_types_active}
+                                    />
+                                )
+                            }
+                        )}
+                    </div>
                 </div>
-                <div className="reading_graph_list_container">
-                    {this.props.readings.sensor_type_view_graphs.map(graph => {
-                            var id = v4();
-                            return (
-                                <ReadingGraph
-                                    key={id}
-                                    id={id}
-                                    graph={graph}
-                                    labels={this.props.readings.device_names}
-                                    active={this.props.readings.devices_active}
-                                />
-                            )
-                        }
-                    )}
+                <div className="reading-graphs-container">
+                    <div className="reading-graphs-header">
+                        <div className="reading-graphs-header-title">By Pollutants</div>
+                        <div>
+                            {
+                                this.props.readings.device_names.map(name => {
+                                    return (
+                                        <span>{name}</span>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div className="reading-graphs">
+                        {this.props.readings.sensor_type_view_graphs.map(graph => {
+                                var id = v4();
+                                return (
+                                    <ReadingGraph
+                                        key={id}
+                                        id={id}
+                                        graph={graph}
+                                        labels={this.props.readings.device_names}
+                                        active={this.props.readings.devices_active}
+                                    />
+                                )
+                            }
+                        )}
+                    </div>
                 </div>
             </div>
         )
     }
+};
+
+ReadingGraphList.propTypes = {
+    readings: React.PropTypes.any.isRequired
 };
 
 class ReadingGraph extends React.Component {
