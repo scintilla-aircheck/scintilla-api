@@ -9,7 +9,10 @@ from platforms.models import Sensor
 
 class AbstractReading(DateMixin):
     device = models.ForeignKey(Device, null=True, blank=True)
+    device_name = models.CharField(max_length=1000, null=True, blank=True)
     sensor = models.ForeignKey(Sensor, null=True, blank=True)
+    sensor_type = models.IntegerField(default=Sensor.Type.NONE, choices=Sensor.TYPE, null=True, blank=True)
+    sensor_type_name = models.CharField(max_length=1000, null=True, blank=True)
     value = DataField(null=True, blank=True)
     average_over_seconds = models.IntegerField(default=0, help_text="If the value is an average reading over time, how "
                                                                     "many seconds is the average taken over? If it is "

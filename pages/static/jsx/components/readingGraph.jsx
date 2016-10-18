@@ -46,6 +46,8 @@ class ReadingGraphList extends React.Component {
 
     componentDidUpdate() {
         console.log('./components/readingGraph.jsx:: ReadingGraphList: COMPONENT DID UPDATE');
+        console.log(this.props.readings.start_date);
+        console.log(this.props.readings.end_date);
     }
 
     render() {
@@ -58,8 +60,9 @@ class ReadingGraphList extends React.Component {
                         <div>
                             {
                                 this.props.readings.sensor_type_names.map(name => {
+                                    var id = v4();
                                     return (
-                                        <span>{name}</span>
+                                        <span key={id}>{name}</span>
                                     )
                                 })
                             }
@@ -75,6 +78,8 @@ class ReadingGraphList extends React.Component {
                                         graph={graph}
                                         labels={this.props.readings.sensor_type_names}
                                         active={this.props.readings.sensor_types_active}
+                                        start_date={this.props.readings.start_date}
+                                        end_date={this.props.readings.end_date}
                                     />
                                 )
                             }
@@ -87,8 +92,9 @@ class ReadingGraphList extends React.Component {
                         <div>
                             {
                                 this.props.readings.device_names.map(name => {
+                                    var id = v4();
                                     return (
-                                        <span>{name}</span>
+                                        <span key={id}>{name}</span>
                                     )
                                 })
                             }
@@ -104,6 +110,8 @@ class ReadingGraphList extends React.Component {
                                         graph={graph}
                                         labels={this.props.readings.device_names}
                                         active={this.props.readings.devices_active}
+                                        start_date={this.props.readings.start_date}
+                                        end_date={this.props.readings.end_date}
                                     />
                                 )
                             }
@@ -137,6 +145,15 @@ class ReadingGraph extends React.Component {
     updateGraphs() {
         console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPHS');
 
+        console.log(this.props.start_date);
+        console.log(this.props.end_date);
+
+        var dateWindow = null;
+
+        if( this.props.start_date && this.props.end_date ) {
+            dateWindow = [this.props.start_date.getTime(), this.props.end_date.getTime()];
+        }
+
         let labels = ["Date/Time"];
         for(var i = 0; i < this.props.labels.length; i++) {
             labels.push(this.props.labels[i]);
@@ -153,7 +170,9 @@ class ReadingGraph extends React.Component {
                 labels: labels,
                 visibility: this.props.active,
                 stacked: false,
-                connectSeparatedPoints: true
+                connectSeparatedPoints: true,
+                dateWindow: dateWindow,
+                valueRange: null
             }
         );
     }

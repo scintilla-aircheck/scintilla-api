@@ -18,6 +18,7 @@ asgi_redis===0.14.1
 psycopg2==2.6.2
 
 # Logging
+opbeat==3.4.0
 
 # DevOps
 

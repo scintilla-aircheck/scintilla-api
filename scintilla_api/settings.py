@@ -64,6 +64,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE_CLASSES = [
+    'opbeat.contrib.django.middleware.OpbeatAPMMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -271,6 +272,29 @@ LOGGING['loggers']['django.request'] = {
     'level': 'ERROR',
     'propagate': True,
 }
+
+# Opbeat
+
+INSTALLED_APPS += [
+    # ...
+    'opbeat.contrib.django',
+]
+
+
+if DEVELOPMENT or DEVELOPMENT_DOCKER:
+    OPBEAT = {
+        'ORGANIZATION_ID': '87a8cc294e484a438bb43fbc6e679ee5',
+        'APP_ID': 'cccb09b3a0',
+        'SECRET_TOKEN': '157caed6dee33c2129443dd1f2c75a9f8612a65b',
+        'DEBUG': True,
+    }
+else:
+    OPBEAT = {
+        'ORGANIZATION_ID': '87a8cc294e484a438bb43fbc6e679ee5',
+        'APP_ID': 'cccb09b3a0',
+        'SECRET_TOKEN': '157caed6dee33c2129443dd1f2c75a9f8612a65b',
+        'DEBUG': True,
+    }
 
 # Django Extensions
 

@@ -23,9 +23,9 @@ class CalibratedReadingSerializer(serializers.ModelSerializer):
 
 class ReadingSerializer(serializers.ModelSerializer):
 
-    sensor_type = serializers.SerializerMethodField()
-    sensor_type_name = serializers.SerializerMethodField()
-    device_name = serializers.SerializerMethodField()
+    #sensor_type = serializers.SerializerMethodField()
+    #sensor_type_name = serializers.SerializerMethodField()
+    #device_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Reading

@@ -1,20 +1,44 @@
-export const initial_readings_state = {device_view_graphs: [], device_ids: [], device_names: [], devices_active: [], sensor_type_view_graphs: [], sensor_types: [], sensor_type_names: [], sensor_types_active: []};
+const initial_end_date = new Date();
+let initial_start_date = new Date(initial_end_date.valueOf());
+console.log('!!!!');
+console.log(initial_end_date);
+console.log(initial_start_date);
+initial_start_date.setHours(0);
+initial_start_date.setMinutes(0);
+initial_start_date.setSeconds(0);
+console.log(initial_end_date);
+console.log(initial_start_date);
+
+export const initial_readings_state = {
+    device_view_graphs: [],
+    device_ids: [],
+    device_names: [],
+    devices_active: [],
+    sensor_type_view_graphs: [],
+    sensor_types: [],
+    sensor_type_names: [],
+    sensor_types_active: [],
+    start_date: initial_start_date,
+    end_date: initial_end_date
+};
 
 const readingToDygraphArray = (reading, index, length) => {
-    var retVal = [];
-    retVal.push(new Date(reading.time));
+    var dygraph_array = [];
+    dygraph_array.push(new Date(reading.time));
     for(var i = 0; i < length; i++) {
         if(i != index) {
-            retVal.push(null);
+            dygraph_array.push(null);
         } else {
-            retVal.push(reading.value);
+            dygraph_array.push(reading.value);
         }
     }
-    return retVal;
+    return dygraph_array;
 };
 
 export const readings = (state = initial_readings_state, action) => {
     switch(action.type) {
+        case 'CHANGE_DATE':
+            return {...state, start_date: action.start_date, end_date: action.end_date};
         case 'READINGS_PENDING':
             return state;
         case 'READINGS_REJECTED':

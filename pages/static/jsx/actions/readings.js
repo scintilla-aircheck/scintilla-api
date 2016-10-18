@@ -10,6 +10,18 @@ export const addReading = (reading) => ({
     reading
 });
 
+export const changeDate = (start_date, end_date) => ({
+    type: 'CHANGE_DATE',
+    start_date,
+    end_date
+});
+
+export const changeTime = (time) => ({
+    type: 'CHANGE_TIME',
+    time
+});
+
+/*
 // reducer must add the reading after adding the device
 export const addDevice = (reading) => ({
     type: 'ADD_DEVICE',
@@ -21,4 +33,4 @@ export const addPollutant = (reading) => ({
     type: 'ADD_POLLUTANT',
     reading
 });
-
+*/

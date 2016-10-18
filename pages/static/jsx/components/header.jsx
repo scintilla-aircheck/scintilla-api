@@ -12,32 +12,29 @@ class Header extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        console.log('TEST');
-        console.log(defaultRanges.Today.startDate(moment()));
-
-        this.state = {
+        /*this.state = {
             'predefined' : {startDate: defaultRanges.Today.startDate(moment()), endDate: defaultRanges.Today.endDate(moment())}
-            //'predefined': defaultRanges.Today(moment())
-        }
+        }*/
     }
 
-    handleChange(which, payload) {
-        if(payload.startDate > payload.endDate) {
-            var temp = payload.startDate;
-            payload.startDate = payload.endDate;
-            payload.endDate = temp;
+    handleDateChange(date) {
+        if(date.startDate > date.endDate) {
+            var temp = date.startDate;
+            date.startDate = date.endDate;
+            date.endDate = temp;
         }
-        this.setState({
-            [which] : payload
-        });
-        if( !(this.state.predefined.startDate === '' || this.state.predefined.endDate === '') ) {
-            console.log(this.state.predefined.startDate.toDate());
-            console.log(this.state.predefined.endDate.toDate());
+
+        console.log('!!!!');
+        console.log(date.startDate);
+
+        if( !(date.startDate === '' || date.endDate === '' || date.startDate === undefined || date.endDate === undefined || date.startDate === null || date.endDate === null) ) {
+            console.log(date.startDate.toDate());
+            console.log(date.endDate.toDate());
+            this.props.onDateChange(date.startDate.toDate(), date.endDate.toDate());
         }
     }
 
     render() {
-        const {predefined} = this.state;
         const format = 'dddd, D MMMM YYYY';
 
         return (
@@ -50,19 +47,19 @@ class Header extends React.Component {
                         <input
                             type="text"
                             readOnly
-                            value={ predefined['startDate'] && predefined['startDate'].format(format).toString() }
+                            value={ this.props.start_date && moment(this.props.start_date).format(format).toString() }
                         />
                         <input
                             type="text"
                             readOnly
-                            value={ predefined['endDate'] && predefined['endDate'].format(format).toString() }
+                            value={ this.props.end_date && moment(this.props.end_date).format(format).toString() }
                         />
                     </div>
                     <DateRange
                         linkedCalendars={ true }
                         ranges={ defaultRanges }
-                        onInit={ this.handleChange.bind(this, 'predefined') }
-                        onChange={ this.handleChange.bind(this, 'predefined') }
+                        //onInit={ this.handleDateChange.bind(this) }
+                        onChange={ this.handleDateChange.bind(this) }
                         theme={{
                             Calendar : { width: 200 },
                             PredefinedRanges : { marginLeft: 10, marginTop: 10 }
@@ -77,7 +74,10 @@ class Header extends React.Component {
 Header.propTypes = {
     deployments: React.PropTypes.any.isRequired,
     current_deployment: React.PropTypes.any.isRequired,
-    onDeploymentClick: React.PropTypes.func.isRequired
+    start_date: React.PropTypes.any.isRequired,
+    end_date: React.PropTypes.any.isRequired,
+    onDeploymentClick: React.PropTypes.func.isRequired,
+    onDateChange: React.PropTypes.func.isRequired
 };
 
 export default Header
