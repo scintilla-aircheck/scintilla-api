@@ -46,8 +46,7 @@ class ReadingGraphList extends React.Component {
 
     componentDidUpdate() {
         console.log('./components/readingGraph.jsx:: ReadingGraphList: COMPONENT DID UPDATE');
-        console.log(this.props.readings.start_date);
-        console.log(this.props.readings.end_date);
+
     }
 
     render() {

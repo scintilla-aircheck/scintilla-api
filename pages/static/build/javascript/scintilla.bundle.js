@@ -48686,8 +48686,6 @@
 	        key: 'componentDidUpdate',
 	        value: function componentDidUpdate() {
 	            console.log('./components/readingGraph.jsx:: ReadingGraphList: COMPONENT DID UPDATE');
-	            console.log(this.props.readings.start_date);
-	            console.log(this.props.readings.end_date);
 	        }
 	    }, {
 	        key: 'render',
