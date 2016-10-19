@@ -37,6 +37,20 @@ const readingToDygraphArray = (reading, index, length) => {
 
 export const readings = (state = initial_readings_state, action) => {
     switch(action.type) {
+        case 'TOGGLE_DEVICE_ACTIVE':
+            return {...state, devices_active: [
+                                                ...state.devices_active.slice(0, action.index),
+                                                !state.devices_active[action.index],
+                                                ...state.devices_active.slice(action.index + 1)
+                                              ]
+                   };
+        case 'TOGGLE_SENSOR_TYPE_ACTIVE':
+            return {...state, sensor_types_active: [
+                                                    ...state.sensor_types_active.slice(0, action.index),
+                                                    !state.sensor_types_active[action.index],
+                                                    ...state.sensor_types_active.slice(action.index + 1)
+                                                   ]
+                   };
         case 'CHANGE_DATE':
             return {...state, start_date: action.start_date, end_date: action.end_date};
         case 'READINGS_PENDING':

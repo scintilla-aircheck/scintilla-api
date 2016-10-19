@@ -46,7 +46,6 @@ class ReadingGraphList extends React.Component {
 
     componentDidUpdate() {
         console.log('./components/readingGraph.jsx:: ReadingGraphList: COMPONENT DID UPDATE');
-
     }
 
     render() {
@@ -58,17 +57,18 @@ class ReadingGraphList extends React.Component {
                         <div className="reading-graphs-header-title">By Scouts</div>
                         <div>
                             {
-                                this.props.readings.sensor_type_names.map(name => {
-                                    var id = v4();
+                                this.props.readings.sensor_type_names.map((name, index) => {
+                                    var className = this.props.readings.sensor_types_active[index] ? 'active' : '';
                                     return (
-                                        <span key={id}>{name}</span>
+                                        <span className={className} onClick={() => this.props.toggleSensorTypeActive(index)} key={index}>{name}</span>
                                     )
                                 })
                             }
                         </div>
                     </div>
                     <div className="reading-graphs">
-                        {this.props.readings.device_view_graphs.map(graph => {
+                        {
+                            this.props.readings.device_view_graphs.map(graph => {
                                 var id = v4();
                                 return (
                                     <ReadingGraph
@@ -90,17 +90,18 @@ class ReadingGraphList extends React.Component {
                         <div className="reading-graphs-header-title">By Pollutants</div>
                         <div>
                             {
-                                this.props.readings.device_names.map(name => {
-                                    var id = v4();
+                                this.props.readings.device_names.map((name ,index) => {
+                                    var className = this.props.readings.devices_active[index] ? 'active' : '';
                                     return (
-                                        <span key={id}>{name}</span>
+                                        <span className={className} onClick={() => this.props.toggleDeviceActive(index)} key={index}>{name}</span>
                                     )
                                 })
                             }
                         </div>
                     </div>
                     <div className="reading-graphs">
-                        {this.props.readings.sensor_type_view_graphs.map(graph => {
+                        {
+                            this.props.readings.sensor_type_view_graphs.map(graph => {
                                 var id = v4();
                                 return (
                                     <ReadingGraph
@@ -123,7 +124,9 @@ class ReadingGraphList extends React.Component {
 };
 
 ReadingGraphList.propTypes = {
-    readings: React.PropTypes.any.isRequired
+    readings: React.PropTypes.any.isRequired,
+    toggleDeviceActive: React.PropTypes.any.isRequired,
+    toggleSensorTypeActive: React.PropTypes.any.isRequired
 };
 
 class ReadingGraph extends React.Component {

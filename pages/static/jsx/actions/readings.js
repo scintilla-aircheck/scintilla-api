@@ -10,6 +10,16 @@ export const addReading = (reading) => ({
     reading
 });
 
+export const toggleDeviceActive = (index) => ({
+    type: 'TOGGLE_DEVICE_ACTIVE',
+    index
+});
+
+export const toggleSensorTypeActive = (index) => ({
+    type: 'TOGGLE_SENSOR_TYPE_ACTIVE',
+    index
+});
+
 export const changeDate = (start_date, end_date) => ({
     type: 'CHANGE_DATE',
     start_date,

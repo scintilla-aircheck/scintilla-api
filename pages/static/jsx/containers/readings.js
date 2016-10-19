@@ -2,15 +2,21 @@ import { connect } from 'react-redux'
 
 import ReadingGraphList from '../components/readingGraph.jsx'
 
-import { changeDate, changeTime } from '../actions/readings'
+import { toggleDeviceActive, toggleSensorTypeActive } from '../actions/readings'
 
 const mapStateToProps = (state) => ({
     readings: state.readings
 });
 
+const mapDispatchToProps =  ({
+    toggleDeviceActive: toggleDeviceActive,
+    toggleSensorTypeActive: toggleSensorTypeActive
+
+});
+
 const ReadingGraphListContainer = connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
 )(ReadingGraphList);
 
 export default ReadingGraphListContainer

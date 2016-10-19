@@ -23125,7 +23125,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.changeTime = exports.changeDate = exports.addReading = exports.readings = undefined;
+	exports.changeTime = exports.changeDate = exports.toggleSensorTypeActive = exports.toggleDeviceActive = exports.addReading = exports.readings = undefined;
 
 	var _axios = __webpack_require__(197);
 
@@ -23144,6 +23144,20 @@
 	    return {
 	        type: 'ADD_READING',
 	        reading: reading
+	    };
+	};
+
+	var toggleDeviceActive = exports.toggleDeviceActive = function toggleDeviceActive(index) {
+	    return {
+	        type: 'TOGGLE_DEVICE_ACTIVE',
+	        index: index
+	    };
+	};
+
+	var toggleSensorTypeActive = exports.toggleSensorTypeActive = function toggleSensorTypeActive(index) {
+	    return {
+	        type: 'TOGGLE_SENSOR_TYPE_ACTIVE',
+	        index: index
 	    };
 	};
 
@@ -48602,7 +48616,13 @@
 	    };
 	};
 
-	var ReadingGraphListContainer = (0, _reactRedux.connect)(mapStateToProps, null)(_readingGraph2.default);
+	var mapDispatchToProps = {
+	    toggleDeviceActive: _readings.toggleDeviceActive,
+	    toggleSensorTypeActive: _readings.toggleSensorTypeActive
+
+	};
+
+	var ReadingGraphListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_readingGraph2.default);
 
 	exports.default = ReadingGraphListContainer;
 
@@ -48710,11 +48730,13 @@
 	                        _react2.default.createElement(
 	                            'div',
 	                            null,
-	                            this.props.readings.sensor_type_names.map(function (name) {
-	                                var id = (0, _nodeUuid.v4)();
+	                            this.props.readings.sensor_type_names.map(function (name, index) {
+	                                var className = _this2.props.readings.sensor_types_active[index] ? 'active' : '';
 	                                return _react2.default.createElement(
 	                                    'span',
-	                                    { key: id },
+	                                    { className: className, onClick: function onClick() {
+	                                            return _this2.props.toggleSensorTypeActive(index);
+	                                        }, key: index },
 	                                    name
 	                                );
 	                            })
@@ -48751,11 +48773,13 @@
 	                        _react2.default.createElement(
 	                            'div',
 	                            null,
-	                            this.props.readings.device_names.map(function (name) {
-	                                var id = (0, _nodeUuid.v4)();
+	                            this.props.readings.device_names.map(function (name, index) {
+	                                var className = _this2.props.readings.devices_active[index] ? 'active' : '';
 	                                return _react2.default.createElement(
 	                                    'span',
-	                                    { key: id },
+	                                    { className: className, onClick: function onClick() {
+	                                            return _this2.props.toggleDeviceActive(index);
+	                                        }, key: index },
 	                                    name
 	                                );
 	                            })
@@ -48788,7 +48812,9 @@
 	;
 
 	ReadingGraphList.propTypes = {
-	    readings: _react2.default.PropTypes.any.isRequired
+	    readings: _react2.default.PropTypes.any.isRequired,
+	    toggleDeviceActive: _react2.default.PropTypes.any.isRequired,
+	    toggleSensorTypeActive: _react2.default.PropTypes.any.isRequired
 	};
 
 	var ReadingGraph = function (_React$Component2) {
@@ -54281,6 +54307,12 @@
 	    var action = arguments[1];
 
 	    switch (action.type) {
+	        case 'TOGGLE_DEVICE_ACTIVE':
+	            return _extends({}, state, { devices_active: [].concat(_toConsumableArray(state.devices_active.slice(0, action.index)), [!state.devices_active[action.index]], _toConsumableArray(state.devices_active.slice(action.index + 1)))
+	            });
+	        case 'TOGGLE_SENSOR_TYPE_ACTIVE':
+	            return _extends({}, state, { sensor_types_active: [].concat(_toConsumableArray(state.sensor_types_active.slice(0, action.index)), [!state.sensor_types_active[action.index]], _toConsumableArray(state.sensor_types_active.slice(action.index + 1)))
+	            });
 	        case 'CHANGE_DATE':
 	            return _extends({}, state, { start_date: action.start_date, end_date: action.end_date });
 	        case 'READINGS_PENDING':
