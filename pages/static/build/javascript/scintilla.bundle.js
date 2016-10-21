@@ -23169,10 +23169,15 @@
 	    };
 	};
 
-	var changeTime = exports.changeTime = function changeTime(time) {
+	var changeTime = exports.changeTime = function changeTime(start_date_hours, start_date_minutes, start_date_seconds, end_date_hours, end_date_minutes, end_date_seconds) {
 	    return {
 	        type: 'CHANGE_TIME',
-	        time: time
+	        start_date_hours: start_date_hours,
+	        start_date_minutes: start_date_minutes,
+	        start_date_seconds: start_date_seconds,
+	        end_date_hours: end_date_hours,
+	        end_date_minutes: end_date_minutes,
+	        end_date_seconds: end_date_seconds
 	    };
 	};
 
@@ -32614,11 +32619,16 @@
 	    function Header(props, context) {
 	        _classCallCheck(this, Header);
 
-	        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props, context));
+	        var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props, context));
+
+	        _this.state = {
+	            display_calendar: false
+	        };
 
 	        /*this.state = {
 	            'predefined' : {startDate: defaultRanges.Today.startDate(moment()), endDate: defaultRanges.Today.endDate(moment())}
 	        }*/
+	        return _this;
 	    }
 
 	    _createClass(Header, [{
@@ -32629,9 +32639,6 @@
 	                date.startDate = date.endDate;
 	                date.endDate = temp;
 	            }
-
-	            console.log('!!!!');
-	            console.log(date.startDate);
 
 	            if (!(date.startDate === '' || date.endDate === '' || date.startDate === undefined || date.endDate === undefined || date.startDate === null || date.endDate === null)) {
 	                console.log(date.startDate.toDate());
@@ -48745,10 +48752,10 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'reading-graphs' },
-	                        this.props.readings.device_view_graphs.map(function (graph) {
+	                        this.props.readings.device_view_graphs.map(function (graph, index) {
 	                            var id = (0, _nodeUuid.v4)();
 	                            return _react2.default.createElement(ReadingGraph, {
-	                                key: id,
+	                                key: index,
 	                                id: id,
 	                                graph: graph,
 	                                labels: _this2.props.readings.sensor_type_names,
@@ -48788,10 +48795,10 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'reading-graphs' },
-	                        this.props.readings.sensor_type_view_graphs.map(function (graph) {
+	                        this.props.readings.sensor_type_view_graphs.map(function (graph, index) {
 	                            var id = (0, _nodeUuid.v4)();
 	                            return _react2.default.createElement(ReadingGraph, {
-	                                key: id,
+	                                key: index,
 	                                id: id,
 	                                graph: graph,
 	                                labels: _this2.props.readings.device_names,
@@ -48809,8 +48816,6 @@
 	    return ReadingGraphList;
 	}(_react2.default.Component);
 
-	;
-
 	ReadingGraphList.propTypes = {
 	    readings: _react2.default.PropTypes.any.isRequired,
 	    toggleDeviceActive: _react2.default.PropTypes.any.isRequired,
@@ -48823,24 +48828,27 @@
 	    function ReadingGraph(props) {
 	        _classCallCheck(this, ReadingGraph);
 
-	        return _possibleConstructorReturn(this, (ReadingGraph.__proto__ || Object.getPrototypeOf(ReadingGraph)).call(this, props));
+	        var _this3 = _possibleConstructorReturn(this, (ReadingGraph.__proto__ || Object.getPrototypeOf(ReadingGraph)).call(this, props));
+
+	        _this3.state = {};
+	        return _this3;
 	    }
 
 	    _createClass(ReadingGraph, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
 	            console.log('./components/readingGraph.jsx:: ReadingGraph: COMPONENT DID MOUNT');
-	            this.updateGraphs();
+	            this.createGraph();
 	        }
 	    }, {
 	        key: 'componentDidUpdate',
 	        value: function componentDidUpdate() {
-	            //this.updateGraphs();
+	            this.updateGraph();
 	        }
 	    }, {
-	        key: 'updateGraphs',
-	        value: function updateGraphs() {
-	            console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPHS');
+	        key: 'createGraph',
+	        value: function createGraph() {
+	            console.log('./components/readingGraph.jsx:: ReadingGraph: CREATE GRAPH');
 
 	            console.log(this.props.start_date);
 	            console.log(this.props.end_date);
@@ -48856,7 +48864,7 @@
 	                labels.push(this.props.labels[i]);
 	            }
 
-	            var g = new Dygraph(
+	            this.state.g = new Dygraph(
 
 	            // containing div
 	            document.getElementById(this.props.id),
@@ -48869,6 +48877,32 @@
 	                connectSeparatedPoints: true,
 	                dateWindow: dateWindow,
 	                valueRange: null
+	            });
+	        }
+	    }, {
+	        key: 'updateGraph',
+	        value: function updateGraph() {
+	            console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPH');
+
+	            console.log(this.props.start_date);
+	            console.log(this.props.end_date);
+
+	            var dateWindow = null;
+
+	            if (this.props.start_date && this.props.end_date) {
+	                dateWindow = [this.props.start_date.getTime(), this.props.end_date.getTime()];
+	            }
+
+	            var labels = ["Date/Time"];
+	            for (var i = 0; i < this.props.labels.length; i++) {
+	                labels.push(this.props.labels[i]);
+	            }
+
+	            this.state.g.updateOptions({
+	                visibility: this.props.active,
+	                file: this.props.graph,
+	                labels: labels,
+	                dateWindow: dateWindow
 	            });
 	        }
 	    }, {
@@ -54266,6 +54300,9 @@
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var initial_end_date = new Date();
+	initial_end_date.setHours(23);
+	initial_end_date.setMinutes(59);
+	initial_end_date.setSeconds(59);
 	var initial_start_date = new Date(initial_end_date.valueOf());
 	console.log('!!!!');
 	console.log(initial_end_date);
@@ -54315,6 +54352,16 @@
 	            });
 	        case 'CHANGE_DATE':
 	            return _extends({}, state, { start_date: action.start_date, end_date: action.end_date });
+	        case 'CHANGE_TIME':
+	            var new_start_date = state.start_date.valueOf();
+	            new_start_date.setHours(action.start_date_hours);
+	            new_start_date.setMinutes(action.start_date_minutes);
+	            new_start_date.setSeconds(action.start_date_seconds);
+	            var new_end_date = state.end_date.valueOf();
+	            new_end_date.setHours(action.end_date_hours);
+	            new_end_date.setMinutes(action.end_date_minutes);
+	            new_end_date.setSeconds(action.end_date_seconds);
+	            return _extends({}, state, { start_date: new_start_date, end_date: new_end_date });
 	        case 'READINGS_PENDING':
 	            return state;
 	        case 'READINGS_REJECTED':

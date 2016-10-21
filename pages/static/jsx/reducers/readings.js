@@ -1,4 +1,7 @@
-const initial_end_date = new Date();
+let initial_end_date = new Date();
+initial_end_date.setHours(23);
+initial_end_date.setMinutes(59);
+initial_end_date.setSeconds(59);
 let initial_start_date = new Date(initial_end_date.valueOf());
 console.log('!!!!');
 console.log(initial_end_date);
@@ -53,6 +56,16 @@ export const readings = (state = initial_readings_state, action) => {
                    };
         case 'CHANGE_DATE':
             return {...state, start_date: action.start_date, end_date: action.end_date};
+        case 'CHANGE_TIME':
+            let new_start_date = state.start_date.valueOf();
+            new_start_date.setHours(action.start_date_hours);
+            new_start_date.setMinutes(action.start_date_minutes);
+            new_start_date.setSeconds(action.start_date_seconds);
+            let new_end_date = state.end_date.valueOf();
+            new_end_date.setHours(action.end_date_hours);
+            new_end_date.setMinutes(action.end_date_minutes);
+            new_end_date.setSeconds(action.end_date_seconds);
+            return {...state, start_date: new_start_date, end_date: new_end_date}
         case 'READINGS_PENDING':
             return state;
         case 'READINGS_REJECTED':

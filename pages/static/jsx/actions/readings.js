@@ -26,9 +26,14 @@ export const changeDate = (start_date, end_date) => ({
     end_date
 });
 
-export const changeTime = (time) => ({
+export const changeTime = (start_date_hours, start_date_minutes, start_date_seconds, end_date_hours, end_date_minutes, end_date_seconds) => ({
     type: 'CHANGE_TIME',
-    time
+    start_date_hours,
+    start_date_minutes,
+    start_date_seconds,
+    end_date_hours,
+    end_date_minutes,
+    end_date_seconds
 });
 
 /*

@@ -12,6 +12,10 @@ class Header extends React.Component {
     constructor(props, context) {
         super(props, context);
 
+        this.state = {
+            display_calendar: false
+        };
+
         /*this.state = {
             'predefined' : {startDate: defaultRanges.Today.startDate(moment()), endDate: defaultRanges.Today.endDate(moment())}
         }*/
@@ -23,9 +27,6 @@ class Header extends React.Component {
             date.startDate = date.endDate;
             date.endDate = temp;
         }
-
-        console.log('!!!!');
-        console.log(date.startDate);
 
         if( !(date.startDate === '' || date.endDate === '' || date.startDate === undefined || date.endDate === undefined || date.startDate === null || date.endDate === null) ) {
             console.log(date.startDate.toDate());

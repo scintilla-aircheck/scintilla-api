@@ -68,11 +68,11 @@ class ReadingGraphList extends React.Component {
                     </div>
                     <div className="reading-graphs">
                         {
-                            this.props.readings.device_view_graphs.map(graph => {
+                            this.props.readings.device_view_graphs.map((graph, index) => {
                                 var id = v4();
                                 return (
                                     <ReadingGraph
-                                        key={id}
+                                        key={index}
                                         id={id}
                                         graph={graph}
                                         labels={this.props.readings.sensor_type_names}
@@ -101,11 +101,11 @@ class ReadingGraphList extends React.Component {
                     </div>
                     <div className="reading-graphs">
                         {
-                            this.props.readings.sensor_type_view_graphs.map(graph => {
+                            this.props.readings.sensor_type_view_graphs.map((graph, index) => {
                                 var id = v4();
                                 return (
                                     <ReadingGraph
-                                        key={id}
+                                        key={index}
                                         id={id}
                                         graph={graph}
                                         labels={this.props.readings.device_names}
@@ -121,7 +121,7 @@ class ReadingGraphList extends React.Component {
             </div>
         )
     }
-};
+}
 
 ReadingGraphList.propTypes = {
     readings: React.PropTypes.any.isRequired,
@@ -133,19 +133,20 @@ class ReadingGraph extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {};
     }
 
     componentDidMount() {
         console.log('./components/readingGraph.jsx:: ReadingGraph: COMPONENT DID MOUNT');
-        this.updateGraphs();
+        this.createGraph();
     }
 
     componentDidUpdate() {
-        //this.updateGraphs();
+        this.updateGraph();
     }
 
-    updateGraphs() {
-        console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPHS');
+    createGraph() {
+        console.log('./components/readingGraph.jsx:: ReadingGraph: CREATE GRAPH');
 
         console.log(this.props.start_date);
         console.log(this.props.end_date);
@@ -161,7 +162,7 @@ class ReadingGraph extends React.Component {
             labels.push(this.props.labels[i]);
         }
 
-        var g = new Dygraph(
+        this.state.g = new Dygraph(
 
             // containing div
             document.getElementById(this.props.id),
@@ -177,6 +178,31 @@ class ReadingGraph extends React.Component {
                 valueRange: null
             }
         );
+    }
+
+    updateGraph() {
+        console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPH');
+
+        console.log(this.props.start_date);
+        console.log(this.props.end_date);
+
+        var dateWindow = null;
+
+        if( this.props.start_date && this.props.end_date ) {
+            dateWindow = [this.props.start_date.getTime(), this.props.end_date.getTime()];
+        }
+
+        let labels = ["Date/Time"];
+        for(var i = 0; i < this.props.labels.length; i++) {
+            labels.push(this.props.labels[i]);
+        }
+
+        this.state.g.updateOptions({
+            visibility: this.props.active,
+            file: this.props.graph,
+            labels: labels,
+            dateWindow: dateWindow
+        });
     }
 
     render() {
