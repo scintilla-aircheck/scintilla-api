@@ -20,12 +20,13 @@ export const toggleSensorTypeActive = (index) => ({
     index
 });
 
-export const changeDate = (start_date, end_date) => ({
+export const changeDate = (start_date, end_date, realtime) => ({
     type: 'CHANGE_DATE',
     start_date,
-    end_date
+    end_date,
+    realtime
 });
-
+/*
 export const changeTime = (start_date_hours, start_date_minutes, start_date_seconds, end_date_hours, end_date_minutes, end_date_seconds) => ({
     type: 'CHANGE_TIME',
     start_date_hours,
@@ -35,7 +36,7 @@ export const changeTime = (start_date_hours, start_date_minutes, start_date_seco
     end_date_minutes,
     end_date_seconds
 });
-
+*/
 /*
 // reducer must add the reading after adding the device
 export const addDevice = (reading) => ({

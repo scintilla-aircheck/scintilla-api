@@ -23125,7 +23125,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.changeTime = exports.changeDate = exports.toggleSensorTypeActive = exports.toggleDeviceActive = exports.addReading = exports.readings = undefined;
+	exports.changeDate = exports.toggleSensorTypeActive = exports.toggleDeviceActive = exports.addReading = exports.readings = undefined;
 
 	var _axios = __webpack_require__(197);
 
@@ -23161,26 +23161,25 @@
 	    };
 	};
 
-	var changeDate = exports.changeDate = function changeDate(start_date, end_date) {
+	var changeDate = exports.changeDate = function changeDate(start_date, end_date, realtime) {
 	    return {
 	        type: 'CHANGE_DATE',
 	        start_date: start_date,
-	        end_date: end_date
+	        end_date: end_date,
+	        realtime: realtime
 	    };
 	};
-
-	var changeTime = exports.changeTime = function changeTime(start_date_hours, start_date_minutes, start_date_seconds, end_date_hours, end_date_minutes, end_date_seconds) {
-	    return {
-	        type: 'CHANGE_TIME',
-	        start_date_hours: start_date_hours,
-	        start_date_minutes: start_date_minutes,
-	        start_date_seconds: start_date_seconds,
-	        end_date_hours: end_date_hours,
-	        end_date_minutes: end_date_minutes,
-	        end_date_seconds: end_date_seconds
-	    };
-	};
-
+	/*
+	export const changeTime = (start_date_hours, start_date_minutes, start_date_seconds, end_date_hours, end_date_minutes, end_date_seconds) => ({
+	    type: 'CHANGE_TIME',
+	    start_date_hours,
+	    start_date_minutes,
+	    start_date_seconds,
+	    end_date_hours,
+	    end_date_minutes,
+	    end_date_seconds
+	});
+	*/
 	/*
 	// reducer must add the reading after adding the device
 	export const addDevice = (reading) => ({
@@ -32643,7 +32642,20 @@
 	            if (!(date.startDate === '' || date.endDate === '' || date.startDate === undefined || date.endDate === undefined || date.startDate === null || date.endDate === null)) {
 	                console.log(date.startDate.toDate());
 	                console.log(date.endDate.toDate());
-	                this.props.onDateChange(date.startDate.toDate(), date.endDate.toDate());
+
+	                var start_date = date.startDate.toDate();
+	                start_date.setHours(this.props.start_date.getHours());
+	                start_date.setMinutes(this.props.start_date.getMinutes());
+	                start_date.setSeconds(this.props.start_date.getSeconds());
+	                var end_date = date.endDate.toDate();
+	                end_date.setHours(this.props.end_date.getHours());
+	                end_date.setMinutes(this.props.end_date.getMinutes());
+	                end_date.setSeconds(this.props.end_date.getSeconds());
+
+	                var now = new Date();
+	                var realtime = end_date > now;
+
+	                this.props.onDateChange(start_date, end_date, realtime);
 	            }
 	        }
 	    }, {
@@ -54300,9 +54312,9 @@
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var initial_end_date = new Date();
-	initial_end_date.setHours(23);
-	initial_end_date.setMinutes(59);
-	initial_end_date.setSeconds(59);
+	//initial_end_date.setHours(23);
+	//initial_end_date.setMinutes(59);
+	//initial_end_date.setSeconds(59);
 	var initial_start_date = new Date(initial_end_date.valueOf());
 	console.log('!!!!');
 	console.log(initial_end_date);
@@ -54323,7 +54335,16 @@
 	    sensor_type_names: [],
 	    sensor_types_active: [],
 	    start_date: initial_start_date,
-	    end_date: initial_end_date
+	    end_date: initial_end_date,
+	    realtime: true
+	};
+
+	function pausecomp(millis) {
+	    var date = new Date();
+	    var curDate = null;
+	    do {
+	        curDate = new Date();
+	    } while (curDate - date < millis);
 	};
 
 	var readingToDygraphArray = function readingToDygraphArray(reading, index, length) {
@@ -54351,32 +54372,129 @@
 	            return _extends({}, state, { sensor_types_active: [].concat(_toConsumableArray(state.sensor_types_active.slice(0, action.index)), [!state.sensor_types_active[action.index]], _toConsumableArray(state.sensor_types_active.slice(action.index + 1)))
 	            });
 	        case 'CHANGE_DATE':
-	            return _extends({}, state, { start_date: action.start_date, end_date: action.end_date });
-	        case 'CHANGE_TIME':
-	            var new_start_date = state.start_date.valueOf();
+	            return _extends({}, state, { start_date: action.start_date, end_date: action.end_date, realtime: action.realtime });
+	        /*case 'CHANGE_TIME':
+	            let new_start_date = state.start_date.valueOf();
 	            new_start_date.setHours(action.start_date_hours);
 	            new_start_date.setMinutes(action.start_date_minutes);
 	            new_start_date.setSeconds(action.start_date_seconds);
-	            var new_end_date = state.end_date.valueOf();
+	            let new_end_date = state.end_date.valueOf();
 	            new_end_date.setHours(action.end_date_hours);
 	            new_end_date.setMinutes(action.end_date_minutes);
 	            new_end_date.setSeconds(action.end_date_seconds);
-	            return _extends({}, state, { start_date: new_start_date, end_date: new_end_date });
+	            return {...state, start_date: new_start_date, end_date: new_end_date};*/
 	        case 'READINGS_PENDING':
 	            return state;
 	        case 'READINGS_REJECTED':
 	            return state;
 	        case 'READINGS_FULFILLED':
-	            var new_state = _extends({}, initial_readings_state);
+	            return readings(state, { type: 'ADD_READINGS', readings: action.payload.data.results });
+
+	        /*let new_state = {...initial_readings_state};
+	         for(var r of action.payload.data.results) {
+	            console.log('%');
+	            new_state = readings(new_state, {type: 'ADD_READING', reading: r});
+	        }
+	        return new_state;*/
+	        case 'ADD_READINGS':
+
+	            if (action.readings === undefined || action.readings === null) {
+	                return _extends({}, state);
+	            }
+
+	            var device_view_graphs = [].concat(_toConsumableArray(state.device_view_graphs.map(function (g) {
+	                return [].concat(_toConsumableArray(g));
+	            })));
+	            var device_ids = [].concat(_toConsumableArray(state.device_ids));
+	            var device_names = [].concat(_toConsumableArray(state.device_names));
+	            var devices_active = [].concat(_toConsumableArray(state.devices_active));
+	            var sensor_type_view_graphs = [].concat(_toConsumableArray(state.sensor_type_view_graphs.map(function (g) {
+	                return [].concat(_toConsumableArray(g));
+	            })));
+	            var sensor_types = [].concat(_toConsumableArray(state.sensor_types));
+	            var sensor_type_names = [].concat(_toConsumableArray(state.sensor_type_names));
+	            var sensor_types_active = [].concat(_toConsumableArray(state.sensor_types_active));
+
 	            var _iteratorNormalCompletion = true;
 	            var _didIteratorError = false;
 	            var _iteratorError = undefined;
 
 	            try {
-	                for (var _iterator = action.payload.data.results[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-	                    var r = _step.value;
+	                for (var _iterator = action.readings[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                    var reading = _step.value;
 
-	                    new_state = readings(new_state, { type: 'ADD_READING', reading: r });
+
+	                    // Check if the device id exists yet. If not, create it.
+	                    if (reading.device && !device_ids.includes(reading.device)) {
+	                        device_view_graphs.push([]);
+	                        device_ids.push(reading.device);
+	                        if (reading.device_name === undefined || reading.device_name === null) {
+	                            device_names.push('');
+	                        } else {
+	                            device_names.push(reading.device_name);
+	                        }
+	                        devices_active.push(true);
+
+	                        // we need to at a null at the end of the first reading of every graph so that dygraphs will render all of the data points
+	                        for (var i = 0; i < sensor_type_view_graphs.length; i++) {
+	                            if (sensor_type_view_graphs[i].length) {
+	                                sensor_type_view_graphs[i][0].push(null);
+	                            }
+	                        }
+	                    }
+
+	                    // Check if the sensor type exists yet. If not, create it.
+	                    if (reading.sensor_type && !sensor_types.includes(reading.sensor_type)) {
+	                        sensor_type_view_graphs.push([]);
+	                        sensor_types.push(reading.sensor_type);
+	                        if (reading.sensor_type_name === undefined || reading.sensor_type_name === null) {
+	                            sensor_type_names.push('');
+	                        } else {
+	                            sensor_type_names.push(reading.sensor_type_name);
+	                        }
+	                        sensor_types_active.push(true);
+
+	                        // we need to at a null at the end of the first reading of every graph so that dygraphs will render all of the data points
+	                        for (var i = 0; i < device_view_graphs.length; i++) {
+	                            if (device_view_graphs[i].length) {
+	                                device_view_graphs[i][0].push(null);
+	                            }
+	                        }
+	                    }
+
+	                    var sensor_type_index = sensor_types.indexOf(reading.sensor_type);
+	                    var device_index = device_ids.indexOf(reading.device);
+	                    var reading_time = new Date(reading.time).getTime();
+
+	                    // Add to the graph in the device_view_graphs array that shares the device
+	                    var new_time = true;
+	                    for (var i = device_view_graphs[device_index].length - 1; i >= 0; i--) {
+	                        if (device_view_graphs[device_index][i].length) {
+	                            if (device_view_graphs[device_index][i][0].getTime() == reading_time) {
+	                                device_view_graphs[device_index][i][sensor_type_index + 1] = reading.value;
+	                                new_time = false;
+	                                break;
+	                            }
+	                        }
+	                    }
+	                    if (new_time) {
+	                        device_view_graphs[device_index].push(readingToDygraphArray(reading, sensor_type_index, sensor_types.length));
+	                    }
+
+	                    // Add to the graph in the sensor_type_view_graphs array that shares the sensor_type
+	                    var new_time = true;
+	                    for (var i = sensor_type_view_graphs[sensor_type_index].length - 1; i >= 0; i--) {
+	                        if (sensor_type_view_graphs[sensor_type_index][i].length) {
+	                            if (sensor_type_view_graphs[sensor_type_index][i][0].getTime() == reading_time) {
+	                                sensor_type_view_graphs[sensor_type_index][i][device_index + 1] = reading.value;
+	                                new_time = false;
+	                                break;
+	                            }
+	                        }
+	                    }
+	                    if (new_time) {
+	                        sensor_type_view_graphs[sensor_type_index].push(readingToDygraphArray(reading, device_index, device_ids.length));
+	                    }
 	                }
 	            } catch (err) {
 	                _didIteratorError = true;
@@ -54393,7 +54511,15 @@
 	                }
 	            }
 
-	            return new_state;
+	            var end_date = state.realtime ? new Date() : Object.assign(state.end_date);
+
+	            var start_date = Object.assign(state.start_date);
+	            if (state.start_date > end_date) {
+	                start_date.setTime(state.end_date.getTime() - 7 * 24 * 3600000);
+	            }
+
+	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, start_date: start_date, end_date: end_date });
+
 	        case 'ADD_READING':
 
 	            if (action.reading.device === undefined || action.reading.device === null || action.reading.sensor_type === undefined || action.reading.sensor_type === null) {
@@ -54414,7 +54540,7 @@
 	            var sensor_types_active = [].concat(_toConsumableArray(state.sensor_types_active));
 
 	            // Check if the device id exists yet. If not, create it.
-	            if (action.reading.device && !state.device_ids.includes(action.reading.device)) {
+	            if (action.reading.device && !device_ids.includes(action.reading.device)) {
 	                device_view_graphs.push([]);
 	                device_ids.push(action.reading.device);
 	                if (action.reading.device_name === undefined || action.reading.device_name === null) {
@@ -54433,7 +54559,7 @@
 	            }
 
 	            // Check if the sensor type exists yet. If not, create it.
-	            if (action.reading.sensor_type && !state.sensor_types.includes(action.reading.sensor_type)) {
+	            if (action.reading.sensor_type && !sensor_types.includes(action.reading.sensor_type)) {
 	                sensor_type_view_graphs.push([]);
 	                sensor_types.push(action.reading.sensor_type);
 	                if (action.reading.sensor_type_name === undefined || action.reading.sensor_type_name === null) {
@@ -54453,12 +54579,13 @@
 
 	            var sensor_type_index = sensor_types.indexOf(action.reading.sensor_type);
 	            var device_index = device_ids.indexOf(action.reading.device);
+	            var reading_time = new Date(action.reading.time).getTime();
 
 	            // Add to the graph in the device_view_graphs array that shares the device
 	            var new_time = true;
 	            for (var i = device_view_graphs[device_index].length - 1; i >= 0; i--) {
 	                if (device_view_graphs[device_index][i].length) {
-	                    if (device_view_graphs[device_index][i][0].toISOString().slice(0, 19) == action.reading.time.slice(0, 19)) {
+	                    if (device_view_graphs[device_index][i][0].getTime() == reading_time) {
 	                        device_view_graphs = [].concat(_toConsumableArray(device_view_graphs.slice(0, device_index)), [[].concat(_toConsumableArray(device_view_graphs[device_index].slice(0, i)), [[].concat(_toConsumableArray(device_view_graphs[device_index][i].slice(0, sensor_type_index + 1)), [action.reading.value], _toConsumableArray(device_view_graphs[device_index][i].slice(sensor_type_index + 2)))], _toConsumableArray(device_view_graphs[device_index].slice(i + 1)))], _toConsumableArray(device_view_graphs.slice(device_index + 1)));
 	                        new_time = false;
 	                        break;
@@ -54473,7 +54600,7 @@
 	            var new_time = true;
 	            for (var i = sensor_type_view_graphs[sensor_type_index].length - 1; i >= 0; i--) {
 	                if (sensor_type_view_graphs[sensor_type_index][i].length) {
-	                    if (sensor_type_view_graphs[sensor_type_index][i][0].toISOString().slice(0, 19) == action.reading.time.slice(0, 19)) {
+	                    if (sensor_type_view_graphs[sensor_type_index][i][0].getTime() == reading_time) {
 	                        sensor_type_view_graphs = [].concat(_toConsumableArray(sensor_type_view_graphs.slice(0, sensor_type_index)), [[].concat(_toConsumableArray(sensor_type_view_graphs[sensor_type_index].slice(0, i)), [[].concat(_toConsumableArray(sensor_type_view_graphs[sensor_type_index][i].slice(0, device_index + 1)), [action.reading.value], _toConsumableArray(sensor_type_view_graphs[sensor_type_index][i].slice(device_index + 2)))], _toConsumableArray(sensor_type_view_graphs[sensor_type_index].slice(i + 1)))], _toConsumableArray(sensor_type_view_graphs.slice(sensor_type_index + 1)));
 	                        new_time = false;
 	                        break;
@@ -54484,7 +54611,14 @@
 	                sensor_type_view_graphs = [].concat(_toConsumableArray(sensor_type_view_graphs.slice(0, sensor_type_index)), [[].concat(_toConsumableArray(sensor_type_view_graphs[sensor_type_index]), [readingToDygraphArray(action.reading, device_index, device_ids.length)])], _toConsumableArray(sensor_type_view_graphs.slice(sensor_type_index + 1)));
 	            }
 
-	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active });
+	            var end_date = state.realtime ? new Date() : Object.assign(state.end_date);
+
+	            var start_date = Object.assign(state.start_date);
+	            if (state.start_date > end_date) {
+	                start_date.setTime(state.end_date.getTime() - 7 * 24 * 3600000);
+	            }
+
+	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, start_date: start_date, end_date: end_date });
 	        default:
 	            return state;
 	    }

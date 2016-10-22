@@ -31,7 +31,20 @@ class Header extends React.Component {
         if( !(date.startDate === '' || date.endDate === '' || date.startDate === undefined || date.endDate === undefined || date.startDate === null || date.endDate === null) ) {
             console.log(date.startDate.toDate());
             console.log(date.endDate.toDate());
-            this.props.onDateChange(date.startDate.toDate(), date.endDate.toDate());
+
+            var start_date = date.startDate.toDate();
+            start_date.setHours(this.props.start_date.getHours());
+            start_date.setMinutes(this.props.start_date.getMinutes());
+            start_date.setSeconds(this.props.start_date.getSeconds());
+            var end_date = date.endDate.toDate();
+            end_date.setHours(this.props.end_date.getHours());
+            end_date.setMinutes(this.props.end_date.getMinutes());
+            end_date.setSeconds(this.props.end_date.getSeconds());
+
+            var now = new Date();
+            var realtime = end_date > now;
+
+            this.props.onDateChange(start_date, end_date, realtime);
         }
     }
 

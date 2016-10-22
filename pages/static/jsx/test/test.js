@@ -39,7 +39,8 @@ describe('reading reducer', function() {
                 sensor_type_names: [''],
                 sensor_types_active: [true],
                 start_date: state_2.start_date,
-                end_date: state_2.end_date
+                end_date: state_2.end_date,
+                realtime: true
             });
 
             const action_2 = {
@@ -71,7 +72,8 @@ describe('reading reducer', function() {
                 sensor_type_names: ['', ''],
                 sensor_types_active: [true, true],
                 start_date: state_3.start_date,
-                end_date: state_3.end_date
+                end_date: state_3.end_date,
+                realtime: true
             });
 
             const action_3 = {
@@ -103,7 +105,8 @@ describe('reading reducer', function() {
                 sensor_type_names: ['', ''],
                 sensor_types_active: [true, true],
                 start_date: state_4.start_date,
-                end_date: state_4.end_date
+                end_date: state_4.end_date,
+                realtime: true
             });
         });
     });
