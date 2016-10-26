@@ -49,8 +49,8 @@ elif APP_ENV == 'PRODUCTION':
     DEBUG = TEMPLATE_DEBUG = False
 
 # Allowed Hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', PROJECT_DOMAIN, '.' + PROJECT_DOMAIN, 'dev.' + PROJECT_DOMAIN, 'staging.' + PROJECT_DOMAIN]
-
+#ALLOWED_HOSTS = ['localhost', '127.0.0.1', PROJECT_DOMAIN, '.' + PROJECT_DOMAIN, 'dev.' + PROJECT_DOMAIN, 'staging.' + PROJECT_DOMAIN]
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
