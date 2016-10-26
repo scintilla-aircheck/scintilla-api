@@ -388,6 +388,7 @@ else:
             "BACKEND": "asgi_ipc.IPCChannelLayer",
             "CONFIG": {
                 "prefix": PROJECT_NAME,
+                "channel_memory": 50 * 1024 * 1024,
             },
             "ROUTING": PROJECT_NAME + ".routing.channel_routing",
         },
