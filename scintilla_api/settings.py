@@ -296,6 +296,11 @@ else:
         'DEBUG': True,
     }
 
+LOGGING['handlers']['opbeat'] = {
+    'level': 'INFO',
+    'class': 'opbeat.contrib.django.handlers.OpbeatHandler',
+}
+
 # Django Extensions
 
 INSTALLED_APPS += [
