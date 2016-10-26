@@ -343,19 +343,22 @@ else:
 
 BOTO_S3_BUCKET = AWS_STORAGE_BUCKET_NAME
 
-if STAGING:
-    '''
-    STATIC_URL = '//' + PROJECT_NAME + '-staging.s3.amazonaws.com/static/'
-    STATICFILES_STORAGE = PROJECT_NAME + '.storage.S3Storage'
-    '''
-    MEDIA_URL = 'https://' + PROJECT_NAME + '-staging.s3.amazonaws.com/media/'
-    DEFAULT_FILE_STORAGE = PROJECT_NAME + '.storage.MediaS3Storage'
-
+'''
 if PRODUCTION:  # TODO make cloudfront
     STATIC_URL = 'https://' + PROJECT_NAME + '-production.s3.amazonaws.com/static/'
     STATICFILES_STORAGE = PROJECT_NAME + '.storage.S3Storage'
     MEDIA_URL = 'https://' + PROJECT_NAME + '-production.s3.amazonaws.com/media/'
     DEFAULT_FILE_STORAGE = PROJECT_NAME + '.storage.MediaS3Storage'
+
+elif STAGING:
+    #STATIC_URL = '//' + PROJECT_NAME + '-staging.s3.amazonaws.com/static/'
+    #STATICFILES_STORAGE = PROJECT_NAME + '.storage.S3Storage'
+    MEDIA_URL = 'https://' + PROJECT_NAME + '-staging.s3.amazonaws.com/media/'
+    DEFAULT_FILE_STORAGE = PROJECT_NAME + '.storage.MediaS3Storage'
+'''
+
+if DEVELOPMENT or DEVELOPMENT_DOCKER or True:
+    STATIC_URL = '/static/'
 
 # CORS Headers for dev server
 
