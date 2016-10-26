@@ -92,10 +92,6 @@
 	            console.log('./index.jsx:: SOCKET ONMESSAGE:');
 	            console.log(e.data);
 	            store.dispatch((0, _readings.addReading)(JSON.parse(e.data)));
-	            //store.dispatch({
-	            //    type: 'ADD_READING',
-	            //    reading: JSON.parse(e.data)
-	            //})
 	        };
 	        // When the backend reloads, the connection will be lost.
 	        // This will reopen it after a bit of a cooldown period.
@@ -23074,7 +23070,7 @@
 
 	        return dispatch({
 	            type: 'DEPLOYMENTS',
-	            payload: _axios2.default.get('http://localhost:8000/api/v1/deployments/')
+	            payload: _axios2.default.get('http://' + window.location.host + '/api/v1/deployments/')
 	        }).then(function (response) {
 	            if (response.value.data.results.length) {
 	                console.log('./actions/deployments.js:: DISPATCHING SELECT DEPLOYMENT:');
@@ -23136,7 +23132,7 @@
 	var readings = exports.readings = function readings(deployment_id) {
 	    return {
 	        type: 'READINGS',
-	        payload: _axios2.default.get('http://localhost:8000/api/v1/readings/?deployment_id=' + String(deployment_id))
+	        payload: _axios2.default.get('http://' + window.location.host + '/api/v1/readings/?deployment_id=' + String(deployment_id))
 	    };
 	};
 
@@ -32623,10 +32619,6 @@
 	        _this.state = {
 	            display_calendar: false
 	        };
-
-	        /*this.state = {
-	            'predefined' : {startDate: defaultRanges.Today.startDate(moment()), endDate: defaultRanges.Today.endDate(moment())}
-	        }*/
 	        return _this;
 	    }
 
@@ -32659,9 +32651,14 @@
 	            }
 	        }
 	    }, {
+	        key: 'toggleDisplayCalendar',
+	        value: function toggleDisplayCalendar() {
+	            this.setState({ display_calendar: !this.state.display_calendar });
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var format = 'dddd, D MMMM YYYY';
+	            var format = 'ddd, D MMM YYYY';
 
 	            return _react2.default.createElement(
 	                'div',
@@ -32671,31 +32668,39 @@
 	                    onDeploymentClick: this.props.onDeploymentClick }),
 	                _react2.default.createElement(
 	                    'div',
-	                    null,
+	                    { className: 'header-date-container' },
 	                    _react2.default.createElement(
 	                        'div',
-	                        null,
-	                        _react2.default.createElement('input', {
-	                            type: 'text',
-	                            readOnly: true,
-	                            value: this.props.start_date && (0, _moment2.default)(this.props.start_date).format(format).toString()
-	                        }),
-	                        _react2.default.createElement('input', {
-	                            type: 'text',
-	                            readOnly: true,
-	                            value: this.props.end_date && (0, _moment2.default)(this.props.end_date).format(format).toString()
-	                        })
+	                        { className: 'header-date-button-container', onClick: this.toggleDisplayCalendar.bind(this) },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'header-date-button-inner-container' },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'header-date-button-text' },
+	                                [this.props.start_date && (0, _moment2.default)(this.props.start_date).format(format).toString(), ' ', _react2.default.createElement(
+	                                    'span',
+	                                    { key: 'dummy' },
+	                                    '\u2014'
+	                                ), ' ', this.props.end_date && (0, _moment2.default)(this.props.end_date).format(format).toString()]
+	                            ),
+	                            _react2.default.createElement('div', { className: 'header-date-button-arrow' })
+	                        )
 	                    ),
-	                    _react2.default.createElement(_reactDateRange.DateRange, {
-	                        linkedCalendars: true,
-	                        ranges: _defaultRanges.defaultRanges
-	                        //onInit={ this.handleDateChange.bind(this) }
-	                        , onChange: this.handleDateChange.bind(this),
-	                        theme: {
-	                            Calendar: { width: 200 },
-	                            PredefinedRanges: { marginLeft: 10, marginTop: 10 }
-	                        }
-	                    })
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: this.state.display_calendar ? "date-range-container" : "date-range-container hidden" },
+	                        _react2.default.createElement(_reactDateRange.DateRange, {
+	                            linkedCalendars: true,
+	                            ranges: _defaultRanges.defaultRanges
+	                            //onInit={ this.handleDateChange.bind(this) }
+	                            , onChange: this.handleDateChange.bind(this),
+	                            theme: {
+	                                Calendar: { width: 200 },
+	                                PredefinedRanges: { marginLeft: 10, marginTop: 10 }
+	                            }
+	                        })
+	                    )
 	                )
 	            );
 	        }
@@ -48888,7 +48893,8 @@
 	                stacked: false,
 	                connectSeparatedPoints: true,
 	                dateWindow: dateWindow,
-	                valueRange: null
+	                valueRange: null,
+	                interactionModel: {}
 	            });
 	        }
 	    }, {
@@ -54260,15 +54266,11 @@
 	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { deployments: [], current_deployment: {} };
 	    var action = arguments[1];
 
-	    console.log(action.type);
+
 	    switch (action.type) {
 	        case 'SELECT_DEPLOYMENT':
-	            //case 'SELECT_DEPLOYMENT_FULFILLED':
-
 	            console.log('./reducers/deployments.js:: SELECT_DEPLOYMENT:');
 	            console.log(action);
-
-	            //readings(action.deployment.id);
 
 	            return _extends({}, state, {
 	                current_deployment: action.deployment
@@ -54278,16 +54280,7 @@
 	        case 'DEPLOYMENTS_REJECTED':
 	            return state;
 	        case 'DEPLOYMENTS_FULFILLED':
-	            /*let current_deployment;
-	            if(action.payload.data.results.length > 0) {
-	                current_deployment = action.payload.data.results[0];
-	            } else {
-	                current_deployment = state.current_deployment;
-	            }
-	             console.log(current_deployment);
-	            */
 	            return _extends({}, state, {
-	                //current_deployment: current_deployment,
 	                deployments: action.payload.data.results
 	            });
 	        default:
@@ -54312,18 +54305,10 @@
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 	var initial_end_date = new Date();
-	//initial_end_date.setHours(23);
-	//initial_end_date.setMinutes(59);
-	//initial_end_date.setSeconds(59);
 	var initial_start_date = new Date(initial_end_date.valueOf());
-	console.log('!!!!');
-	console.log(initial_end_date);
-	console.log(initial_start_date);
 	initial_start_date.setHours(0);
 	initial_start_date.setMinutes(0);
 	initial_start_date.setSeconds(0);
-	console.log(initial_end_date);
-	console.log(initial_start_date);
 
 	var initial_readings_state = exports.initial_readings_state = {
 	    device_view_graphs: [],
@@ -54337,14 +54322,6 @@
 	    start_date: initial_start_date,
 	    end_date: initial_end_date,
 	    realtime: true
-	};
-
-	function pausecomp(millis) {
-	    var date = new Date();
-	    var curDate = null;
-	    do {
-	        curDate = new Date();
-	    } while (curDate - date < millis);
 	};
 
 	var readingToDygraphArray = function readingToDygraphArray(reading, index, length) {
@@ -54388,32 +54365,36 @@
 	        case 'READINGS_REJECTED':
 	            return state;
 	        case 'READINGS_FULFILLED':
-	            return readings(state, { type: 'ADD_READINGS', readings: action.payload.data.results });
-
-	        /*let new_state = {...initial_readings_state};
-	         for(var r of action.payload.data.results) {
-	            console.log('%');
-	            new_state = readings(new_state, {type: 'ADD_READING', reading: r});
-	        }
-	        return new_state;*/
+	            return readings(state, { type: 'ADD_READINGS', readings: action.payload.data.results, clear: true });
 	        case 'ADD_READINGS':
 
 	            if (action.readings === undefined || action.readings === null) {
 	                return _extends({}, state);
 	            }
 
-	            var device_view_graphs = [].concat(_toConsumableArray(state.device_view_graphs.map(function (g) {
-	                return [].concat(_toConsumableArray(g));
-	            })));
-	            var device_ids = [].concat(_toConsumableArray(state.device_ids));
-	            var device_names = [].concat(_toConsumableArray(state.device_names));
-	            var devices_active = [].concat(_toConsumableArray(state.devices_active));
-	            var sensor_type_view_graphs = [].concat(_toConsumableArray(state.sensor_type_view_graphs.map(function (g) {
-	                return [].concat(_toConsumableArray(g));
-	            })));
-	            var sensor_types = [].concat(_toConsumableArray(state.sensor_types));
-	            var sensor_type_names = [].concat(_toConsumableArray(state.sensor_type_names));
-	            var sensor_types_active = [].concat(_toConsumableArray(state.sensor_types_active));
+	            if (action.clear) {
+	                var device_view_graphs = [];
+	                var device_ids = [];
+	                var device_names = [];
+	                var devices_active = [];
+	                var sensor_type_view_graphs = [];
+	                var sensor_types = [];
+	                var sensor_type_names = [];
+	                var sensor_types_active = [];
+	            } else {
+	                var device_view_graphs = [].concat(_toConsumableArray(state.device_view_graphs.map(function (g) {
+	                    return [].concat(_toConsumableArray(g));
+	                })));
+	                var device_ids = [].concat(_toConsumableArray(state.device_ids));
+	                var device_names = [].concat(_toConsumableArray(state.device_names));
+	                var devices_active = [].concat(_toConsumableArray(state.devices_active));
+	                var sensor_type_view_graphs = [].concat(_toConsumableArray(state.sensor_type_view_graphs.map(function (g) {
+	                    return [].concat(_toConsumableArray(g));
+	                })));
+	                var sensor_types = [].concat(_toConsumableArray(state.sensor_types));
+	                var sensor_type_names = [].concat(_toConsumableArray(state.sensor_type_names));
+	                var sensor_types_active = [].concat(_toConsumableArray(state.sensor_types_active));
+	            }
 
 	            var _iteratorNormalCompletion = true;
 	            var _didIteratorError = false;
@@ -54515,7 +54496,7 @@
 
 	            var start_date = Object.assign(state.start_date);
 	            if (state.start_date > end_date) {
-	                start_date.setTime(state.end_date.getTime() - 7 * 24 * 3600000);
+	                start_date.setTime(state.end_date.getTime() - 24 * 3600000);
 	            }
 
 	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, start_date: start_date, end_date: end_date });
@@ -54615,7 +54596,7 @@
 
 	            var start_date = Object.assign(state.start_date);
 	            if (state.start_date > end_date) {
-	                start_date.setTime(state.end_date.getTime() - 7 * 24 * 3600000);
+	                start_date.setTime(state.end_date.getTime() - 24 * 3600000);
 	            }
 
 	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, start_date: start_date, end_date: end_date });

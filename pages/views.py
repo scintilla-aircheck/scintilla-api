@@ -9,6 +9,10 @@ def react_home(request):
     return render(request, 'common/react_home.html')
 
 
+def test_mobile(request):
+    return render(request, 'common/test_mobile.html')
+
+
 def graphs(request):
     return render(request, 'common/graphs.html')
 

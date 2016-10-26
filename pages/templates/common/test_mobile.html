@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ontouchstart="touchStart();">
+    <body ontouchstart="touchStart();">
+        <script type="text/javascript">
+            function toggleBackground() {
+                var test = document.getElementById("test");
+                console.log(test.style.backgroundColor);
+
+                if(test.style.backgroundColor == 'rgb(255, 0, 0)') {
+                    test.style.backgroundColor = '#0000FF';
+                } else {
+                     test.style.backgroundColor = '#FF0000';
+                }
+            }
+
+            function touchStart() {
+                console.log('touchStart');
+            }
+        </script>
+        <div style="width: 100px; height: 100px; background-color: #FF0000;" id="test" onclick="toggleBackground();">
+
+        </div>
+        <div style="width: 100px; height: 100px; background-color: #00FF00" ontouchstart="touchStart();">
+
+        </div>
+        <div style="width: 100px; height: 100px; background-color: #FF0000">
+
+        </div>
+        <div style="width: 100px; height: 100px; background-color: #00FF00">
+
+        </div>
+        <div style="width: 100px; height: 100px; background-color: #FF0000">
+
+        </div>
+        <div style="width: 100px; height: 100px; background-color: #00FF00">
+
+        </div>
+        <div style="width: 100px; height: 100px; background-color: #FF0000">
+
+        </div>
+    </body>
+</html>

@@ -15,10 +15,6 @@ class Header extends React.Component {
         this.state = {
             display_calendar: false
         };
-
-        /*this.state = {
-            'predefined' : {startDate: defaultRanges.Today.startDate(moment()), endDate: defaultRanges.Today.endDate(moment())}
-        }*/
     }
 
     handleDateChange(date) {
@@ -48,37 +44,41 @@ class Header extends React.Component {
         }
     }
 
+    toggleDisplayCalendar() {
+        this.setState({display_calendar: !this.state.display_calendar});
+    }
+
     render() {
-        const format = 'dddd, D MMMM YYYY';
+        const format = 'ddd, D MMM YYYY';
 
         return (
             <div className="header-container">
                 <DeploymentList deployments={this.props.deployments}
                                 current_deployment={this.props.current_deployment}
                                 onDeploymentClick={this.props.onDeploymentClick} />
-                <div>
-                    <div>
-                        <input
-                            type="text"
-                            readOnly
-                            value={ this.props.start_date && moment(this.props.start_date).format(format).toString() }
-                        />
-                        <input
-                            type="text"
-                            readOnly
-                            value={ this.props.end_date && moment(this.props.end_date).format(format).toString() }
+                <div className="header-date-container">
+                    <div className="header-date-button-container" onClick={ this.toggleDisplayCalendar.bind(this) }>
+                        <div className="header-date-button-inner-container">
+                            <div className="header-date-button-text">
+                                { [this.props.start_date && moment(this.props.start_date).format(format).toString(), ' ', <span key="dummy">&mdash;</span>, ' ', this.props.end_date && moment(this.props.end_date).format(format).toString()] }
+                            </div>
+                            <div className="header-date-button-arrow">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div className={ this.state.display_calendar ? "date-range-container" : "date-range-container hidden" }>
+                        <DateRange
+                            linkedCalendars={ true }
+                            ranges={ defaultRanges }
+                            //onInit={ this.handleDateChange.bind(this) }
+                            onChange={ this.handleDateChange.bind(this) }
+                            theme={{
+                                Calendar : { width: 200 },
+                                PredefinedRanges : { marginLeft: 10, marginTop: 10 }
+                            }}
                         />
                     </div>
-                    <DateRange
-                        linkedCalendars={ true }
-                        ranges={ defaultRanges }
-                        //onInit={ this.handleDateChange.bind(this) }
-                        onChange={ this.handleDateChange.bind(this) }
-                        theme={{
-                            Calendar : { width: 200 },
-                            PredefinedRanges : { marginLeft: 10, marginTop: 10 }
-                        }}
-                    />
                 </div>
             </div>
         );

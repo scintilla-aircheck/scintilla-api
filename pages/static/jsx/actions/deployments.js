@@ -7,7 +7,7 @@ export const deployments = () => {
 
         return dispatch({
             type: 'DEPLOYMENTS',
-            payload: axios.get('http://localhost:8000/api/v1/deployments/')
+            payload: axios.get('http://' + window.location.host + '/api/v1/deployments/')
         }).then((response) => {
             if( response.value.data.results.length ) {
                 console.log('./actions/deployments.js:: DISPATCHING SELECT DEPLOYMENT:');

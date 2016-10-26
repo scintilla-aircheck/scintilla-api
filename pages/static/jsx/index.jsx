@@ -31,10 +31,6 @@ function createSocket() {
             console.log('./index.jsx:: SOCKET ONMESSAGE:');
             console.log(e.data);
             store.dispatch(addReading(JSON.parse(e.data)));
-            //store.dispatch({
-            //    type: 'ADD_READING',
-            //    reading: JSON.parse(e.data)
-            //})
         };
         // When the backend reloads, the connection will be lost.
         // This will reopen it after a bit of a cooldown period.

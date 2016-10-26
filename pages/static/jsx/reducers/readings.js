@@ -1,16 +1,8 @@
 let initial_end_date = new Date();
-//initial_end_date.setHours(23);
-//initial_end_date.setMinutes(59);
-//initial_end_date.setSeconds(59);
 let initial_start_date = new Date(initial_end_date.valueOf());
-console.log('!!!!');
-console.log(initial_end_date);
-console.log(initial_start_date);
 initial_start_date.setHours(0);
 initial_start_date.setMinutes(0);
 initial_start_date.setSeconds(0);
-console.log(initial_end_date);
-console.log(initial_start_date);
 
 export const initial_readings_state = {
     device_view_graphs: [],
@@ -24,14 +16,6 @@ export const initial_readings_state = {
     start_date: initial_start_date,
     end_date: initial_end_date,
     realtime: true
-};
-
-function pausecomp(millis)
-{
-    var date = new Date();
-    var curDate = null;
-    do { curDate = new Date(); }
-    while(curDate-date < millis);
 };
 
 const readingToDygraphArray = (reading, index, length) => {
@@ -80,29 +64,32 @@ export const readings = (state = initial_readings_state, action) => {
         case 'READINGS_REJECTED':
             return state;
         case 'READINGS_FULFILLED':
-            return readings(state, {type: 'ADD_READINGS', readings: action.payload.data.results});
-
-            /*let new_state = {...initial_readings_state};
-
-            for(var r of action.payload.data.results) {
-                console.log('%');
-                new_state = readings(new_state, {type: 'ADD_READING', reading: r});
-            }
-            return new_state;*/
+            return readings(state, {type: 'ADD_READINGS', readings: action.payload.data.results, clear: true});
         case 'ADD_READINGS':
 
             if( action.readings === undefined || action.readings === null) {
                 return {...state};
             }
 
-            var device_view_graphs = [...state.device_view_graphs.map(g => ([...g]))];
-            var device_ids = [...state.device_ids];
-            var device_names = [...state.device_names];
-            var devices_active = [...state.devices_active];
-            var sensor_type_view_graphs = [...state.sensor_type_view_graphs.map(g => ([...g]))];
-            var sensor_types = [...state.sensor_types];
-            var sensor_type_names = [...state.sensor_type_names];
-            var sensor_types_active = [...state.sensor_types_active];
+            if( action.clear ) {
+                var device_view_graphs = [];
+                var device_ids = [];
+                var device_names = [];
+                var devices_active = [];
+                var sensor_type_view_graphs = [];
+                var sensor_types = [];
+                var sensor_type_names = [];
+                var sensor_types_active = [];
+            } else {
+                var device_view_graphs = [...state.device_view_graphs.map(g => ([...g]))];
+                var device_ids = [...state.device_ids];
+                var device_names = [...state.device_names];
+                var devices_active = [...state.devices_active];
+                var sensor_type_view_graphs = [...state.sensor_type_view_graphs.map(g => ([...g]))];
+                var sensor_types = [...state.sensor_types];
+                var sensor_type_names = [...state.sensor_type_names];
+                var sensor_types_active = [...state.sensor_types_active];
+            }
 
             for(var reading of action.readings) {
 
@@ -183,7 +170,7 @@ export const readings = (state = initial_readings_state, action) => {
 
             var start_date = Object.assign(state.start_date);
             if( state.start_date > end_date ) {
-                start_date.setTime(state.end_date.getTime() - (7*24*3600000));
+                start_date.setTime(state.end_date.getTime() - (24*3600000));
             }
 
             return {...state, device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, start_date: start_date, end_date: end_date};
@@ -318,7 +305,7 @@ export const readings = (state = initial_readings_state, action) => {
 
             var start_date = Object.assign(state.start_date);
             if( state.start_date > end_date ) {
-                start_date.setTime(state.end_date.getTime() - (7*24*3600000));
+                start_date.setTime(state.end_date.getTime() - (24*3600000));
             }
 
             return {...state, device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, start_date: start_date, end_date: end_date};

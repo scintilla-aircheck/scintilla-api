@@ -374,6 +374,16 @@ if DEVELOPMENT_DOCKER:
             "ROUTING": PROJECT_NAME + ".routing.channel_routing",
         },
     }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "asgi_ipc.IPCChannelLayer",
+            "CONFIG": {
+                "prefix": PROJECT_NAME,
+            },
+            "ROUTING": PROJECT_NAME + ".routing.channel_routing",
+        },
+    }
 
 # Broker
 

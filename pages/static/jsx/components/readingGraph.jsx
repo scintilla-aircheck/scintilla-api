@@ -175,7 +175,8 @@ class ReadingGraph extends React.Component {
                 stacked: false,
                 connectSeparatedPoints: true,
                 dateWindow: dateWindow,
-                valueRange: null
+                valueRange: null,
+                interactionModel: {}
             }
         );
     }

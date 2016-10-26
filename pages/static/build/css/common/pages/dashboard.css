@@ -324,6 +324,64 @@ body {
   pointer-events: auto;
 }
 
+.header-date-container .header-date-button-container {
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  background-color: #E0E5E5;
+  border: solid 2px #F0F5F5;
+  border-radius: 3px;
+  margin: 5px 5px 5px 0px;
+  font-family: Roboto-Regular;
+  cursor: pointer;
+}
+.header-date-container .header-date-button-container:hover {
+  border: solid 2px #C8CDCD;
+}
+.header-date-container .header-date-button-container .header-date-button-inner-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+.header-date-container .header-date-button-container .header-date-button-inner-container .header-date-button-text {
+  padding: 5px;
+  background-color: #F0F5F5;
+}
+.header-date-container .header-date-button-container .header-date-button-inner-container .header-date-button-arrow {
+  position: relative;
+  width: 24px;
+}
+.header-date-container .header-date-button-container .header-date-button-inner-container .header-date-button-arrow:after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  margin-top: -4px;
+  border-width: 8px 8px 0px 8px;
+  border-style: solid;
+  border-color: #4A5353 transparent;
+}
+.header-date-container .date-range-container {
+  position: absolute;
+  width: 550px;
+  right: 0px;
+}
+.header-date-container .date-range-container.hidden {
+  display: none;
+}
+
 .reading-graphs-section .reading-graphs-container .reading-graphs-header {
   display: -webkit-box;
   display: -moz-box;
