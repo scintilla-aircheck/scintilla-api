@@ -271,12 +271,18 @@ body {
 
 .deployments-list {
   position: relative;
+  box-sizing: border-box;
   width: 200px;
+  max-width: 50%;
   padding: 10px;
   color: #FFFFFF;
   outline: none;
   cursor: pointer;
   font-weight: bold;
+}
+.deployments-list .deployment-title {
+  display: inline-block;
+  max-width: calc(100% - 44px);
 }
 .deployments-list:after {
   content: "";
@@ -312,7 +318,7 @@ body {
 
 .deployments-list.active {
   background: #4A5353;
-  background: linear-gradient(to right, #4A5353 0%, #4A5353 78%, #FFFFFF 78%, #FFFFFF 100%);
+  background: linear-gradient(to right, #4A5353 0%, #4A5353 calc(100% - 44px), #FFFFFF calc(100% - 44px), #FFFFFF 100%);
 }
 .deployments-list.active:after {
   border-color: #4A5353 transparent;
@@ -324,6 +330,9 @@ body {
   pointer-events: auto;
 }
 
+.header-date-container {
+  max-width: 50%;
+}
 .header-date-container .header-date-button-container {
   display: inline-block;
   position: relative;
@@ -360,6 +369,7 @@ body {
 .header-date-container .header-date-button-container .header-date-button-inner-container .header-date-button-arrow {
   position: relative;
   width: 24px;
+  min-width: 24px;
 }
 .header-date-container .header-date-button-container .header-date-button-inner-container .header-date-button-arrow:after {
   content: "";
@@ -376,10 +386,31 @@ body {
 .header-date-container .date-range-container {
   position: absolute;
   width: 550px;
+  max-width: 100vw;
   right: 0px;
 }
 .header-date-container .date-range-container.hidden {
   display: none;
+}
+@media (max-width: 550px) {
+  .header-date-container .date-range-container .rdr-DateRange {
+    display: -webkit-box !important;
+    display: -moz-box !important;
+    display: -ms-flexbox !important;
+    display: -webkit-flex !important;
+    display: flex !important;
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    align-items: center;
+    width: 200px;
+    position: absolute;
+    right: 0px;
+  }
 }
 
 .reading-graphs-section .reading-graphs-container .reading-graphs-header {

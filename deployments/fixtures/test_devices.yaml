@@ -7,19 +7,59 @@
   pk: 2
   fields:
     name: "West"
-    deployments: [2,3]
+    deployments: [1]
 - model: deployments.device
   pk: 3
   fields:
     name: "East"
-    deployments: [3]
+    deployments: [1]
 - model: deployments.device
   pk: 4
   fields:
     name: "North"
-    deployments: [3]
+    deployments: [1]
 - model: deployments.device
   pk: 5
+  fields:
+    name: "South"
+    deployments: [1]
+- model: deployments.device
+  pk: 6
+  fields:
+    name: "West"
+    deployments: [2]
+- model: deployments.device
+  pk: 7
+  fields:
+    name: "East"
+    deployments: [2]
+- model: deployments.device
+  pk: 8
+  fields:
+    name: "North"
+    deployments: [2]
+- model: deployments.device
+  pk: 9
+  fields:
+    name: "South"
+    deployments: [2]
+- model: deployments.device
+  pk: 10
+  fields:
+    name: "West"
+    deployments: [3]
+- model: deployments.device
+  pk: 11
+  fields:
+    name: "East"
+    deployments: [3]
+- model: deployments.device
+  pk: 12
+  fields:
+    name: "North"
+    deployments: [3]
+- model: deployments.device
+  pk: 13
   fields:
     name: "South"
     deployments: [3]

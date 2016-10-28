@@ -16,7 +16,7 @@ class DeploymentList extends React.Component {
 
         return (
             <div className={dropDownContainerClass} onClick={this.onClick}>
-                <span>{this.props.current_deployment.name}</span>
+                <span className="deployment-title">{this.props.current_deployment.name}</span>
                 <ul className="dropdown">
                     {this.props.deployments.map(deployment =>
                         <Deployment

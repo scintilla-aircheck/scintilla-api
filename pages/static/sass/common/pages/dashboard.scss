@@ -24,7 +24,9 @@
 
 .deployments-list {
     position: relative;
+    box-sizing: border-box;
     width: 200px;
+    max-width: 50%;
     padding: 10px;
     //margin: 0 auto;
 
@@ -33,6 +35,11 @@
     cursor: pointer;
 
     font-weight: bold;
+
+    .deployment-title {
+        display: inline-block;
+        max-width: calc(100% - 44px);
+    }
 
     &:after {
         content: "";
@@ -78,7 +85,7 @@
 
 .deployments-list.active {
     background: $darker-grey;
-    background: linear-gradient(to right, $darker-grey 0%, $darker-grey 78%, $pure-white 78%, $pure-white 100%);
+    background: linear-gradient(to right, $darker-grey 0%, $darker-grey calc(100% - 44px), $pure-white calc(100% - 44px), $pure-white 100%);
 
     &:after {
         border-color: $darker-grey transparent;
@@ -93,6 +100,8 @@
 }
 
 .header-date-container {
+    max-width: 50%;
+
     .header-date-button-container {
         display: inline-block;
         position: relative;
@@ -121,6 +130,7 @@
             .header-date-button-arrow {
                 position: relative;
                 width: 24px;
+                min-width: 24px;
 
                 &:after {
                     content: "";
@@ -141,9 +151,22 @@
     .date-range-container {
         position: absolute;
         width: 550px;
+        max-width: 100vw;
         right: 0px;
+
         &.hidden {
             display: none;
+        }
+
+        .rdr-DateRange {
+            @include media("<=550px") {
+                @include flexbox-display-flex-important();
+                @include flexbox-flex-direction(column);
+                @include flexbox-align-items(center);
+                width: 200px;
+                position: absolute;
+                right: 0px;
+              }
         }
     }
 }

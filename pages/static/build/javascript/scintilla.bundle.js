@@ -48570,7 +48570,7 @@
 	                { className: dropDownContainerClass, onClick: this.onClick },
 	                _react2.default.createElement(
 	                    'span',
-	                    null,
+	                    { className: 'deployment-title' },
 	                    this.props.current_deployment.name
 	                ),
 	                _react2.default.createElement(
@@ -48891,7 +48891,7 @@
 	                labels: labels,
 	                visibility: this.props.active,
 	                stacked: false,
-	                connectSeparatedPoints: true,
+	                connectSeparatedPoints: false,
 	                dateWindow: dateWindow,
 	                valueRange: null,
 	                interactionModel: {}

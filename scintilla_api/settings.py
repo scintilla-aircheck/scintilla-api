@@ -388,7 +388,6 @@ else:
             "BACKEND": "asgi_ipc.IPCChannelLayer",
             "CONFIG": {
                 "prefix": PROJECT_NAME,
-                "channel_memory": 50 * 1024 * 1024,
             },
             "ROUTING": PROJECT_NAME + ".routing.channel_routing",
         },
@@ -397,7 +396,6 @@ else:
 # Broker
 
 BROKER_URL = 'django://'
-
 
 REDIS_PORT = 6379
 REDIS_DB = 0

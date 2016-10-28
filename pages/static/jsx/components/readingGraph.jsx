@@ -173,7 +173,7 @@ class ReadingGraph extends React.Component {
                 labels: labels,
                 visibility: this.props.active,
                 stacked: false,
-                connectSeparatedPoints: true,
+                connectSeparatedPoints: false,
                 dateWindow: dateWindow,
                 valueRange: null,
                 interactionModel: {}

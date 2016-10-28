@@ -139,6 +139,14 @@ $page: -100000;
   display: flex;
 }
 
+@mixin flexbox-display-flex-important {
+  display: -webkit-box !important;
+  display: -moz-box !important;
+  display: -ms-flexbox !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+}
+
 @mixin flexbox-flex-direction($arg) {
   -webkit-flex-direction: $arg;
   -moz-flex-direction: $arg;
