@@ -20,10 +20,18 @@ class AbstractReading(DateMixin):
     longitude = GeoCoordinateField(null=True, blank=True)
     latitude = GeoCoordinateField(null=True, blank=True)
     unit = models.IntegerField(default=Sensor.Unit.NONE, choices=Sensor.UNIT, null=True, blank=True)
+    unit_name = models.CharField(max_length=1000, null=True, blank=True)
     time = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         abstract = True
+
+    @staticmethod
+    def get_unit_name(unit):
+        try:
+            return dict(Sensor.UNIT)[unit]
+        except:
+            return ''
 
 
 class CalibratedReading(AbstractReading):

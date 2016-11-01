@@ -46,6 +46,11 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.store = undefined;
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -74,7 +79,8 @@
 
 	document.getElementById('loading').style.display = 'none';
 
-	var store = (0, _configureStore2.default)();
+	var store = exports.store = (0, _configureStore2.default)();
+	window.store = store; // for debugging
 
 	(0, _reactDom.render)(_react2.default.createElement(
 	    _reactRedux.Provider,
@@ -83,26 +89,6 @@
 	), document.getElementById('root'));
 
 	store.dispatch((0, _deployments.deployments)());
-
-	var socket = null;
-	function createSocket() {
-	    socket = new WebSocket('ws://' + window.location.host + '/socket');
-	    if (socket) {
-	        socket.onmessage = function (e) {
-	            console.log('./index.jsx:: SOCKET ONMESSAGE:');
-	            console.log(e.data);
-	            store.dispatch((0, _readings.addReading)(JSON.parse(e.data)));
-	        };
-	        // When the backend reloads, the connection will be lost.
-	        // This will reopen it after a bit of a cooldown period.
-	        socket.onclose = function (e) {
-	            if (e.code === 1006) {
-	                window.setTimeout(createSocket, 2000);
-	            }
-	        };
-	    }
-	}
-	createSocket();
 
 /***/ },
 /* 1 */
@@ -23055,7 +23041,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.selectDeployment = exports.deployments = undefined;
+	exports.selectDeployment = exports.deployments = exports.createSocket = undefined;
 
 	var _readings = __webpack_require__(196);
 
@@ -23064,6 +23050,38 @@
 	var _axios2 = _interopRequireDefault(_axios);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function socketFactory(dispatch, deployment_id) {
+	    return function () {
+	        var socket = new WebSocket('ws://' + window.location.host + '/socket/deployment/' + String(deployment_id));
+	        if (socket) {
+	            socket.onmessage = function (e) {
+	                console.log('./index.jsx:: SOCKET ONMESSAGE:');
+	                console.log(e.data);
+	                dispatch((0, _readings.addReading)(JSON.parse(e.data)));
+	            };
+	            // When the backend reloads, the connection will be lost.
+	            // This will reopen it after a bit of a cooldown period.
+	            socket.onclose = function (e) {
+	                if (e.code === 1006) {
+	                    window.setTimeout(function () {
+	                        createSocket(deployment_id);
+	                    }, 1500);
+	                }
+	            };
+	        }
+
+	        return socket;
+	    };
+	}
+
+	var createSocket = exports.createSocket = function createSocket(deployment_id) {
+	    return function (dispatch) {
+	        console.log('./actions/deployments.js:: CREATE SOCKET:');
+	        console.log(deployment_id);
+	        return dispatch({ type: 'CREATE_SOCKET', socket: socketFactory(dispatch, deployment_id) });
+	    };
+	};
 
 	var deployments = exports.deployments = function deployments() {
 	    return function (dispatch) {
@@ -23086,7 +23104,10 @@
 	var selectDeployment = exports.selectDeployment = function selectDeployment(deployment) {
 	    return function (dispatch) {
 	        dispatch({ type: 'SELECT_DEPLOYMENT', deployment: deployment });
+
 	        dispatch((0, _readings.readings)(deployment.id));
+
+	        dispatch(createSocket(deployment.id));
 	    };
 	};
 
@@ -32565,7 +32586,6 @@
 	var mapDispatchToProps = {
 	    onDeploymentClick: _deployments.selectDeployment,
 	    onDateChange: _readings.changeDate
-
 	};
 
 	var DeploymentListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_header2.default);
@@ -32636,13 +32656,19 @@
 	                console.log(date.endDate.toDate());
 
 	                var start_date = date.startDate.toDate();
-	                start_date.setHours(this.props.start_date.getHours());
-	                start_date.setMinutes(this.props.start_date.getMinutes());
-	                start_date.setSeconds(this.props.start_date.getSeconds());
+	                start_date.setHours(0);
+	                start_date.setMinutes(0);
+	                start_date.setSeconds(0);
+	                //start_date.setHours(this.props.start_date.getHours());
+	                //start_date.setMinutes(this.props.start_date.getMinutes());
+	                //start_date.setSeconds(this.props.start_date.getSeconds());
 	                var end_date = date.endDate.toDate();
-	                end_date.setHours(this.props.end_date.getHours());
-	                end_date.setMinutes(this.props.end_date.getMinutes());
-	                end_date.setSeconds(this.props.end_date.getSeconds());
+	                end_date.setHours(23);
+	                end_date.setMinutes(59);
+	                end_date.setSeconds(59);
+	                //end_date.setHours(this.props.end_date.getHours());
+	                //end_date.setMinutes(this.props.end_date.getMinutes());
+	                //end_date.setSeconds(this.props.end_date.getSeconds());
 
 	                var now = new Date();
 	                var realtime = end_date > now;
@@ -48676,57 +48702,50 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	/*
-	const ReadingGraphList = ({
-	    readings
-	}) => {
-
-	    return (
-	        <div>
-	            <div className="reading_graph_list_container">
-	                {readings.device_view_graphs.map(graph => {
-	                        var id = v4();
-	                        return (
-	                            <ReadingGraph
-	                                key={id}
-	                                id={id}
-	                                graph={graph}
-	                                labels={readings.sensor_type_names}
-	                                active={readings.sensor_types_active}
-	                            />
-	                        )
-	                    }
-	                )}
-	            </div>
-	            <div className="reading_graph_list_container">
-	                {readings.sensor_type_view_graphs.map(graph => {
-	                        var id = v4();
-	                        return (
-	                            <ReadingGraph
-	                                key={id}
-	                                id={id}
-	                                graph={graph}
-	                                labels={readings.device_names}
-	                                active={readings.devices_active}
-	                            />
-	                        )
-	                    }
-	                )}
-	            </div>
-	        </div>
-	    )
-	};*/
+	var graph_render_wait_time = 500; // ms
 
 	var ReadingGraphList = function (_React$Component) {
 	    _inherits(ReadingGraphList, _React$Component);
 
-	    function ReadingGraphList() {
+	    function ReadingGraphList(props) {
 	        _classCallCheck(this, ReadingGraphList);
 
-	        return _possibleConstructorReturn(this, (ReadingGraphList.__proto__ || Object.getPrototypeOf(ReadingGraphList)).apply(this, arguments));
+	        var _this = _possibleConstructorReturn(this, (ReadingGraphList.__proto__ || Object.getPrototypeOf(ReadingGraphList)).call(this, props));
+
+	        _this.state = { queued_update_count: 0, last_update_time: null };
+	        return _this;
 	    }
 
 	    _createClass(ReadingGraphList, [{
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate(nextProps, nextState) {
+	            // rate limit updates
+
+	            // prevent continuous updates from locking up semaphore check
+	            var now = new Date();
+	            var offset_time = new Date(now.getTime() - graph_render_wait_time); // 500ms in the past
+
+	            if (this.state.last_update_time === null || this.state.last_update_time < offset_time) {
+	                this.state.last_update_time = now;
+	                return true;
+	            }
+
+	            // check using semaphore
+	            this.state.queued_update_count += 1;
+
+	            var that = this;
+	            window.setTimeout(function () {
+	                var now = new Date();
+	                that.state.queued_update_count -= 1;
+	                if (that.state.queued_update_count <= 0) {
+	                    that.state.last_update_time = now;
+	                    that.forceUpdate();
+	                }
+	            }, graph_render_wait_time);
+
+	            return false;
+	        }
+	    }, {
 	        key: 'componentDidUpdate',
 	        value: function componentDidUpdate() {
 	            console.log('./components/readingGraph.jsx:: ReadingGraphList: COMPONENT DID UPDATE');
@@ -48749,13 +48768,13 @@
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'reading-graphs-header-title' },
-	                            'By Scouts'
+	                            'Sensors'
 	                        ),
 	                        _react2.default.createElement(
 	                            'div',
 	                            null,
 	                            this.props.readings.sensor_type_names.map(function (name, index) {
-	                                var className = _this2.props.readings.sensor_types_active[index] ? 'active' : '';
+	                                var className = _this2.props.readings.sensor_types_active[index] ? 'tag active' : 'tag';
 	                                return _react2.default.createElement(
 	                                    'span',
 	                                    { className: className, onClick: function onClick() {
@@ -48775,6 +48794,7 @@
 	                                key: index,
 	                                id: id,
 	                                graph: graph,
+	                                title: _this2.props.readings.device_names[index],
 	                                labels: _this2.props.readings.sensor_type_names,
 	                                active: _this2.props.readings.sensor_types_active,
 	                                start_date: _this2.props.readings.start_date,
@@ -48792,13 +48812,13 @@
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'reading-graphs-header-title' },
-	                            'By Pollutants'
+	                            'Pollutants'
 	                        ),
 	                        _react2.default.createElement(
 	                            'div',
 	                            null,
 	                            this.props.readings.device_names.map(function (name, index) {
-	                                var className = _this2.props.readings.devices_active[index] ? 'active' : '';
+	                                var className = _this2.props.readings.devices_active[index] ? 'tag active' : 'tag';
 	                                return _react2.default.createElement(
 	                                    'span',
 	                                    { className: className, onClick: function onClick() {
@@ -48819,6 +48839,7 @@
 	                                id: id,
 	                                graph: graph,
 	                                labels: _this2.props.readings.device_names,
+	                                title: _this2.props.readings.sensor_type_names[index],
 	                                active: _this2.props.readings.devices_active,
 	                                start_date: _this2.props.readings.start_date,
 	                                end_date: _this2.props.readings.end_date
@@ -48854,7 +48875,7 @@
 	    _createClass(ReadingGraph, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            console.log('./components/readingGraph.jsx:: ReadingGraph: COMPONENT DID MOUNT');
+	            //console.log('./components/readingGraph.jsx:: ReadingGraph: COMPONENT DID MOUNT');
 	            this.createGraph();
 	        }
 	    }, {
@@ -48865,10 +48886,7 @@
 	    }, {
 	        key: 'createGraph',
 	        value: function createGraph() {
-	            console.log('./components/readingGraph.jsx:: ReadingGraph: CREATE GRAPH');
-
-	            console.log(this.props.start_date);
-	            console.log(this.props.end_date);
+	            //console.log('./components/readingGraph.jsx:: ReadingGraph: CREATE GRAPH');
 
 	            var dateWindow = null;
 
@@ -48890,20 +48908,23 @@
 	            this.props.graph, {
 	                labels: labels,
 	                visibility: this.props.active,
-	                stacked: false,
-	                connectSeparatedPoints: false,
+	                stackedGraph: false,
+	                connectSeparatedPoints: true,
 	                dateWindow: dateWindow,
 	                valueRange: null,
+	                rightGap: 10,
+	                title: this.props.title,
+	                labelsDiv: document.getElementById('legend-' + String(this.props.id)),
+	                hideOverlayOnMouseOut: true,
+	                rollPeriod: 7,
+	                showRoller: true,
 	                interactionModel: {}
 	            });
 	        }
 	    }, {
 	        key: 'updateGraph',
 	        value: function updateGraph() {
-	            console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPH');
-
-	            console.log(this.props.start_date);
-	            console.log(this.props.end_date);
+	            //console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPH');
 
 	            var dateWindow = null;
 
@@ -48928,8 +48949,9 @@
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'reading_graph_container' },
-	                _react2.default.createElement('div', { id: this.props.id })
+	                { className: 'reading-graph-container' },
+	                _react2.default.createElement('div', { className: 'reading-graph', id: this.props.id }),
+	                _react2.default.createElement('div', { className: 'reading-graph-legend', id: "legend-" + this.props.id })
 	            );
 	        }
 	    }]);
@@ -54263,7 +54285,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var deployments = function deployments() {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { deployments: [], current_deployment: {} };
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { deployments: [], current_deployment: {}, socket: null };
 	    var action = arguments[1];
 
 
@@ -54280,8 +54302,20 @@
 	        case 'DEPLOYMENTS_REJECTED':
 	            return state;
 	        case 'DEPLOYMENTS_FULFILLED':
+
 	            return _extends({}, state, {
 	                deployments: action.payload.data.results
+	            });
+	        case 'CREATE_SOCKET':
+	            console.log('./reducers/deployments.js:: CREATE_SOCKET:');
+	            console.log(action.socket);
+	            if (state.socket) {
+	                state.socket.onclose = function () {}; // disable onclose handler first
+	                state.socket.close();
+	            }
+	            var socket = action.socket();
+	            return _extends({}, state, {
+	                socket: socket
 	            });
 	        default:
 	            return state;
@@ -54319,6 +54353,7 @@
 	    sensor_types: [],
 	    sensor_type_names: [],
 	    sensor_types_active: [],
+	    sensor_type_units: [],
 	    start_date: initial_start_date,
 	    end_date: initial_end_date,
 	    realtime: true
@@ -54381,6 +54416,7 @@
 	                var sensor_types = [];
 	                var sensor_type_names = [];
 	                var sensor_types_active = [];
+	                var sensor_type_units = [];
 	            } else {
 	                var device_view_graphs = [].concat(_toConsumableArray(state.device_view_graphs.map(function (g) {
 	                    return [].concat(_toConsumableArray(g));
@@ -54394,6 +54430,7 @@
 	                var sensor_types = [].concat(_toConsumableArray(state.sensor_types));
 	                var sensor_type_names = [].concat(_toConsumableArray(state.sensor_type_names));
 	                var sensor_types_active = [].concat(_toConsumableArray(state.sensor_types_active));
+	                var sensor_type_units = [].concat(_toConsumableArray(state.sensor_type_units));
 	            }
 
 	            var _iteratorNormalCompletion = true;
@@ -54433,6 +54470,11 @@
 	                        } else {
 	                            sensor_type_names.push(reading.sensor_type_name);
 	                        }
+	                        if (reading.unit_name === undefined || reading.unit_name === null) {
+	                            sensor_type_units.push('');
+	                        } else {
+	                            sensor_type_units.push(reading.unit_name);
+	                        }
 	                        sensor_types_active.push(true);
 
 	                        // we need to at a null at the end of the first reading of every graph so that dygraphs will render all of the data points
@@ -54459,7 +54501,7 @@
 	                        }
 	                    }
 	                    if (new_time) {
-	                        device_view_graphs[device_index].push(readingToDygraphArray(reading, sensor_type_index, sensor_types.length));
+	                        device_view_graphs[device_index].unshift(readingToDygraphArray(reading, sensor_type_index, sensor_types.length));
 	                    }
 
 	                    // Add to the graph in the sensor_type_view_graphs array that shares the sensor_type
@@ -54474,7 +54516,7 @@
 	                        }
 	                    }
 	                    if (new_time) {
-	                        sensor_type_view_graphs[sensor_type_index].push(readingToDygraphArray(reading, device_index, device_ids.length));
+	                        sensor_type_view_graphs[sensor_type_index].unshift(readingToDygraphArray(reading, device_index, device_ids.length));
 	                    }
 	                }
 	            } catch (err) {
@@ -54499,7 +54541,7 @@
 	                start_date.setTime(state.end_date.getTime() - 24 * 3600000);
 	            }
 
-	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, start_date: start_date, end_date: end_date });
+	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, sensor_type_units: sensor_type_units, start_date: start_date, end_date: end_date });
 
 	        case 'ADD_READING':
 
@@ -54519,6 +54561,7 @@
 	            var sensor_types = [].concat(_toConsumableArray(state.sensor_types));
 	            var sensor_type_names = [].concat(_toConsumableArray(state.sensor_type_names));
 	            var sensor_types_active = [].concat(_toConsumableArray(state.sensor_types_active));
+	            var sensor_type_units = [].concat(_toConsumableArray(state.sensor_type_units));
 
 	            // Check if the device id exists yet. If not, create it.
 	            if (action.reading.device && !device_ids.includes(action.reading.device)) {
@@ -54547,6 +54590,11 @@
 	                    sensor_type_names.push('');
 	                } else {
 	                    sensor_type_names.push(action.reading.sensor_type_name);
+	                }
+	                if (action.reading.unit_name === undefined || action.reading.unit_name === null) {
+	                    sensor_type_units.push('');
+	                } else {
+	                    sensor_type_units.push(action.reading.unit_name);
 	                }
 	                sensor_types_active.push(true);
 
@@ -54599,7 +54647,7 @@
 	                start_date.setTime(state.end_date.getTime() - 24 * 3600000);
 	            }
 
-	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, start_date: start_date, end_date: end_date });
+	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, sensor_type_units: sensor_type_units, start_date: start_date, end_date: end_date });
 	        default:
 	            return state;
 	    }

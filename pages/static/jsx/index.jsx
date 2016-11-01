@@ -12,7 +12,8 @@ import configureStore from './store/configureStore'
 
 document.getElementById('loading').style.display = 'none';
 
-const store = configureStore();
+export const store = configureStore();
+window.store = store; // for debugging
 
 render(
     <Provider store={store}>
@@ -22,23 +23,3 @@ render(
 );
 
 store.dispatch(deployments());
-
-var socket = null;
-function createSocket() {
-    socket = new WebSocket('ws://' + window.location.host + '/socket');
-    if (socket) {
-        socket.onmessage = function(e) {
-            console.log('./index.jsx:: SOCKET ONMESSAGE:');
-            console.log(e.data);
-            store.dispatch(addReading(JSON.parse(e.data)));
-        };
-        // When the backend reloads, the connection will be lost.
-        // This will reopen it after a bit of a cooldown period.
-        socket.onclose = function(e) {
-            if (e.code === 1006) {
-                window.setTimeout(createSocket, 2000);
-            }
-        };
-    }
-}
-createSocket();

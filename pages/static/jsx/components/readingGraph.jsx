@@ -1,48 +1,43 @@
 import React from 'react'
 
 import { v4 } from 'node-uuid'
-/*
-const ReadingGraphList = ({
-    readings
-}) => {
 
-    return (
-        <div>
-            <div className="reading_graph_list_container">
-                {readings.device_view_graphs.map(graph => {
-                        var id = v4();
-                        return (
-                            <ReadingGraph
-                                key={id}
-                                id={id}
-                                graph={graph}
-                                labels={readings.sensor_type_names}
-                                active={readings.sensor_types_active}
-                            />
-                        )
-                    }
-                )}
-            </div>
-            <div className="reading_graph_list_container">
-                {readings.sensor_type_view_graphs.map(graph => {
-                        var id = v4();
-                        return (
-                            <ReadingGraph
-                                key={id}
-                                id={id}
-                                graph={graph}
-                                labels={readings.device_names}
-                                active={readings.devices_active}
-                            />
-                        )
-                    }
-                )}
-            </div>
-        </div>
-    )
-};*/
+const graph_render_wait_time = 500;  // ms
 
 class ReadingGraphList extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {queued_update_count: 0, last_update_time: null};
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        // rate limit updates
+
+        // prevent continuous updates from locking up semaphore check
+        var now = new Date();
+        var offset_time = new Date(now.getTime() - graph_render_wait_time);  // 500ms in the past
+
+        if(this.state.last_update_time === null || this.state.last_update_time < offset_time) {
+            this.state.last_update_time = now;
+            return true;
+        }
+
+        // check using semaphore
+        this.state.queued_update_count += 1;
+
+        var that = this;
+        window.setTimeout(() => {
+            var now = new Date();
+            that.state.queued_update_count -= 1;
+            if(that.state.queued_update_count <= 0) {
+                that.state.last_update_time = now;
+                that.forceUpdate();
+            }
+        }, graph_render_wait_time);
+
+        return false;
+    }
 
     componentDidUpdate() {
         console.log('./components/readingGraph.jsx:: ReadingGraphList: COMPONENT DID UPDATE');
@@ -54,11 +49,11 @@ class ReadingGraphList extends React.Component {
             <div className="reading-graphs-section">
                 <div className="reading-graphs-container">
                     <div className="reading-graphs-header">
-                        <div className="reading-graphs-header-title">By Scouts</div>
+                        <div className="reading-graphs-header-title">Sensors</div>
                         <div>
                             {
                                 this.props.readings.sensor_type_names.map((name, index) => {
-                                    var className = this.props.readings.sensor_types_active[index] ? 'active' : '';
+                                    var className = this.props.readings.sensor_types_active[index] ? 'tag active' : 'tag';
                                     return (
                                         <span className={className} onClick={() => this.props.toggleSensorTypeActive(index)} key={index}>{name}</span>
                                     )
@@ -75,6 +70,7 @@ class ReadingGraphList extends React.Component {
                                         key={index}
                                         id={id}
                                         graph={graph}
+                                        title={this.props.readings.device_names[index]}
                                         labels={this.props.readings.sensor_type_names}
                                         active={this.props.readings.sensor_types_active}
                                         start_date={this.props.readings.start_date}
@@ -87,11 +83,11 @@ class ReadingGraphList extends React.Component {
                 </div>
                 <div className="reading-graphs-container">
                     <div className="reading-graphs-header">
-                        <div className="reading-graphs-header-title">By Pollutants</div>
+                        <div className="reading-graphs-header-title">Pollutants</div>
                         <div>
                             {
                                 this.props.readings.device_names.map((name ,index) => {
-                                    var className = this.props.readings.devices_active[index] ? 'active' : '';
+                                    var className = this.props.readings.devices_active[index] ? 'tag active' : 'tag';
                                     return (
                                         <span className={className} onClick={() => this.props.toggleDeviceActive(index)} key={index}>{name}</span>
                                     )
@@ -109,6 +105,7 @@ class ReadingGraphList extends React.Component {
                                         id={id}
                                         graph={graph}
                                         labels={this.props.readings.device_names}
+                                        title={this.props.readings.sensor_type_names[index]}
                                         active={this.props.readings.devices_active}
                                         start_date={this.props.readings.start_date}
                                         end_date={this.props.readings.end_date}
@@ -137,7 +134,7 @@ class ReadingGraph extends React.Component {
     }
 
     componentDidMount() {
-        console.log('./components/readingGraph.jsx:: ReadingGraph: COMPONENT DID MOUNT');
+        //console.log('./components/readingGraph.jsx:: ReadingGraph: COMPONENT DID MOUNT');
         this.createGraph();
     }
 
@@ -146,10 +143,7 @@ class ReadingGraph extends React.Component {
     }
 
     createGraph() {
-        console.log('./components/readingGraph.jsx:: ReadingGraph: CREATE GRAPH');
-
-        console.log(this.props.start_date);
-        console.log(this.props.end_date);
+        //console.log('./components/readingGraph.jsx:: ReadingGraph: CREATE GRAPH');
 
         var dateWindow = null;
 
@@ -172,20 +166,23 @@ class ReadingGraph extends React.Component {
             {
                 labels: labels,
                 visibility: this.props.active,
-                stacked: false,
-                connectSeparatedPoints: false,
+                stackedGraph: false,
+                connectSeparatedPoints: true,
                 dateWindow: dateWindow,
                 valueRange: null,
+                rightGap: 10,
+                title: this.props.title,
+                labelsDiv: document.getElementById('legend-' + String(this.props.id)),
+                hideOverlayOnMouseOut: true,
+                rollPeriod: 7,
+                showRoller: true,
                 interactionModel: {}
             }
         );
     }
 
     updateGraph() {
-        console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPH');
-
-        console.log(this.props.start_date);
-        console.log(this.props.end_date);
+        //console.log('./components/readingGraph.jsx:: ReadingGraph: UPDATE GRAPH');
 
         var dateWindow = null;
 
@@ -208,10 +205,11 @@ class ReadingGraph extends React.Component {
 
     render() {
         return (
-            <div className="reading_graph_container">
-                <div id={this.props.id}>
+            <div className="reading-graph-container">
+                <div className="reading-graph" id={this.props.id}>
 
                 </div>
+                <div className="reading-graph-legend" id={"legend-" + this.props.id}></div>
             </div>
         )
     }

@@ -7,7 +7,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T12:10:10"
 - model: readings.reading
   pk: 2
@@ -18,7 +18,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T02:10:10"
 - model: readings.reading
   pk: 3
@@ -29,7 +29,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T03:10:10"
 - model: readings.reading
   pk: 4
@@ -40,7 +40,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T04:10:10"
 - model: readings.reading
   pk: 5
@@ -51,7 +51,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T05:10:10"
 - model: readings.reading
   pk: 6
@@ -62,7 +62,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T06:10:10"
 - model: readings.reading
   pk: 7
@@ -73,7 +73,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 2
     time: "2016-10-17T12:10:10"
 - model: readings.reading
   pk: 8
@@ -84,7 +84,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 2
     time: "2016-10-17T02:10:10"
 - model: readings.reading
   pk: 9
@@ -95,7 +95,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 2
     time: "2016-10-17T03:10:10"
 - model: readings.reading
   pk: 10
@@ -106,7 +106,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 2
     time: "2016-10-17T04:10:10"
 - model: readings.reading
   pk: 11
@@ -117,7 +117,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 2
     time: "2016-10-17T05:10:10"
 - model: readings.reading
   pk: 12
@@ -128,7 +128,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 2
     time: "2016-10-17T06:10:10"
 - model: readings.reading
   pk: 13
@@ -139,7 +139,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T12:10:10"
 - model: readings.reading
   pk: 14
@@ -150,7 +150,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T02:10:10"
 - model: readings.reading
   pk: 15
@@ -161,7 +161,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T03:10:10"
 - model: readings.reading
   pk: 16
@@ -172,7 +172,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T04:10:10"
 - model: readings.reading
   pk: 17
@@ -183,7 +183,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T05:10:10"
 - model: readings.reading
   pk: 18
@@ -194,7 +194,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T06:10:10"
 - model: readings.reading
   pk: 19
@@ -205,7 +205,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T12:10:10"
 - model: readings.reading
   pk: 20
@@ -216,7 +216,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T02:10:10"
 - model: readings.reading
   pk: 21
@@ -227,7 +227,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T03:10:10"
 - model: readings.reading
   pk: 22
@@ -238,7 +238,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T04:10:10"
 - model: readings.reading
   pk: 23
@@ -249,7 +249,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 1
     time: "2016-10-17T05:10:10"
 - model: readings.reading
   pk: 24
@@ -260,7 +260,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T12:10:10"
 - model: readings.reading
   pk: 25
@@ -271,7 +271,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T02:10:10"
 - model: readings.reading
   pk: 26
@@ -282,7 +282,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T03:10:10"
 - model: readings.reading
   pk: 27
@@ -293,7 +293,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T04:10:10"
 - model: readings.reading
   pk: 28
@@ -304,7 +304,7 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T05:10:10"
 - model: readings.reading
   pk: 29
@@ -315,5 +315,5 @@
     average_over_seconds: 60
     longitude: "1.234"
     latitude: "5.678"
-    unit: 0
+    unit: 3
     time: "2016-10-17T06:10:10"

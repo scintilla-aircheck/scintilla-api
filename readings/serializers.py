@@ -29,7 +29,7 @@ class ReadingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reading
-        fields = ('id', 'device', 'device_name', 'value', 'average_over_seconds', 'longitude', 'latitude', 'unit', 'sensor_type', 'sensor_type_name', 'time', )
+        fields = ('id', 'device', 'device_name', 'value', 'average_over_seconds', 'longitude', 'latitude', 'unit', 'unit_name', 'sensor_type', 'sensor_type_name', 'time', )
 
     def get_sensor_type(self, obj):
 

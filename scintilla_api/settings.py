@@ -650,6 +650,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.TemplateHTMLRenderer',
         'readings.renderers.PlainTextRenderer',
     ),
+    'COERCE_DECIMAL_TO_STRING': False
 }
 
 # Email

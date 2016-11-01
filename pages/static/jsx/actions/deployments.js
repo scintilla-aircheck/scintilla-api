@@ -1,6 +1,38 @@
-import { readings } from './readings'
+import { addReading, readings } from './readings'
 
 import axios from 'axios'
+
+function socketFactory(dispatch, deployment_id) {
+    return () => {
+        var socket = new WebSocket('ws://' + window.location.host + '/socket/deployment/' + String(deployment_id));
+        if (socket) {
+            socket.onmessage = function (e) {
+                console.log('./index.jsx:: SOCKET ONMESSAGE:');
+                console.log(e.data);
+                dispatch(addReading(JSON.parse(e.data)));
+            };
+            // When the backend reloads, the connection will be lost.
+            // This will reopen it after a bit of a cooldown period.
+            socket.onclose = function (e) {
+                if (e.code === 1006) {
+                    window.setTimeout(() => {
+                        createSocket(deployment_id);
+                    }, 1500);
+                }
+            };
+        }
+
+        return socket;
+    }
+}
+
+export const createSocket = (deployment_id) => {
+    return dispatch => {
+        console.log('./actions/deployments.js:: CREATE SOCKET:');
+        console.log(deployment_id);
+        return dispatch({type: 'CREATE_SOCKET', socket: socketFactory(dispatch, deployment_id)});
+    };
+};
 
 export const deployments = () => {
     return dispatch => {
@@ -23,7 +55,10 @@ export const deployments = () => {
 export const selectDeployment = (deployment) => {
     return dispatch => {
         dispatch({type: 'SELECT_DEPLOYMENT', deployment});
+
         dispatch(readings(deployment.id));
+
+        dispatch(createSocket(deployment.id));
     };
 };
 

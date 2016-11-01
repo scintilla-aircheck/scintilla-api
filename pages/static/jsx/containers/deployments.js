@@ -15,7 +15,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps =  ({
     onDeploymentClick: selectDeployment,
     onDateChange: changeDate
-
 });
 
 const DeploymentListContainer = connect(

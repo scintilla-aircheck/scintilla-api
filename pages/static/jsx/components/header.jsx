@@ -29,13 +29,19 @@ class Header extends React.Component {
             console.log(date.endDate.toDate());
 
             var start_date = date.startDate.toDate();
-            start_date.setHours(this.props.start_date.getHours());
-            start_date.setMinutes(this.props.start_date.getMinutes());
-            start_date.setSeconds(this.props.start_date.getSeconds());
+            start_date.setHours(0);
+            start_date.setMinutes(0);
+            start_date.setSeconds(0);
+            //start_date.setHours(this.props.start_date.getHours());
+            //start_date.setMinutes(this.props.start_date.getMinutes());
+            //start_date.setSeconds(this.props.start_date.getSeconds());
             var end_date = date.endDate.toDate();
-            end_date.setHours(this.props.end_date.getHours());
-            end_date.setMinutes(this.props.end_date.getMinutes());
-            end_date.setSeconds(this.props.end_date.getSeconds());
+            end_date.setHours(23);
+            end_date.setMinutes(59);
+            end_date.setSeconds(59);
+            //end_date.setHours(this.props.end_date.getHours());
+            //end_date.setMinutes(this.props.end_date.getMinutes());
+            //end_date.setSeconds(this.props.end_date.getSeconds());
 
             var now = new Date();
             var realtime = end_date > now;
