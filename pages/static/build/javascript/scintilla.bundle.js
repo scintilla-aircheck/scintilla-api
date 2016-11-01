@@ -23060,8 +23060,7 @@
 	                console.log(e.data);
 	                dispatch((0, _readings.addReading)(JSON.parse(e.data)));
 	            };
-	            // When the backend reloads, the connection will be lost.
-	            // This will reopen it after a bit of a cooldown period.
+	            // Retry a dropped connection after a few seconds
 	            socket.onclose = function (e) {
 	                if (e.code === 1006) {
 	                    window.setTimeout(function () {
@@ -32518,6 +32517,10 @@
 
 	var _readings2 = _interopRequireDefault(_readings);
 
+	var _readingMap = __webpack_require__(678);
+
+	var _readingMap2 = _interopRequireDefault(_readingMap);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32542,6 +32545,7 @@
 	                'div',
 	                null,
 	                _react2.default.createElement(_deployments2.default, null),
+	                _react2.default.createElement(_readingMap2.default, null),
 	                _react2.default.createElement(_readings2.default, null)
 	            );
 	        }
@@ -54682,6 +54686,114 @@
 	        // Ignore write errors.
 	    }
 	};
+
+/***/ },
+/* 678 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _reactRedux = __webpack_require__(186);
+
+	var _readingMap = __webpack_require__(679);
+
+	var _readingMap2 = _interopRequireDefault(_readingMap);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        readings: state.readings
+	    };
+	};
+
+	var ReadingMapContainer = (0, _reactRedux.connect)(mapStateToProps, null)(_readingMap2.default);
+
+	exports.default = ReadingMapContainer;
+
+/***/ },
+/* 679 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ReadingMap = function (_React$Component) {
+	    _inherits(ReadingMap, _React$Component);
+
+	    function ReadingMap(props) {
+	        _classCallCheck(this, ReadingMap);
+
+	        var _this = _possibleConstructorReturn(this, (ReadingMap.__proto__ || Object.getPrototypeOf(ReadingMap)).call(this, props));
+
+	        _this.state = { map: null };
+	        return _this;
+	    }
+
+	    _createClass(ReadingMap, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.state.map = new window.google.maps.Map(document.getElementById('map'), {
+	                zoom: 2,
+	                center: { lat: -33.865427, lng: 151.196123 },
+	                mapTypeId: 'terrain'
+	            });
+	            function eqfeed_callback(results) {
+	                var heatmapData = [];
+	                for (var i = 0; i < results.features.length; i++) {
+	                    var coords = results.features[i].geometry.coordinates;
+	                    var latLng = new window.google.maps.LatLng(coords[1], coords[0]);
+	                    var magnitude = results.features[i].properties.mag;
+	                    var weightedLoc = {
+	                        location: latLng,
+	                        weight: Math.pow(2, magnitude)
+	                    };
+	                    heatmapData.push(weightedLoc);
+	                }
+	                var heatmap = new window.google.maps.visualization.HeatmapLayer({
+	                    data: heatmapData,
+	                    dissipating: false,
+	                    map: map
+	                });
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            console.log('./components/readingMap.jsx:: ReadingMap: RENDER');
+	            return _react2.default.createElement('div', { id: 'map' });
+	        }
+	    }]);
+
+	    return ReadingMap;
+	}(_react2.default.Component);
+
+	ReadingMap.propTypes = {
+	    readings: _react2.default.PropTypes.any.isRequired
+	};
+
+	exports.default = ReadingMap;
 
 /***/ }
 /******/ ]);

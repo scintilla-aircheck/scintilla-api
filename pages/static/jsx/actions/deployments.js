@@ -5,15 +5,14 @@ import axios from 'axios'
 function socketFactory(dispatch, deployment_id) {
     return () => {
         var socket = new WebSocket('ws://' + window.location.host + '/socket/deployment/' + String(deployment_id));
-        if (socket) {
-            socket.onmessage = function (e) {
+        if(socket) {
+            socket.onmessage = (e) => {
                 console.log('./index.jsx:: SOCKET ONMESSAGE:');
                 console.log(e.data);
                 dispatch(addReading(JSON.parse(e.data)));
             };
-            // When the backend reloads, the connection will be lost.
-            // This will reopen it after a bit of a cooldown period.
-            socket.onclose = function (e) {
+            // Retry a dropped connection after a few seconds
+            socket.onclose = (e) => {
                 if (e.code === 1006) {
                     window.setTimeout(() => {
                         createSocket(deployment_id);

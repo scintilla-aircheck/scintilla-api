@@ -505,3 +505,8 @@ body {
 .dygraph-roller {
   position: absolute;
 }
+
+#map {
+  min-height: 300px;
+  height: 50%;
+}

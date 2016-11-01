@@ -3,6 +3,7 @@ import { Component } from 'react'
 
 import DeploymentListContainer from '../containers/deployments'
 import ReadingGraphListContainer from '../containers/readings'
+import ReadingMapContainer from '../containers/readingMap'
 
 class Root extends Component {
 
@@ -10,6 +11,7 @@ class Root extends Component {
         return(
             <div>
                 <DeploymentListContainer />
+                <ReadingMapContainer />
                 <ReadingGraphListContainer />
             </div>
         )
