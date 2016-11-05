@@ -10,6 +10,12 @@ export const addReading = (reading) => ({
     reading
 });
 
+export const addReadings = (readings, clear) => ({
+    type: 'ADD_READINGS',
+    readings,
+    clear
+});
+
 export const toggleDeviceActive = (index) => ({
     type: 'TOGGLE_DEVICE_ACTIVE',
     index

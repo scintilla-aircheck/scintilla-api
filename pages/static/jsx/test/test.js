@@ -41,7 +41,11 @@ describe('reading reducer', function() {
                 sensor_types_active: [true],
                 start_date: state_2.start_date,
                 end_date: state_2.end_date,
-                realtime: true
+                realtime: true,
+                heatmap_date: initial_readings_state.heatmap_date,
+                heatmap_active_sensor_type_index: -1,
+                heatmap_longitude: 0.0,
+                heatmap_latitude: 0.0
             });
 
             const action_2 = {
@@ -75,7 +79,11 @@ describe('reading reducer', function() {
                 sensor_types_active: [true, true],
                 start_date: state_3.start_date,
                 end_date: state_3.end_date,
-                realtime: true
+                realtime: true,
+                heatmap_date: initial_readings_state.heatmap_date,
+                heatmap_active_sensor_type_index: -1,
+                heatmap_longitude: 0.0,
+                heatmap_latitude: 0.0
             });
 
             const action_3 = {
@@ -109,7 +117,11 @@ describe('reading reducer', function() {
                 sensor_types_active: [true, true],
                 start_date: state_4.start_date,
                 end_date: state_4.end_date,
-                realtime: true
+                realtime: true,
+                heatmap_date: initial_readings_state.heatmap_date,
+                heatmap_active_sensor_type_index: -1,
+                heatmap_longitude: 0.0,
+                heatmap_latitude: 0.0
             });
         });
     });

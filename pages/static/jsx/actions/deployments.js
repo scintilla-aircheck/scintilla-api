@@ -1,4 +1,4 @@
-import { addReading, readings } from './readings'
+import { addReading, addReadings, readings } from './readings'
 
 import axios from 'axios'
 
@@ -55,7 +55,9 @@ export const selectDeployment = (deployment) => {
     return dispatch => {
         dispatch({type: 'SELECT_DEPLOYMENT', deployment});
 
-        dispatch(readings(deployment.id));
+        dispatch(readings(deployment.id)).then((response) => {
+            dispatch(addReadings(response.action.payload.data.results, true));
+        });
 
         dispatch(createSocket(deployment.id));
     };

@@ -71,7 +71,7 @@
 
 	var _root2 = _interopRequireDefault(_root);
 
-	var _configureStore = __webpack_require__(661);
+	var _configureStore = __webpack_require__(663);
 
 	var _configureStore2 = _interopRequireDefault(_configureStore);
 
@@ -23104,7 +23104,9 @@
 	    return function (dispatch) {
 	        dispatch({ type: 'SELECT_DEPLOYMENT', deployment: deployment });
 
-	        dispatch((0, _readings.readings)(deployment.id));
+	        dispatch((0, _readings.readings)(deployment.id)).then(function (response) {
+	            dispatch((0, _readings.addReadings)(response.action.payload.data.results, true));
+	        });
 
 	        dispatch(createSocket(deployment.id));
 	    };
@@ -23141,7 +23143,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.changeDate = exports.toggleSensorTypeActive = exports.toggleDeviceActive = exports.addReading = exports.readings = undefined;
+	exports.changeDate = exports.toggleSensorTypeActive = exports.toggleDeviceActive = exports.addReadings = exports.addReading = exports.readings = undefined;
 
 	var _axios = __webpack_require__(197);
 
@@ -23160,6 +23162,14 @@
 	    return {
 	        type: 'ADD_READING',
 	        reading: reading
+	    };
+	};
+
+	var addReadings = exports.addReadings = function addReadings(readings, clear) {
+	    return {
+	        type: 'ADD_READINGS',
+	        readings: readings,
+	        clear: clear
 	    };
 	};
 
@@ -32517,7 +32527,7 @@
 
 	var _readings2 = _interopRequireDefault(_readings);
 
-	var _readingMap = __webpack_require__(678);
+	var _readingMap = __webpack_require__(661);
 
 	var _readingMap2 = _interopRequireDefault(_readingMap);
 
@@ -48706,8 +48716,6 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var graph_render_wait_time = 500; // ms
-
 	var ReadingGraphList = function (_React$Component) {
 	    _inherits(ReadingGraphList, _React$Component);
 
@@ -48723,6 +48731,7 @@
 	    _createClass(ReadingGraphList, [{
 	        key: 'shouldComponentUpdate',
 	        value: function shouldComponentUpdate(nextProps, nextState) {
+	            var graph_render_wait_time = 500; // ms
 	            // rate limit updates
 
 	            // prevent continuous updates from locking up semaphore check
@@ -53267,29 +53276,300 @@
 	    value: true
 	});
 
+	var _reactRedux = __webpack_require__(186);
+
+	var _readingMap = __webpack_require__(662);
+
+	var _readingMap2 = _interopRequireDefault(_readingMap);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	    return {
+	        readings: state.readings
+	    };
+	};
+
+	var ReadingMapContainer = (0, _reactRedux.connect)(mapStateToProps, null)(_readingMap2.default);
+
+	exports.default = ReadingMapContainer;
+
+/***/ },
+/* 662 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	function test() {
+	    var latitude = 34;
+	    var longitude = 118;
+	    var phi = -(latitude - 90.0) * Math.PI / 180.0;
+	    var theta = longitude * Math.PI / 180.0;
+	    console.log(phi);
+	    console.log(theta);
+	    var x_total = Math.sin(phi) * Math.cos(theta);
+	    var y_total = Math.sin(phi) * Math.sin(theta);
+	    var z_total = Math.cos(phi);
+
+	    //var length = Math.sqrt(Math.pow(x_total, 2) + Math.pow(y_total, 2) + Math.pow(z_total, 2));
+	    var length = 1.0;
+	    var x_total_normalized = x_total / length;
+	    var y_total_normalized = y_total / length;
+	    var z_total_normalized = z_total / length;
+
+	    var center_longitude = Math.atan(y_total_normalized / x_total_normalized); // * 180.0 / Math.PI;
+	    var center_latitude = /*-(*/Math.atan(Math.sqrt(Math.pow(x_total_normalized, 2) + Math.pow(y_total_normalized, 2)) / z_total_normalized); // * 180.0 / Math.PI) + 90.0;
+	    console.log('TEST CENTER LATLONG:');
+	    console.log(center_latitude);
+	    console.log(center_longitude);
+	}
+
+	function createHeatmap(map, heatmap, markers, device_ids, heatmap_readings_table, heatmap_date) {
+	    console.log('./components/readingMap.jsx:: CREATE HEATMAP: ');
+	    console.log(heatmap_readings_table);
+
+	    //clear markers
+	    for (var m = 0; m < markers.length; m++) {
+	        markers[m].setMap(null);
+	    }
+	    markers = [];
+
+	    test();
+
+	    try {
+	        var heatmap_data = [];
+	        var x_total = 0.0;
+	        var y_total = 0.0;
+	        var z_total = 0.0;
+
+	        var _loop = function _loop() {
+	            bottom_index = 0;
+	            top_index = heatmap_readings_table[i].length - 1;
+
+	            for (j = 0; j < Math.floor(Math.log2(heatmap_readings_table[i].length)) + 1; j++) {
+	                pivot = Math.floor((top_index + bottom_index) / 2);
+	                //console.log('^^^^^');
+	                //console.log(pivot);
+	                //console.log(heatmap_readings_table[i][pivot][0]);
+	                //console.log(heatmap_date);
+	                //console.log(heatmap_readings_table[i][pivot][0] <= heatmap_date);
+
+	                if (heatmap_date > heatmap_readings_table[i][pivot][0]) {
+	                    bottom_index = pivot + 1;
+	                } else {
+	                    top_index = pivot;
+	                }
+	            }
+
+	            latitude = heatmap_readings_table[i][pivot][1];
+	            longitude = heatmap_readings_table[i][pivot][2];
+	            phi = -(latitude - 90.0) * Math.PI / 180.0;
+	            theta = (longitude + 180.0) * Math.PI / 180.0;
+
+	            x_total += Math.sin(phi) * Math.cos(theta);
+	            y_total += Math.sin(phi) * Math.sin(theta);
+	            z_total += Math.cos(phi);
+
+	            latLng = new google.maps.LatLng(latitude, longitude);
+	            magnitude = heatmap_readings_table[i][pivot][3] / 100.0;
+	            weightedLoc = {
+	                location: latLng,
+	                weight: magnitude
+	            };
+
+	            heatmap_data.push(weightedLoc);
+
+	            var infowindow = new google.maps.InfoWindow({
+	                content: '<div>' + String(device_ids[i]) + '</div>'
+	            });
+	            var marker = new google.maps.Marker({
+	                position: latLng,
+	                map: map,
+	                title: String(device_ids[i])
+	            });
+
+	            //markers.push(marker);
+	            marker.addListener('click', function () {
+	                infowindow.open(map, marker);
+	            });
+	        };
+
+	        for (var i = 0; i < device_ids.length; i++) {
+	            var pivot;
+	            var bottom_index;
+	            var top_index;
+	            var j;
+	            var latitude;
+	            var longitude;
+	            var phi;
+	            var theta;
+	            var latLng;
+	            var magnitude;
+	            var weightedLoc;
+
+	            _loop();
+	        }
+
+	        var length = Math.sqrt(Math.pow(x_total, 2) + Math.pow(y_total, 2) + Math.pow(z_total, 2));
+	        var x_total_normalized = x_total / length;
+	        var y_total_normalized = y_total / length;
+	        var z_total_normalized = z_total / length;
+
+	        var center_longitude = Math.atan(y_total_normalized / x_total_normalized) * 180.0 / Math.PI - 180.0;
+	        var center_latitude = -(Math.atan(Math.sqrt(Math.pow(x_total_normalized, 2) + Math.pow(y_total_normalized, 2)) / z_total_normalized) * 180.0 / Math.PI) + 90.0;
+	        console.log('CENTER LATLONG:');
+	        console.log(center_latitude);
+	        console.log(center_longitude);
+	        map.setCenter(new google.maps.LatLng(center_latitude, center_longitude));
+
+	        heatmap.setData(heatmap_data);
+	    } catch (e) {
+	        console.log(e);
+	    }
+	}
+
+	var ReadingMap = function (_React$Component) {
+	    _inherits(ReadingMap, _React$Component);
+
+	    function ReadingMap(props) {
+	        _classCallCheck(this, ReadingMap);
+
+	        var _this = _possibleConstructorReturn(this, (ReadingMap.__proto__ || Object.getPrototypeOf(ReadingMap)).call(this, props));
+
+	        _this.state = { map: null, heatmap: null, markers: [], queued_update_count: 0, last_update_time: null };
+	        return _this;
+	    }
+
+	    _createClass(ReadingMap, [{
+	        key: 'shouldComponentUpdate',
+	        value: function shouldComponentUpdate(nextProps, nextState) {
+	            var graph_render_wait_time = 500; // ms
+	            // rate limit updates
+
+	            // prevent continuous updates from locking up semaphore check
+	            var now = new Date();
+	            var offset_time = new Date(now.getTime() - graph_render_wait_time); // 500ms in the past
+
+	            if (this.state.last_update_time === null || this.state.last_update_time < offset_time) {
+	                this.state.last_update_time = now;
+	                return true;
+	            }
+
+	            // check using semaphore
+	            this.state.queued_update_count += 1;
+
+	            var that = this;
+	            window.setTimeout(function () {
+	                var now = new Date();
+	                that.state.queued_update_count -= 1;
+	                if (that.state.queued_update_count <= 0) {
+	                    that.state.last_update_time = now;
+	                    that.forceUpdate();
+	                }
+	            }, graph_render_wait_time);
+
+	            return false;
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            console.log('./components/readingMap.jsx:: COMPONENT DID MOUNT: ');
+	            console.log(this.props.readings.heatmap_latitude);
+	            console.log(this.props.readings.heatmap_longitude);
+	            this.state.map = new window.google.maps.Map(document.getElementById('map'), {
+	                zoom: 8,
+	                center: { lat: 0.0, lng: 0.0 },
+	                mapTypeId: 'terrain'
+	            });
+	            this.state.heatmap = new window.google.maps.visualization.HeatmapLayer({
+	                data: [],
+	                dissipating: false,
+	                map: this.state.map
+	            });
+
+	            if (this.props.readings.sensor_type_view_graphs.length) {
+	                var heatmap_active_sensor_type_index = this.props.readings.heatmap_active_sensor_type_index > -1 ? this.props.readings.heatmap_active_sensor_type_index : 0;
+
+	                createHeatmap(this.state.map, this.state.heatmap, this.state.markers, this.props.readings.device_ids, this.props.readings.heatmap_readings_table[heatmap_active_sensor_type_index], this.props.readings.heatmap_date);
+	            }
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            if (this.props.readings.sensor_type_view_graphs.length) {
+	                var heatmap_active_sensor_type_index = this.props.readings.heatmap_active_sensor_type_index > -1 ? this.props.readings.heatmap_active_sensor_type_index : 0;
+
+	                createHeatmap(this.state.map, this.state.heatmap, this.state.markers, this.props.readings.device_ids, this.props.readings.heatmap_readings_table[heatmap_active_sensor_type_index], this.props.readings.heatmap_date);
+	            }
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            console.log('./components/readingMap.jsx:: ReadingMap: RENDER');
+	            return _react2.default.createElement('div', { id: 'map' });
+	        }
+	    }]);
+
+	    return ReadingMap;
+	}(_react2.default.Component);
+
+	ReadingMap.propTypes = {
+	    readings: _react2.default.PropTypes.any.isRequired
+	};
+
+	exports.default = ReadingMap;
+
+/***/ },
+/* 663 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
 	var _redux = __webpack_require__(172);
 
-	var _reduxPromiseMiddleware = __webpack_require__(662);
+	var _reduxPromiseMiddleware = __webpack_require__(664);
 
 	var _reduxPromiseMiddleware2 = _interopRequireDefault(_reduxPromiseMiddleware);
 
-	var _reduxThunk = __webpack_require__(664);
+	var _reduxThunk = __webpack_require__(666);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reduxLogger = __webpack_require__(665);
+	var _reduxLogger = __webpack_require__(667);
 
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 
-	var _throttle = __webpack_require__(666);
+	var _throttle = __webpack_require__(668);
 
 	var _throttle2 = _interopRequireDefault(_throttle);
 
-	var _reducers = __webpack_require__(674);
+	var _reducers = __webpack_require__(676);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
-	var _localStorage = __webpack_require__(677);
+	var _localStorage = __webpack_require__(679);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -53309,7 +53589,7 @@
 	exports.default = configureStore;
 
 /***/ },
-/* 662 */
+/* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53326,7 +53606,7 @@
 
 	exports.default = promiseMiddleware;
 
-	var _isPromise = __webpack_require__(663);
+	var _isPromise = __webpack_require__(665);
 
 	var _isPromise2 = _interopRequireDefault(_isPromise);
 
@@ -53483,7 +53763,7 @@
 	}
 
 /***/ },
-/* 663 */
+/* 665 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -53504,7 +53784,7 @@
 	}
 
 /***/ },
-/* 664 */
+/* 666 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -53532,7 +53812,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 665 */
+/* 667 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -53765,11 +54045,11 @@
 	module.exports = createLogger;
 
 /***/ },
-/* 666 */
+/* 668 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var debounce = __webpack_require__(667),
-	    isObject = __webpack_require__(668);
+	var debounce = __webpack_require__(669),
+	    isObject = __webpack_require__(670);
 
 	/** Error message constants. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -53840,12 +54120,12 @@
 
 
 /***/ },
-/* 667 */
+/* 669 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(668),
-	    now = __webpack_require__(669),
-	    toNumber = __webpack_require__(672);
+	var isObject = __webpack_require__(670),
+	    now = __webpack_require__(671),
+	    toNumber = __webpack_require__(674);
 
 	/** Error message constants. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -54034,7 +54314,7 @@
 
 
 /***/ },
-/* 668 */
+/* 670 */
 /***/ function(module, exports) {
 
 	/**
@@ -54071,10 +54351,10 @@
 
 
 /***/ },
-/* 669 */
+/* 671 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(670);
+	var root = __webpack_require__(672);
 
 	/**
 	 * Gets the timestamp of the number of milliseconds that have elapsed since
@@ -54100,10 +54380,10 @@
 
 
 /***/ },
-/* 670 */
+/* 672 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var freeGlobal = __webpack_require__(671);
+	var freeGlobal = __webpack_require__(673);
 
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -54115,7 +54395,7 @@
 
 
 /***/ },
-/* 671 */
+/* 673 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
@@ -54126,11 +54406,11 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 672 */
+/* 674 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(668),
-	    isSymbol = __webpack_require__(673);
+	var isObject = __webpack_require__(670),
+	    isSymbol = __webpack_require__(675);
 
 	/** Used as references for various `Number` constants. */
 	var NAN = 0 / 0;
@@ -54198,7 +54478,7 @@
 
 
 /***/ },
-/* 673 */
+/* 675 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isObjectLike = __webpack_require__(177);
@@ -54242,7 +54522,7 @@
 
 
 /***/ },
-/* 674 */
+/* 676 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54253,11 +54533,11 @@
 
 	var _redux = __webpack_require__(172);
 
-	var _deployments = __webpack_require__(675);
+	var _deployments = __webpack_require__(677);
 
 	var _deployments2 = _interopRequireDefault(_deployments);
 
-	var _readings = __webpack_require__(676);
+	var _readings = __webpack_require__(678);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -54269,7 +54549,7 @@
 	exports.default = rootReducer;
 
 /***/ },
-/* 675 */
+/* 677 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54329,7 +54609,7 @@
 	exports.default = deployments;
 
 /***/ },
-/* 676 */
+/* 678 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -54360,7 +54640,12 @@
 	    sensor_type_units: [],
 	    start_date: initial_start_date,
 	    end_date: initial_end_date,
-	    realtime: true
+	    realtime: true,
+	    heatmap_readings_table: [],
+	    heatmap_date: initial_end_date,
+	    heatmap_active_sensor_type_index: -1,
+	    heatmap_longitude: -118.24,
+	    heatmap_latitude: 34.05
 	};
 
 	var readingToDygraphArray = function readingToDygraphArray(reading, index, length) {
@@ -54389,6 +54674,9 @@
 	            });
 	        case 'CHANGE_DATE':
 	            return _extends({}, state, { start_date: action.start_date, end_date: action.end_date, realtime: action.realtime });
+	        case 'CHANGE_HEATMAP_DATE':
+	            // set heatmap_longitude and heapmap_latitude TODO
+	            return _extends({}, state, { heatmap_date: action.heatmap_date });
 	        /*case 'CHANGE_TIME':
 	            let new_start_date = state.start_date.valueOf();
 	            new_start_date.setHours(action.start_date_hours);
@@ -54404,7 +54692,7 @@
 	        case 'READINGS_REJECTED':
 	            return state;
 	        case 'READINGS_FULFILLED':
-	            return readings(state, { type: 'ADD_READINGS', readings: action.payload.data.results, clear: true });
+	            return state;
 	        case 'ADD_READINGS':
 
 	            if (action.readings === undefined || action.readings === null) {
@@ -54421,6 +54709,7 @@
 	                var sensor_type_names = [];
 	                var sensor_types_active = [];
 	                var sensor_type_units = [];
+	                var heatmap_readings_table = [];
 	            } else {
 	                var device_view_graphs = [].concat(_toConsumableArray(state.device_view_graphs.map(function (g) {
 	                    return [].concat(_toConsumableArray(g));
@@ -54435,6 +54724,11 @@
 	                var sensor_type_names = [].concat(_toConsumableArray(state.sensor_type_names));
 	                var sensor_types_active = [].concat(_toConsumableArray(state.sensor_types_active));
 	                var sensor_type_units = [].concat(_toConsumableArray(state.sensor_type_units));
+	                var heatmap_readings_table = [].concat(_toConsumableArray(state.heatmap_readings_table.map(function (st) {
+	                    return [].concat(_toConsumableArray(st.map(function (d) {
+	                        return [].concat(_toConsumableArray(d));
+	                    })));
+	                })));
 	            }
 
 	            var _iteratorNormalCompletion = true;
@@ -54457,11 +54751,16 @@
 	                        }
 	                        devices_active.push(true);
 
-	                        // we need to at a null at the end of the first reading of every graph so that dygraphs will render all of the data points
+	                        // we need to add a null at the end of the first reading of every graph so that dygraphs will render all of the data points
 	                        for (var i = 0; i < sensor_type_view_graphs.length; i++) {
 	                            if (sensor_type_view_graphs[i].length) {
 	                                sensor_type_view_graphs[i][0].push(null);
 	                            }
+	                        }
+
+	                        // add an empty array for this new device under each sensor type of the heatmap_readings_table
+	                        for (var j = 0; j < heatmap_readings_table.length; j++) {
+	                            heatmap_readings_table[j].push([]);
 	                        }
 	                    }
 
@@ -54481,11 +54780,17 @@
 	                        }
 	                        sensor_types_active.push(true);
 
-	                        // we need to at a null at the end of the first reading of every graph so that dygraphs will render all of the data points
+	                        // we need to add a null at the end of the first reading of every graph so that dygraphs will render all of the data points
 	                        for (var i = 0; i < device_view_graphs.length; i++) {
 	                            if (device_view_graphs[i].length) {
 	                                device_view_graphs[i][0].push(null);
 	                            }
+	                        }
+
+	                        // add an empty array to the heatmap_readings_table for this new sensor type and add an empty array for each device
+	                        heatmap_readings_table.push([]);
+	                        for (var j = 0; j < device_ids.length; j++) {
+	                            heatmap_readings_table[heatmap_readings_table.length - 1].push([]);
 	                        }
 	                    }
 
@@ -54522,6 +54827,9 @@
 	                    if (new_time) {
 	                        sensor_type_view_graphs[sensor_type_index].unshift(readingToDygraphArray(reading, device_index, device_ids.length));
 	                    }
+
+	                    // add the reading to the approriate heatmap_readings_table entry
+	                    heatmap_readings_table[sensor_type_index][device_index].push([reading.time, reading.latitude, reading.longitude, reading.value]);
 	                }
 	            } catch (err) {
 	                _didIteratorError = true;
@@ -54545,7 +54853,7 @@
 	                start_date.setTime(state.end_date.getTime() - 24 * 3600000);
 	            }
 
-	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, sensor_type_units: sensor_type_units, start_date: start_date, end_date: end_date });
+	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, sensor_type_units: sensor_type_units, heatmap_readings_table: heatmap_readings_table, start_date: start_date, end_date: end_date });
 
 	        case 'ADD_READING':
 
@@ -54566,6 +54874,11 @@
 	            var sensor_type_names = [].concat(_toConsumableArray(state.sensor_type_names));
 	            var sensor_types_active = [].concat(_toConsumableArray(state.sensor_types_active));
 	            var sensor_type_units = [].concat(_toConsumableArray(state.sensor_type_units));
+	            var heatmap_readings_table = [].concat(_toConsumableArray(state.heatmap_readings_table.map(function (st) {
+	                return [].concat(_toConsumableArray(st.map(function (d) {
+	                    return [].concat(_toConsumableArray(d));
+	                })));
+	            })));
 
 	            // Check if the device id exists yet. If not, create it.
 	            if (action.reading.device && !device_ids.includes(action.reading.device)) {
@@ -54578,11 +54891,16 @@
 	                }
 	                devices_active.push(true);
 
-	                // we need to at a null at the end of the first reading of every graph so that dygraphs will render all of the data points
+	                // we need to add a null at the end of the first reading of every graph so that dygraphs will render all of the data points
 	                for (var i = 0; i < sensor_type_view_graphs.length; i++) {
 	                    if (sensor_type_view_graphs[i].length) {
 	                        sensor_type_view_graphs[i][0] = [].concat(_toConsumableArray(sensor_type_view_graphs[i][0]), [null]);
 	                    }
+	                }
+
+	                // add an empty array for this new device under each sensor type of the heatmap_readings_table
+	                for (var j = 0; j < heatmap_readings_table.length; j++) {
+	                    heatmap_readings_table[j].push([]);
 	                }
 	            }
 
@@ -54602,11 +54920,17 @@
 	                }
 	                sensor_types_active.push(true);
 
-	                // we need to at a null at the end of the first reading of every graph so that dygraphs will render all of the data points
+	                // we need to add a null at the end of the first reading of every graph so that dygraphs will render all of the data points
 	                for (var i = 0; i < device_view_graphs.length; i++) {
 	                    if (device_view_graphs[i].length) {
 	                        device_view_graphs[i][0] = [].concat(_toConsumableArray(device_view_graphs[i][0]), [null]);
 	                    }
+	                }
+
+	                // add an empty array to the heatmap_readings_table for this new sensor type and add an empty array for each device
+	                heatmap_readings_table.push([]);
+	                for (var j = 0; j < device_ids.length; j++) {
+	                    heatmap_readings_table[heatmap_readings_table.length - 1].push([]);
 	                }
 	            }
 
@@ -54644,6 +54968,9 @@
 	                sensor_type_view_graphs = [].concat(_toConsumableArray(sensor_type_view_graphs.slice(0, sensor_type_index)), [[].concat(_toConsumableArray(sensor_type_view_graphs[sensor_type_index]), [readingToDygraphArray(action.reading, device_index, device_ids.length)])], _toConsumableArray(sensor_type_view_graphs.slice(sensor_type_index + 1)));
 	            }
 
+	            // add the reading to the approriate heatmap_readings_table entry
+	            heatmap_readings_table[sensor_type_index][device_index].push([action.reading.time, action.reading.latitude, action.reading.longitude, action.reading.value]);
+
 	            var end_date = state.realtime ? new Date() : Object.assign(state.end_date);
 
 	            var start_date = Object.assign(state.start_date);
@@ -54651,14 +54978,14 @@
 	                start_date.setTime(state.end_date.getTime() - 24 * 3600000);
 	            }
 
-	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, sensor_type_units: sensor_type_units, start_date: start_date, end_date: end_date });
+	            return _extends({}, state, { device_view_graphs: device_view_graphs, device_ids: device_ids, device_names: device_names, devices_active: devices_active, sensor_type_view_graphs: sensor_type_view_graphs, sensor_types: sensor_types, sensor_type_names: sensor_type_names, sensor_types_active: sensor_types_active, sensor_type_units: sensor_type_units, heatmap_readings_table: heatmap_readings_table, start_date: start_date, end_date: end_date });
 	        default:
 	            return state;
 	    }
 	};
 
 /***/ },
-/* 677 */
+/* 679 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -54686,114 +55013,6 @@
 	        // Ignore write errors.
 	    }
 	};
-
-/***/ },
-/* 678 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _reactRedux = __webpack_require__(186);
-
-	var _readingMap = __webpack_require__(679);
-
-	var _readingMap2 = _interopRequireDefault(_readingMap);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var mapStateToProps = function mapStateToProps(state) {
-	    return {
-	        readings: state.readings
-	    };
-	};
-
-	var ReadingMapContainer = (0, _reactRedux.connect)(mapStateToProps, null)(_readingMap2.default);
-
-	exports.default = ReadingMapContainer;
-
-/***/ },
-/* 679 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ReadingMap = function (_React$Component) {
-	    _inherits(ReadingMap, _React$Component);
-
-	    function ReadingMap(props) {
-	        _classCallCheck(this, ReadingMap);
-
-	        var _this = _possibleConstructorReturn(this, (ReadingMap.__proto__ || Object.getPrototypeOf(ReadingMap)).call(this, props));
-
-	        _this.state = { map: null };
-	        return _this;
-	    }
-
-	    _createClass(ReadingMap, [{
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            this.state.map = new window.google.maps.Map(document.getElementById('map'), {
-	                zoom: 2,
-	                center: { lat: -33.865427, lng: 151.196123 },
-	                mapTypeId: 'terrain'
-	            });
-	            function eqfeed_callback(results) {
-	                var heatmapData = [];
-	                for (var i = 0; i < results.features.length; i++) {
-	                    var coords = results.features[i].geometry.coordinates;
-	                    var latLng = new window.google.maps.LatLng(coords[1], coords[0]);
-	                    var magnitude = results.features[i].properties.mag;
-	                    var weightedLoc = {
-	                        location: latLng,
-	                        weight: Math.pow(2, magnitude)
-	                    };
-	                    heatmapData.push(weightedLoc);
-	                }
-	                var heatmap = new window.google.maps.visualization.HeatmapLayer({
-	                    data: heatmapData,
-	                    dissipating: false,
-	                    map: map
-	                });
-	            }
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            console.log('./components/readingMap.jsx:: ReadingMap: RENDER');
-	            return _react2.default.createElement('div', { id: 'map' });
-	        }
-	    }]);
-
-	    return ReadingMap;
-	}(_react2.default.Component);
-
-	ReadingMap.propTypes = {
-	    readings: _react2.default.PropTypes.any.isRequired
-	};
-
-	exports.default = ReadingMap;
 
 /***/ }
 /******/ ]);

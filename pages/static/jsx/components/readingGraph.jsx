@@ -2,8 +2,6 @@ import React from 'react'
 
 import { v4 } from 'node-uuid'
 
-const graph_render_wait_time = 500;  // ms
-
 class ReadingGraphList extends React.Component {
 
     constructor(props) {
@@ -12,6 +10,7 @@ class ReadingGraphList extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
+        const graph_render_wait_time = 500;  // ms
         // rate limit updates
 
         // prevent continuous updates from locking up semaphore check
