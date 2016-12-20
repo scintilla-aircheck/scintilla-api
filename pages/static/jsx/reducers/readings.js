@@ -1,8 +1,8 @@
 let initial_end_date = new Date();
-let initial_start_date = new Date(initial_end_date.valueOf());
-initial_start_date.setHours(0);
-initial_start_date.setMinutes(0);
-initial_start_date.setSeconds(0);
+let initial_start_date = new Date(initial_end_date.valueOf() - 8 * 60 * 60 * 1000);
+//initial_start_date.setHours(0);
+//initial_start_date.setMinutes(0);
+//initial_start_date.setSeconds(0);
 
 export const initial_readings_state = {
     device_view_graphs: [],

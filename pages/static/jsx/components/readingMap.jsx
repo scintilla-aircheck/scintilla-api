@@ -1,29 +1,5 @@
 import React from 'react'
 
-function test() {
-    var latitude = 34;
-    var longitude = 118;
-    var phi = -(latitude - 90.0) * Math.PI / 180.0;
-    var theta = longitude * Math.PI / 180.0;
-    console.log(phi);
-    console.log(theta);
-    var x_total = Math.sin(phi) * Math.cos(theta);
-    var y_total = Math.sin(phi) * Math.sin(theta);
-    var z_total = Math.cos(phi);
-
-    //var length = Math.sqrt(Math.pow(x_total, 2) + Math.pow(y_total, 2) + Math.pow(z_total, 2));
-    var length = 1.0;
-    var x_total_normalized = x_total / length;
-    var y_total_normalized = y_total / length;
-    var z_total_normalized = z_total / length;
-
-    var center_longitude = Math.atan(y_total_normalized / x_total_normalized);// * 180.0 / Math.PI;
-    var center_latitude = /*-(*/Math.atan(Math.sqrt(Math.pow(x_total_normalized, 2) + Math.pow(y_total_normalized, 2)) / z_total_normalized);// * 180.0 / Math.PI) + 90.0;
-    console.log('TEST CENTER LATLONG:');
-    console.log(center_latitude);
-    console.log(center_longitude);
-}
-
 function createHeatmap(map, heatmap, markers, device_ids, heatmap_readings_table, heatmap_date) {
     console.log('./components/readingMap.jsx:: CREATE HEATMAP: ');
     console.log(heatmap_readings_table);
@@ -32,26 +8,22 @@ function createHeatmap(map, heatmap, markers, device_ids, heatmap_readings_table
     for(var m = 0; m < markers.length; m++) {
         markers[m].setMap(null);
     }
-    markers = [];
+    markers.length = 0; // keep this.state.markers reference intact for use later in this function
 
-    test();
+    var bounds = new google.maps.LatLngBounds();
 
     try {
         var heatmap_data = [];
         var x_total = 0.0;
         var y_total = 0.0;
         var z_total = 0.0;
+
         for (var i = 0; i < device_ids.length; i++) {
             var pivot;
             var bottom_index = 0;
             var top_index = heatmap_readings_table[i].length - 1;
             for (var j = 0; j < Math.floor(Math.log2(heatmap_readings_table[i].length)) + 1; j++) {
                 pivot = Math.floor((top_index + bottom_index) / 2);
-                //console.log('^^^^^');
-                //console.log(pivot);
-                //console.log(heatmap_readings_table[i][pivot][0]);
-                //console.log(heatmap_date);
-                //console.log(heatmap_readings_table[i][pivot][0] <= heatmap_date);
 
                 if (heatmap_date > heatmap_readings_table[i][pivot][0]) {
                     bottom_index = pivot + 1;
@@ -82,10 +54,13 @@ function createHeatmap(map, heatmap, markers, device_ids, heatmap_readings_table
             let marker = new google.maps.Marker({
                 position: latLng,
                 map: map,
-                title: String(device_ids[i])
+                title: String(device_ids[i]),
+                label: {text: 'test2'},
+                opacity: 0.7
             });
 
-            //markers.push(marker);
+            markers.push(marker);
+            bounds.extend(marker.getPosition());
             marker.addListener('click', function() {
                 infowindow.open(map, marker);
             });
@@ -98,10 +73,10 @@ function createHeatmap(map, heatmap, markers, device_ids, heatmap_readings_table
 
         var center_longitude = (Math.atan(y_total_normalized / x_total_normalized) * 180.0 / Math.PI) - 180.0;
         var center_latitude = -(Math.atan(Math.sqrt(Math.pow(x_total_normalized, 2) + Math.pow(y_total_normalized, 2)) / z_total_normalized) * 180.0 / Math.PI) + 90.0;
-        console.log('CENTER LATLONG:');
-        console.log(center_latitude);
-        console.log(center_longitude);
+
         map.setCenter(new google.maps.LatLng(center_latitude, center_longitude));
+
+        map.fitBounds(bounds);
 
         heatmap.setData(heatmap_data);
 
@@ -151,13 +126,16 @@ class ReadingMap extends React.Component {
         console.log(this.props.readings.heatmap_latitude);
         console.log(this.props.readings.heatmap_longitude);
         this.state.map = new window.google.maps.Map(document.getElementById('map'), {
-            zoom: 8,
+            zoom: 12,
             center: {lat: 0.0, lng: 0.0},
             mapTypeId: 'terrain'
         });
         this.state.heatmap = new window.google.maps.visualization.HeatmapLayer({
             data: [],
             dissipating: false,
+            //maxIntensity: 10,
+            radius: .01,
+            //opacity: 0.9,
             map: this.state.map
         });
 

@@ -5,8 +5,8 @@ djangorestframework==3.4.6
 slothauth==0.6.1
 django-mobile==0.7.0
 celery==3.1.24
-#django-celery==3.1.17
-git+https://github.com/celery/django-celery
+django-celery==3.2.0
+#git+https://github.com/celery/django-celery
 kombu==3.0.37
 protobuf==3.0.0
 simplejson==3.10.0
